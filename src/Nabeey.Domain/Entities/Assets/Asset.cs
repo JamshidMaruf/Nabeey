@@ -1,6 +1,6 @@
 ﻿using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Assets;
+namespace Nabeey.Domain.Entities.Assets;
 
 public class Asset : Auditable
 {
