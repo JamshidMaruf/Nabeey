@@ -1,5 +1,5 @@
-﻿using Nabeey.Domain.Assets;
-using Nabeey.Domain.Commons;
+﻿using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Assets;
 
 namespace Nabeey.Domain.Entities.Books;
 
