@@ -2,4 +2,5 @@
 
 public class ContentCreationDto
 {
+    public long ContentCategoryId { get; set; }
 }

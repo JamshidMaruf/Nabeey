@@ -1,4 +1,6 @@
-﻿namespace Nabeey.Service.DTOs.Quizzes;
+﻿using Nabeey.Service.DTOs.ContentCategories;
+
+namespace Nabeey.Service.DTOs.Quizzes;
 
 public class QuizResultDto
 {
