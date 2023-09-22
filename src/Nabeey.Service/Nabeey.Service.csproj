@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\QuestionAnswer\" />
+    <Folder Include="DTOs\Question\" />
+  </ItemGroup>
+
 </Project>
