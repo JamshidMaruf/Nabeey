@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Nabeey.Service.Extensions;
 
-namespace Nabeey.Service.Extensions
+public static class Converter
 {
-    internal class Class1
+    public static byte[] ToByte(this IFormFile formFile)
     {
+        using var memoryStream = new MemoryStream();
+        formFile.CopyTo(memoryStream);
+        return memoryStream.ToArray();
     }
 }
