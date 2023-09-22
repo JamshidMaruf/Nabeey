@@ -3,6 +3,7 @@ using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
+using Nabeey.Domain.Entities.ContentBooks;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
