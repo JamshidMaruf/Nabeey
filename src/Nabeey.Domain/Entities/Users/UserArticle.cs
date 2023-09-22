@@ -1,4 +1,5 @@
 ﻿using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Articles;
 
 namespace Nabeey.Domain.Entities.Users;
 
