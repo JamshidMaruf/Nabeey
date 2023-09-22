@@ -1,10 +1,12 @@
-﻿namespace Nabeey.Domain.Contexts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class ContentImage
+namespace Nabeey.Domain.Contexts
 {
-    public long ContentId { get; set; }
-    public Content Content { get; set; }
-
-    public long AssetId { get; set; }
-    public Asset Asset { get; set; }
+	internal class ContentImage
+	{
+	}
 }
