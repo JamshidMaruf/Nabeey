@@ -2,7 +2,7 @@
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Enums;
 
-namespace Nabeey.Domain.Users;
+namespace Nabeey.Domain.Entities.Users;
 
 public class User : Auditable
 {

@@ -1,8 +1,8 @@
 ﻿using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Users;
+namespace Nabeey.Domain.Entities.Users;
 
-public class UserArticle: Auditable
+public class UserArticle : Auditable
 {
     public long UserId { get; set; }
     public User User { get; set; }
