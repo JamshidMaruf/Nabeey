@@ -1,9 +1,9 @@
-﻿using Nabeey.Domain.Assets;
-using Nabeey.Domain.Commons;
+﻿using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Assets;
 
-namespace Nabeey.Domain.Contexts;
+namespace Nabeey.Domain.Entities.Contexts;
 
-public class ContentAudio : Auditable
+public class ContentVideo : Auditable
 {
     public long ContentId { get; set; }
     public Content Content { get; set; }
