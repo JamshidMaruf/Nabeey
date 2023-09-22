@@ -20,9 +20,4 @@
     <ProjectReference Include="..\Nabeey.Domain\Nabeey.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\QuestionAnswer\" />
-    <Folder Include="DTOs\Question\" />
-  </ItemGroup>
-
 </Project>
