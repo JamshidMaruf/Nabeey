@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Nabeey.Service.Exceptions;
 
-namespace Nabeey.Service.Exceptions
+public class CustomException : Exception
 {
-    internal class CustomException
+    public int StatusCode { get; set; }
+    public CustomException(int statusCode, string message) : base(message)
     {
+        this.StatusCode = statusCode;
     }
 }
