@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Service.DTOs.ContentCategories;
+namespace Nabeey.Service.Mappers;
+using Nabeey.Service.DTOs.ContentImages;
 
-namespace Nabeey.Service.Mappers
+public class MappedProfile : Profile
 {
-	internal class MappedProfile
-	{
+    public MappedProfile()
+    {
+		// ContentCategory
+		CreateMap<ContentCategory, ContentCategoryCreationDto>().ReverseMap();
+		CreateMap<ContentCategory, ContentCategoryUpdateDto>().ReverseMap();
+		CreateMap<ContentCategory, ContentCategoryResultDto>().ReverseMap();
+
+		// ContentImage
+		CreateMap<ContentImage, ContentImageCreationDto>().ReverseMap();
+		CreateMap<ContentImage, ContentImageUpdateDto>().ReverseMap();
+		CreateMap<ContentImage, ContentImageResultDto>().ReverseMap();
 	}
 }
