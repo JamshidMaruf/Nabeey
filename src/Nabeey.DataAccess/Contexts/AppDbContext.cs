@@ -9,13 +9,12 @@ using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
+using System.Numerics;
 
 namespace Nabeey.DataAccess.Contexts;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    { }
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Asset> Assets { get; set; }
@@ -32,4 +31,26 @@ public class AppDbContext : DbContext
     public DbSet<QuizQuestion> QuizQuestions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserArticle> UserArticles { get; set; }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // entitilar uchun "isDeleted" holatini filter qilish
+        modelBuilder.Entity<Answer>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Article>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Asset>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Book>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<ContentBook>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Content>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<ContentAudio>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<ContentCategory>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<ContentVideo>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Question>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<QuestionAnswer>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<Quiz>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<QuizQuestion>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<UserArticle>().HasQueryFilter(u => !u.IsDeleted);
+    }
 }
