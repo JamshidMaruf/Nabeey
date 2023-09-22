@@ -1,6 +1,8 @@
-﻿namespace Nabeey.Domain.Contexts;
+﻿using Nabeey.Domain.Commons;
 
-public class ContentCategory
+namespace Nabeey.Domain.Contexts;
+
+public class ContentCategory : Auditable
 {
     public string Name { get; set; }
 }
