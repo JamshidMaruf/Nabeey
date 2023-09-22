@@ -1,4 +1,6 @@
-﻿namespace Nabeey.Service.DTOs.Answer;
+﻿using Nabeey.Service.DTOs.QuestionAnswer;
+
+namespace Nabeey.Service.DTOs.Answer;
 
 public class AnswerResultDto
 {

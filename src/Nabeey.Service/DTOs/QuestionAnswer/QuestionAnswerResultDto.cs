@@ -5,6 +5,7 @@ namespace Nabeey.Service.DTOs.QuestionAnswer;
 
 public class QuestionAnswerResultDto
 {
+    public long Id { get; set; }
     public long AnswerId { get; set; }
     public AnswerResultDto Answer { get; set; }
     public long QuestionId { get; set; }

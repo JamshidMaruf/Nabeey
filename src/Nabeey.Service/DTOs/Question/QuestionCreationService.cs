@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Entities.QuestionAnswers;
 
-namespace Nabeey.Service.DTOs.Question
+namespace Nabeey.Service.DTOs.Question;
+
+public class QuestionCreationService
 {
-    internal class QuestionCreationService
-    {
-    }
+    public long AssetId { get; set; }
+    public string Text { get; set; }
 }
