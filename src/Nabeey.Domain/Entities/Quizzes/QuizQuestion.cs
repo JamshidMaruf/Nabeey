@@ -1,5 +1,5 @@
 ﻿using Nabeey.Domain.Commons;
-using Nabeey.Domain.Questions;
+using Nabeey.Domain.Entities.Questions;
 
 namespace Nabeey.Domain.Entities.Quizzes;
 

@@ -1,7 +1,7 @@
 ﻿using Nabeey.Domain.Commons;
 using Nabeey.Domain.Contexts;
 
-namespace Nabeey.Domain.Books;
+namespace Nabeey.Domain.Entities.Books;
 
 public class ContentBook : Auditable
 {
