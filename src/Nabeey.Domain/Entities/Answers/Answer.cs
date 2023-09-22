@@ -1,10 +1,10 @@
 ﻿using Nabeey.Domain.Assets;
 using Nabeey.Domain.Commons;
-using Nabeey.Domain.QuestionAnswers;
+using Nabeey.Domain.Entities.QuestionAnswers;
 
-namespace Nabeey.Domain.Answers;
+namespace Nabeey.Domain.Entities.Answers;
 
-public class Answer:Auditable
+public class Answer : Auditable
 {
     public long AssetId { get; set; }
     public Asset Asset { get; set; }
