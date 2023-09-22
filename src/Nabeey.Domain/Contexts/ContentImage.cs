@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nabeey.Domain.Assets;
+using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Contexts
+namespace Nabeey.Domain.Contexts;
+
+public class ContentImage : Auditable
 {
-	internal class ContentImage
-	{
-	}
+	public long ContentId { get; set; }
+	public Content Content { get; set; }
+
+	public long AssetId { get; set; }
+	public Asset Asset { get; set; }
 }
