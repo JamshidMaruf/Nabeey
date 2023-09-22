@@ -3,7 +3,7 @@ using Nabeey.Domain.Entities.QuestionAnswers;
 
 namespace Nabeey.Service.DTOs.Question;
 
-public class QuestionCreationService
+public class QuestionCreationDto
 {
     public long AssetId { get; set; }
     public string Text { get; set; }
