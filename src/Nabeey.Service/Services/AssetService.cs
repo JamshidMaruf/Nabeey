@@ -1,6 +1,8 @@
 ﻿using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Service.DTOs.Assets;
+using Nabeey.Service.Extensions;
+using Nabeey.Service.Helpers;
 using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
@@ -14,13 +16,41 @@ public class AssetService : IAssetService
         this.repository = repository;
     }
 
-    public Task<bool> RemoveAsync(Asset asset)
+    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto)
     {
-        throw new NotImplementedException();
+        var webRootPath = Path.Combine(PathHelper.WebRootPath, "Images");
+
+        if (!Directory.Exists(webRootPath))
+            Directory.CreateDirectory(webRootPath);
+
+        var fileExtention = Path.GetExtension(dto.FormFile.FileName);
+        var fileName = $"{Guid.NewGuid().ToString("N")}{fileExtention}";
+        var filePath = Path.Combine(webRootPath, fileName);
+
+        var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
+        await fileStream.WriteAsync(dto.FormFile.ToByte());
+
+        var asset = new Asset()
+        {
+            FileName = fileName,
+            FilePath = filePath,
+        };
+        await this.repository.CreateAsync(asset);
+        var result = await this.repository.SaveAsync();
+        return asset;
     }
 
-    public Task<Asset> UploadAsync(AssetCreationDto dto)
+    public async ValueTask<bool> RemoveAsync(Asset Assetment)
     {
-        throw new NotImplementedException();
+        if (Assetment is null)
+            return false;
+
+        var existAssetment = await repository.SelectAsync(a => a.Id.Equals(Assetment.Id));
+
+        if (existAssetment is null)
+            return false;
+        this.repository.Delete(existAssetment);
+        var result = await this.repository.SaveAsync();
+        return true;
     }
 }
