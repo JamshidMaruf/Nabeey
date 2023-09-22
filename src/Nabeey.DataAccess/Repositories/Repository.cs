@@ -65,4 +65,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
 
         return entities.Where(t => !t.IsDelete);
     }
+
+    public async ValueTask<bool> SaveAsync()
+    {
+        var rowsAffetted = await _context.SaveChangesAsync();
+        return rowsAffetted > 0;
+    }
 }
