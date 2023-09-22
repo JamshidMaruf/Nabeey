@@ -1,7 +1,7 @@
 ﻿using Nabeey.Domain.Assets;
 using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Books;
+namespace Nabeey.Domain.Entities.Books;
 
 public class Book : Auditable
 {
