@@ -15,4 +15,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Nabeey.Service\Nabeey.Service.csproj" />
+  </ItemGroup>
+
 </Project>
