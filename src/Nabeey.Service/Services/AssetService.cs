@@ -16,7 +16,7 @@ public class AssetService : IAssetService
         this.repository = repository;
     }
 
-    public async Task<Asset> UploadAsync(AssetCreationDto dto)
+    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto)
     {
         var webRootPath = Path.Combine(PathHelper.WebRootPath, "Images");
 
@@ -35,12 +35,12 @@ public class AssetService : IAssetService
             FileName = fileName,
             FilePath = filePath,
         };
-
-
+        await this.repository.CreateAsync(asset);
+        var result = await this.repository.SaveAsync();
         return asset;
     }
 
-    public async Task<bool> RemoveAsync(Asset Assetment)
+    public async ValueTask<bool> RemoveAsync(Asset Assetment)
     {
         if (Assetment is null)
             return false;
@@ -49,7 +49,8 @@ public class AssetService : IAssetService
 
         if (existAssetment is null)
             return false;
-
+        this.repository.Delete(existAssetment);
+        var result = await this.repository.SaveAsync();
         return true;
     }
 }
