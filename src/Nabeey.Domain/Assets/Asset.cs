@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Assets
+namespace Nabeey.Domain.Assets;
+
+public class Asset : Auditable
 {
-    internal class Asset
-    {
-    }
+    public string FileName { get; set; }
+    public string FilePath { get; set; }
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Contexts
+namespace Nabeey.Domain.Contexts;
+
+public class Content : Auditable
 {
-    internal class Content
-    {
-    }
 }
