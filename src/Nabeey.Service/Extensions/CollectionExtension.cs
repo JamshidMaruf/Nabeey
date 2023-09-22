@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Nabeey.Service.Helpers;
 using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Commons;
 
 namespace Nabeey.Service.Extensions;
 
@@ -39,6 +40,24 @@ public static class CollectionExtension
             entities.OrderBy(e => e.Id)
                 .Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize) :
                     throw new CustomException(400, "Please, enter valid numbers");
+    }
+
+    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
+    {
+        if (filter is null)
+            return collect;
+
+        var property = typeof(TEntity).GetProperties().FirstOrDefault(n
+            => n.Name.ToLower().Equals(filter.OrderBy.ToLower())
+            );
+
+        if (property is null)
+            return collect;
+
+        if (filter.IsDesc)
+            return collect.OrderByDescending(x => property);
+
+        return collect.OrderBy(x => property);
     }
 }
 
