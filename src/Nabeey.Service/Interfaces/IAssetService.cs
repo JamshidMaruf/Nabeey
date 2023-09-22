@@ -5,6 +5,6 @@ namespace Nabeey.Service.Interfaces;
 
 public interface IAssetService
 {
-    Task<Asset> UploadAsync(AssetCreationDto dto);
-    Task<bool> RemoveAsync(Asset asset);
+    ValueTask<Asset> UploadAsync(AssetCreationDto dto);
+    ValueTask<bool> RemoveAsync(Asset asset);
 }

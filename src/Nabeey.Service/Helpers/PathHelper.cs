@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Nabeey.Service.Helpers;
 
-namespace Nabeey.Service.Helpers
+public static class PathHelper
 {
-    internal class Class1
-    {
-    }
+    public static string WebRootPath { get; set; }
 }
