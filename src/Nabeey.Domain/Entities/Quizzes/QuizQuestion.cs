@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Nabeey.Domain.Commons;
 
-namespace Nabeey.Domain.Entities.Quizzes
+namespace Nabeey.Domain.Entities.Quizzes;
+
+public class QuizQuestion : Auditable
 {
-    internal class QuizQuestion
-    {
-    }
+    public long QuizId { get; set; }
+    public Quiz Quiz { get; set; }
+
+    public ICollection<Question> Questions { get; set; }
 }
