@@ -1,6 +1,11 @@
-﻿namespace Nabeey.WebApi.Middlewares
+﻿using System.Text.RegularExpressions;
+
+namespace Nabeey.WebApi.Middlewares;
+
+public class SlugifyParameterTransformer : IOutboundParameterTransformer
 {
-    public class SlugifyParameterTransformer
+    public string TransformOutbound(object value)
     {
+        return value == null ? null : Regex.Replace(value.ToString(), "([a-z])([A-Z])", "$1-$2").ToLower();
     }
 }
