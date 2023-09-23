@@ -13,6 +13,7 @@ public static class CollectionServices
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddAutoMapper(typeof(MappedProfile));
         services.AddScoped<IQuizService, QuizService>();
+        services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IQuizQuestionService, QuizQuestionService>();
     }
 }
