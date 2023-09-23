@@ -2,6 +2,7 @@
 using Nabeey.Service.Helpers;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Commons;
+using Nabeey.Service.Exceptions;
 
 namespace Nabeey.Service.Extensions;
 

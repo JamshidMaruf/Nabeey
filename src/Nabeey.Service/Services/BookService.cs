@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Configurations;
-using Nabeey.Domain.Entities.Books;
 using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Entities.Books;
+using Nabeey.DataAccess.IRepositories;
 
 namespace Nabeey.Service.Services;
 
@@ -66,10 +66,11 @@ public class BookService : IBookService
         return mappedBook;
     }
 
-    public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params,  string search = null)
+    public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params,Filter filter,  string search = null)
     {
         var books = this.repository.SelectAll()
                     .ToPaginate(@params)
+                    .OrderBy(filter)
                     .ToList();
 
         if (search is not null)
