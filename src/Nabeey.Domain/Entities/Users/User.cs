@@ -15,4 +15,5 @@ public class User : Auditable
     public Role UserRole { get; set; }
     public long AssetId { get; set; }
     public Asset Asset { get; set; }
+    public IEnumerable<UserArticle> UserArticles { get; set; }
 }

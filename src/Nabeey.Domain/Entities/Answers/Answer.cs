@@ -1,7 +1,6 @@
 
-﻿using Nabeey.Domain.Commons;
-﻿using Nabeey.Domain.Entities.Assets;
-using Nabeey.Domain.Entities.QuestionAnswers;
+using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Assets;
 
 namespace Nabeey.Domain.Entities.Answers;
 

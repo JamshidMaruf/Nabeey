@@ -1,7 +1,6 @@
 
-﻿using Nabeey.Domain.Commons;
-﻿using Nabeey.Domain.Entities.Assets;
-using Nabeey.Domain.Entities.QuestionAnswers;
+using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Assets;
 
 namespace Nabeey.Domain.Entities.Questions;
 
@@ -12,5 +11,6 @@ public class Question : Auditable
     public long AssetId { get; set; }
     public Asset Asset { get; set; }
 
-    public ICollection<QuestionAnswer> QuestionAnswers { get; set; }
+    public IEnumerable<QuizQuestion> QuizQuestions { get; set; }
+    public IEnumerable<QuestionAnswer> QuestionAnswers { get; set; }
 }
