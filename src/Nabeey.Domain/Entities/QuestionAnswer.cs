@@ -1,10 +1,9 @@
-﻿using Nabeey.Domain.Commons;
-using Nabeey.Domain.Entities.Answers;
+﻿using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Questions;
 
-namespace Nabeey.Domain.Entities.QuestionAnswers;
+namespace Nabeey.Domain.Entities;
 
-public class QuestionAnswer : Auditable
+public class QuestionAnswer
 {
     public long AnswerId { get; set; }
     public Answer Answer { get; set; }

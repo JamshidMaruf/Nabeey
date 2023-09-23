@@ -1,6 +1,5 @@
 ﻿using Nabeey.Domain.Commons;
 using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Domain.Entities.Users;
 
 namespace Nabeey.Domain.Entities.Articles;
 
