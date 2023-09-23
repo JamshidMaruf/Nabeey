@@ -2,10 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities;
 using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
+using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Entities.Books;
+using Nabeey.Domain.Entities.ContentBooks;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
-using System.Numerics;
 
 namespace Nabeey.DataAccess.Contexts;
 
@@ -33,7 +37,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // entitilar uchun "isDeleted" holatini filter qilish
+        // entitilar uchun "IsDeleted" holatini filter qilish
         modelBuilder.Entity<Answer>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<Article>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<Asset>().HasQueryFilter(u => !u.IsDeleted);
@@ -44,29 +48,36 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ContentCategory>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<ContentVideo>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<Question>().HasQueryFilter(u => !u.IsDeleted);
-        modelBuilder.Entity<QuestionAnswer>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<Quiz>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<QuizQuestion>().HasQueryFilter(u => !u.IsDeleted);
-        modelBuilder.Entity<UserArticle>().HasQueryFilter(u => !u.IsDeleted);
-    
+
         #region Many to many realationship --->>
         // Users <=> Articles
         var userArticle = modelBuilder.Entity<UserArticle>();
-        userArticle.HasKey(ua => new {ua.UserId, ua.ArticleId});
+        userArticle.HasKey(ua => new { ua.UserId, ua.ArticleId });
         userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
         userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
-        
+
         // Quizzes <=> Questions
         var quizQuestion = modelBuilder.Entity<QuizQuestion>();
         quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
-        quizQuestion.HasOne(qq => qq.Quiz).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.Quiz);
+        quizQuestion.HasOne(qq => qq.Quiz).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuizId);
         quizQuestion.HasOne(qq => qq.Question).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuestionId);
-        
+
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
         questionAnswer.HasKey(qa => new { qa.QuestionId, qa.AnswerId });
         questionAnswer.HasOne(qa => qa.Answer).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.AnswerId);
         questionAnswer.HasOne(qa => qa.Question).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.QuestionId);
         #endregion
+
+        // entity uchun global query filter ni o'chirish
+        modelBuilder.Entity<Asset>().HasQueryFilter(null);
+        modelBuilder.Entity<Answer>().HasQueryFilter(null);
+        modelBuilder.Entity<Article>().HasQueryFilter(null);
+        modelBuilder.Entity<User>().HasQueryFilter(null);
+        modelBuilder.Entity<Content>().HasQueryFilter(null);
+        modelBuilder.Entity<Question>().HasQueryFilter(null);
+        modelBuilder.Entity<ContentCategory>().HasQueryFilter(null);
     }
 }

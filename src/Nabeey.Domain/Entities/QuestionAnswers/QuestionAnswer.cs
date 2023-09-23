@@ -1,7 +1,7 @@
 ﻿using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Questions;
 
-namespace Nabeey.Domain.Entities;
+namespace Nabeey.Domain.Entities.QuestionAnswers;
 
 public class QuestionAnswer
 {

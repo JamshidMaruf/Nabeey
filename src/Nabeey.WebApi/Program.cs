@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.Contexts;
+using Nabeey.Service.Mappers;
+using Nabeey.WebApi.Extensions;
 using Nabeey.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // Lowercase routing
 
 builder.Services.AddControllers(options =>
@@ -23,6 +24,8 @@ builder.Services.AddControllers(options =>
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 

@@ -6,10 +6,12 @@ using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
+using Nabeey.Domain.Entities;
+using Nabeey.Service.DTOs.Question;
 
 namespace Nabeey.Service.Services;
 
-public class QuizQuestionService : IQuizQuestion
+public class QuizQuestionService : IQuizQuestionService
 {
     private readonly IRepository<QuizQuestion> quizQuestionRepository;
     private readonly IRepository<Question> questionRepository;
@@ -78,7 +80,7 @@ public class QuizQuestionService : IQuizQuestion
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async Task<IEnumerable<Question>> RetrieveByQuiz(long id)
+    public async Task<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException("This quiz is not found");
@@ -95,7 +97,7 @@ public class QuizQuestionService : IQuizQuestion
 
         ShuffleQuestions(questions);
 
-        return questions;
+        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
     }
 
     private void ShuffleQuestions(List<Question> questions)
