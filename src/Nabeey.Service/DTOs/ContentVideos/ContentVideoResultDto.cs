@@ -1,7 +1,7 @@
 ﻿using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Contents;
 
-namespace Nabeey.Service.DTOs.ContentVideo;
+namespace Nabeey.Service.DTOs.ContentVideos;
 
 public class ContentVideoResultDto
 {
