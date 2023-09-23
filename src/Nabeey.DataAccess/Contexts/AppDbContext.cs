@@ -1,11 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities;
 using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
-using Nabeey.Domain.Entities.Assets;
-using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.ContentBooks;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
@@ -16,20 +12,34 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     { }
-    public DbSet<Answer> Answers { get; set; }
-    public DbSet<Article> Articles { get; set; }
-    public DbSet<Asset> Assets { get; set; }
-    public DbSet<Book> Books { get; set; }
-    public DbSet<ContentBook> ContentBooks { get; set; }
-    public DbSet<Content> Contents { get; set; }
-    public DbSet<ContentAudio> ContentAudios { get; set; }
-    public DbSet<ContentCategory> ContentCategories { get; set; }
-    public DbSet<ContentImage> ContentImages { get; set; }
-    public DbSet<ContentVideo> ContentVideos { get; set; }
-    public DbSet<Question> Questions { get; set; }
-    public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
-    public DbSet<Quiz> Quizzes { get; set; }
-    public DbSet<QuizQuestion> QuizQuestions { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserArticle> UserArticles { get; set; }
+
+    DbSet<Answer> Answers { get; set; }
+    DbSet<Article> Articles { get; set; }
+    DbSet<Question> Questions { get; set; }
+    DbSet<Quiz> Quizzes { get; set; }
+    DbSet<User> Users { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        #region Many to many realationship --->>
+        // Users <=> Articles
+        var userArticle = modelBuilder.Entity<UserArticle>();
+        userArticle.HasKey(ua => new {ua.UserId, ua.ArticleId});
+        userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
+        userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
+        
+        // Quizzes <=> Questions
+        var quizQuestion = modelBuilder.Entity<QuizQuestion>();
+        quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
+        quizQuestion.HasOne(qq => qq.Quiz).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.Quiz);
+        quizQuestion.HasOne(qq => qq.Question).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuestionId);
+        
+        // Questions <=> Answers
+        var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
+        questionAnswer.HasKey(qa => new { qa.QuestionId, qa.AnswerId });
+        questionAnswer.HasOne(qa => qa.Answer).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.AnswerId);
+        questionAnswer.HasOne(qa => qa.Question).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.QuestionId);
+        #endregion
+
+    }
 }

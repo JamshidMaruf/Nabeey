@@ -8,4 +8,5 @@ public class Article : Auditable
     public string Text { get; set; }
     public long ContentId { get; set; }
     public Content Content { get; set; }
+    public IEnumerable<UserArticle> UserArticles { get; set; }
 }
