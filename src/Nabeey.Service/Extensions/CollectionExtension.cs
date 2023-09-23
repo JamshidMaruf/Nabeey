@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Nabeey.Service.Helpers;
-using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Commons;
+using Nabeey.Service.Helpers;
+using Nabeey.Service.Exceptions;
+using Nabeey.Domain.Configurations;
 
 namespace Nabeey.Service.Extensions;
 
@@ -60,4 +61,3 @@ public static class CollectionExtension
         return collect.OrderBy(x => property);
     }
 }
-

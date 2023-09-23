@@ -12,5 +12,4 @@ public class Quiz : Auditable
     public ContentCategory ContentCategory { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public IEnumerable<QuizQuestion> QuizQuestions { get; set; }
 }
