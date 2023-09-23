@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.Contexts;
+using Nabeey.WebApi.Extensions;
 using Nabeey.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.ConfigureSwagger();
+
+
+//JWT
+builder.Services.AddJwt(builder.Configuration);
 
 
 // Lowercase routing
