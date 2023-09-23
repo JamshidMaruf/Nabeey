@@ -32,7 +32,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
 
     public void Delete(TEntity entity)
     {
-        entity.IsDelete = true;
+        entity.IsDeleted = true;
         _context.Update(entity).State = EntityState.Deleted;
     }
 
@@ -49,7 +49,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
             foreach (var include in includes)
                 entities = entities.Include(include);
 
-        return await entities.Where(t => !t.IsDelete).FirstOrDefaultAsync();
+        return await entities.FirstOrDefaultAsync();
     }
 
     public IQueryable<TEntity> SelectAll(Expression<Func<TEntity, bool>> expression = null, string[] includes = null, bool isTracking = true)
@@ -63,7 +63,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
             foreach (var include in includes)
                 entities = entities.Include(include);
 
-        return entities.Where(t => !t.IsDelete);
+        return entities;
     }
 
     public async ValueTask<bool> SaveAsync()
