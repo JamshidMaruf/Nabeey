@@ -7,7 +7,8 @@ using Nabeey.Domain.Entities.Books;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Service.DTOs.ContentBooks;
-using Nabeey.Domain.Entities.ContentBooks;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Contents;
 
 namespace Nabeey.Service.Services;
 
@@ -73,10 +74,10 @@ public class ContentBookService : IContentBookService
 
     public async Task<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var contentBooks = this.contentBookRepository.SelectAll()
+        var contentBooks = await this.contentBookRepository.SelectAll()
             .ToPaginate(@params)
             .OrderBy(filter)
-            .ToList();
+            .ToListAsync();
 
         if (search is not null)
         {

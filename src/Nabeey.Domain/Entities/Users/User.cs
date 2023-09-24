@@ -1,4 +1,5 @@
 ﻿using Nabeey.Domain.Commons;
+using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Enums;
 
@@ -12,7 +13,9 @@ public class User : Auditable
     public string Phone { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = default!;
     public Role UserRole { get; set; }
-    public long AssetId { get; set; }
+
+    public long? AssetId { get; set; }
     public Asset Asset { get; set; }
+
     public IEnumerable<UserArticle> UserArticles { get; set; }
 }

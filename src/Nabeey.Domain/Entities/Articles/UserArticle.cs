@@ -1,8 +1,7 @@
 ﻿using Nabeey.Domain.Commons;
-using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Users;
 
-namespace Nabeey.Domain.Entities;
+namespace Nabeey.Domain.Entities.Articles;
 
 public class UserArticle : Auditable
 {

@@ -46,7 +46,7 @@ public static class CollectionExtension
 
     public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
     {
-        if (filter is null)
+        if (filter.OrderBy is null)
             return collect;
 
         var property = typeof(TEntity).GetProperties().FirstOrDefault(n

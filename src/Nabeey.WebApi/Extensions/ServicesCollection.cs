@@ -17,6 +17,7 @@ public static class ServicesCollection
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddAutoMapper(typeof(MappedProfile));
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserService, UserService>();
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
