@@ -2,10 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities;
 using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
+using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Entities.Books;
+using Nabeey.Domain.Entities.ContentBooks;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
-using System.Numerics;
 
 namespace Nabeey.DataAccess.Contexts;
 
@@ -59,8 +63,6 @@ public class AppDbContext : DbContext
         // Quizzes <=> Questions
         var quizQuestion = modelBuilder.Entity<QuizQuestion>();
         quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
-        quizQuestion.HasOne(qq => qq.Quiz).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.Quiz);
-        quizQuestion.HasOne(qq => qq.Question).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuestionId);
         
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();

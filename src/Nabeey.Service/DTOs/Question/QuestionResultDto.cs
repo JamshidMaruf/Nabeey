@@ -1,5 +1,5 @@
 ﻿using Nabeey.Service.DTOs.Assets;
-using Nabeey.Service.DTOs.QuestionAnswer;
+using Nabeey.Service.DTOs.QuestionAnswers;
 
 namespace Nabeey.Service.DTOs.Question;
 
