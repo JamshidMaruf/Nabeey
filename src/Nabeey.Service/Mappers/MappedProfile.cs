@@ -6,7 +6,7 @@ namespace Nabeey.Service.Mappers;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.ContentAudio;
 using Nabeey.Service.DTOs.ContentImages;
-using Nabeey.Service.DTOs.ContentVideo;
+using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.DTOs.Users;
 
 public class MappedProfile : Profile
