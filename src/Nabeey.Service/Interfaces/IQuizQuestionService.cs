@@ -10,6 +10,6 @@ public interface IQuizQuestionService
     ValueTask<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<QuizQuestionResultDto> RetrieveAsync(long id);
-    ValueTask<List<QuestionResultDto>> RetrieveByQuiz(long id);
+    ValueTask<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id);
     ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync();
 }

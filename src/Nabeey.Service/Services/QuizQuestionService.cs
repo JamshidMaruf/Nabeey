@@ -80,38 +80,40 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async ValueTask<List<QuestionResultDto>> RetrieveByQuiz(long id)
+    public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException("This quiz is not found");
 
-        var questions = new List<Question>();
+        IEnumerable<Question> questions = new List<Question>();
         var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz","Question"}).ToListAsync();
 
         foreach (var item in quizQuestions)
         {
             if (item.QuizId == existQuiz.Id)
             {
-                questions.Add(item.Question);
+               questions = questions.Append(item.Question);
             }
         }
 
         ShuffleQuestions(questions);
 
-        return this.mapper.Map<List<QuestionResultDto>>(questions);
+        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
     }
 
-    private void ShuffleQuestions(List<Question> questions)
+    private IEnumerable<Question> ShuffleQuestions(IEnumerable<Question> questions)
     {
+        List<Question> questionList = questions.ToList();
         Random random = new Random();
-        int n = questions.Count;
+        int n = questionList.Count;
         while (n > 1)
         {
             n--;
             int k = random.Next(n + 1);
-            Question value = questions[k];
-            questions[k] = questions[n];
-            questions[n] = value;
+            Question value = questionList[k];
+            questionList[k] = questionList[n];
+            questionList[n] = value;
         }
+        return questionList;
     }
 }
