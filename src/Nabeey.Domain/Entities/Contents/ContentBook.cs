@@ -2,7 +2,7 @@
 using Nabeey.Domain.Entities.Books;
 using Nabeey.Domain.Entities.Contexts;
 
-namespace Nabeey.Domain.Entities.ContentBooks;
+namespace Nabeey.Domain.Entities.Contents;
 
 public class ContentBook : Auditable
 {

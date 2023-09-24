@@ -94,21 +94,18 @@ public class QuizQuestionService : IQuizQuestion
         }
 
         ShuffleQuestions(questions);
-
         return questions;
     }
 
-    private void ShuffleQuestions(List<Question> questions)
+    static void ShuffleQuestions(List<Question> questions)
     {
-        Random random = new Random();
+        Random random = new();
         int n = questions.Count;
         while (n > 1)
         {
             n--;
             int k = random.Next(n + 1);
-            Question value = questions[k];
-            questions[k] = questions[n];
-            questions[n] = value;
+            (questions[k], questions[n]) = (questions[n], questions[k]);
         }
     }
 }

@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Nabeey.Domain.Entities;
 using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.ContentBooks;
+using Nabeey.Domain.Entities.Contents;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
@@ -69,6 +68,15 @@ public class AppDbContext : DbContext
         questionAnswer.HasKey(qa => new { qa.QuestionId, qa.AnswerId });
         questionAnswer.HasOne(qa => qa.Answer).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.AnswerId);
         questionAnswer.HasOne(qa => qa.Question).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.QuestionId);
+
+        modelBuilder.Entity<Content>()
+            .HasOne<ContentImage>()
+            .WithOne(ci => ci.Content)
+            .IsRequired()
+            .HasPrincipalKey<ContentImage>(ci => ci.Id)
+            .HasForeignKey<Content>()
+            .OnDelete(DeleteBehavior.Restrict);
+
         #endregion
     }
 }
