@@ -69,9 +69,11 @@ public class UserService : IUserService
             .ToPaginate(@params)
             .ToListAsync();
 
-        var result = users.Where(user => user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase));
-        var mappedUsers = this.mapper.Map<List<UserResultDto>>(result);
-        return mappedUsers;
+        if(search is not null) 
+        {
+            users = users.Where(user => user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        return this.mapper.Map<IEnumerable<UserResultDto>>(users);
     }
 
     public async Task<IEnumerable<UserResultDto>> RetrieveAllAsync()
