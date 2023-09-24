@@ -51,7 +51,7 @@ public class BooksController : BaseController
         });
 
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
+    public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
         => Ok(new Response
         {
             StatusCode = 200,

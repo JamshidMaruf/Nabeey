@@ -72,17 +72,14 @@ public class ContentBookService : IContentBookService
         return this.mapper.Map<ContentBookResultDto>(contentBook);
     }
 
-    public async Task<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var contentBooks = await this.contentBookRepository.SelectAll()
-            .ToPaginate(@params)
-            .OrderBy(filter)
-            .ToListAsync();
+                                                    .ToPaginate(@params)
+                                                    .OrderByAsync(filter);
 
         if (search is not null)
-        {
             contentBooks = contentBooks.Where(contentBook => contentBook.Book.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
 
         return this.mapper.Map<IEnumerable<ContentBookResultDto>>(contentBooks);
     }

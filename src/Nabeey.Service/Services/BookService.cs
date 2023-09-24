@@ -67,17 +67,14 @@ public class BookService : IBookService
         return mappedBook;
     }
 
-    public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params, Filter filter,  string search = null)
+    public async ValueTask<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params, Filter filter,  string search = null)
     {
         var books = await this.repository.SelectAll()
-                    .ToPaginate(@params)
-                    .OrderBy(filter)
-                    .ToListAsync();
+                                    .ToPagedList(@params)
+                                    .OrderByAsync(filter);
 
         if (search is not null)
-        {
             books = books.Where(book => book.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
 
         return this.mapper.Map<IEnumerable<BookResultDto>>(books);
     }

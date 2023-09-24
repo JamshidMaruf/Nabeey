@@ -3,7 +3,7 @@ using Nabeey.Domain.Commons;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Configurations;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Nabeey.Service.Extensions;
 
@@ -15,7 +15,7 @@ public static class CollectionExtension
         return source;
     }
 
-    public static IEnumerable<TEntity> ToPagedList<TEntity>(this IQueryable<TEntity> entities, PaginationParams @params)
+    public static IQueryable<TEntity> ToPagedList<TEntity>(this IQueryable<TEntity> entities, PaginationParams @params)
         where TEntity : Auditable
     {
         if (@params.PageSize == 0 && @params.PageIndex == 0)
@@ -30,7 +30,7 @@ public static class CollectionExtension
 
         var json = JsonConvert.SerializeObject(metaData);
 
-        if (HttpContextHelper.ResponseHeaders != null)
+        if(HttpContextHelper.ResponseHeaders is not null)
         {
             if (HttpContextHelper.ResponseHeaders.ContainsKey("X-Pagination"))
                 HttpContextHelper.ResponseHeaders.Remove("X-Pagination");
@@ -44,21 +44,23 @@ public static class CollectionExtension
                     throw new CustomException(400, "Please, enter valid numbers");
     }
 
-    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
+    public static async Task<IEnumerable<T>> OrderByAsync<T>(this IQueryable<T> collect, Filter filter)
     {
         if (filter.OrderBy is null)
             return collect;
-
-        var property = typeof(TEntity).GetProperties().FirstOrDefault(n
-            => n.Name.ToLower().Equals(filter.OrderBy.ToLower())
-            );
-
-        if (property is null)
-            return collect;
-
         if (filter.IsDesc)
-            return collect.OrderByDescending(x => property);
+            return await (from n in collect
+                    orderby GetValueFromProperty(n, filter.OrderBy) descending
+                    select n).ToListAsync();
 
-        return collect.OrderBy(x => property);
+        return await (from n in collect
+                orderby GetValueFromProperty(n, filter.OrderBy) ascending
+                select n).ToListAsync();
     }
+
+    private static object GetValueFromProperty(object item, string propName)
+         => item.GetType().GetProperties()
+            .FirstOrDefault(property 
+                => property.Name.Contains(propName, StringComparison.OrdinalIgnoreCase))
+            .GetValue(item);
 }
