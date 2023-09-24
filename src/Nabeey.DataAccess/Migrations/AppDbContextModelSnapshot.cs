@@ -337,8 +337,20 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<long>("AnswerId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsTrue")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("QuestionId", "AnswerId");
 
@@ -377,29 +389,34 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
                 {
-                    b.Property<long>("QuizId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("QuestionId")
-                        .HasColumnType("bigint");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("QuizId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("QuizId", "QuestionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("QuizId");
 
                     b.ToTable("QuizQuestions");
                 });
@@ -454,6 +471,18 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<long>("ArticleId")
                         .HasColumnType("bigint");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("UserId", "ArticleId");
 
                     b.HasIndex("ArticleId");
@@ -488,9 +517,6 @@ namespace Nabeey.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordSalt")
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
@@ -659,7 +685,7 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("Asset");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Questions.Question", "Question")
                         .WithMany("QuizQuestions")

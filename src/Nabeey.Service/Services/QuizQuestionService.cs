@@ -6,8 +6,8 @@ using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
-using Nabeey.Domain.Entities;
 using Nabeey.Service.DTOs.Question;
+using Nabeey.Domain.Entities.QuizQuestions;
 
 namespace Nabeey.Service.Services;
 
@@ -26,7 +26,7 @@ public class QuizQuestionService : IQuizQuestionService
         this.questionRepository = questionRepository;
         this.quizQuestionRepository = quizQuestionRepository;
     }
-    public async Task<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto)
+    public async ValueTask<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.QuizId))
             ?? throw new NotFoundException($"This quiz is not found with id : {dto.QuizId}");
@@ -43,7 +43,7 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<QuizQuestionResultDto>(mapped);
     }
 
-    public async Task<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto)
+    public async ValueTask<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto)
     {
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == dto.Id)
             ?? throw new NotFoundException($"This quiz, question is not found with id : {dto.Id}");
@@ -55,7 +55,7 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<QuizQuestionResultDto>(quizQuestion);
     }
 
-    public async Task<bool> RemoveAsync(long id)
+    public async ValueTask<bool> RemoveAsync(long id)
     {
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == id)
             ?? throw new NotFoundException($"This quiz, question is not found with id : {id}");
@@ -66,7 +66,7 @@ public class QuizQuestionService : IQuizQuestionService
         return true;
     }
 
-    public async Task<QuizQuestionResultDto> RetrieveAsync(long id)
+    public async ValueTask<QuizQuestionResultDto> RetrieveAsync(long id)
     {
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == id)
             ?? throw new NotFoundException($"This quiz, question is not found with id : {id}");
@@ -74,22 +74,23 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<QuizQuestionResultDto>(quizQuestion);
     }
 
-    public async Task<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync()
     {
         var allQuizQuestion = await this.quizQuestionRepository.SelectAll().ToListAsync();
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async Task<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id)
+    public async ValueTask<List<QuestionResultDto>> RetrieveByQuiz(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException("This quiz is not found");
 
         var questions = new List<Question>();
-        var quizQuestions = this.quizQuestionRepository.SelectAll();
+        var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz","Question"}).ToListAsync();
+
         foreach (var item in quizQuestions)
         {
-            if (item.Id == existQuiz.Id)
+            if (item.QuizId == existQuiz.Id)
             {
                 questions.Add(item.Question);
             }
@@ -97,7 +98,7 @@ public class QuizQuestionService : IQuizQuestionService
 
         ShuffleQuestions(questions);
 
-        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
+        return this.mapper.Map<List<QuestionResultDto>>(questions);
     }
 
     private void ShuffleQuestions(List<Question> questions)

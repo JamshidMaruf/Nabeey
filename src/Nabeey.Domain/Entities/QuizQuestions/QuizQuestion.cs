@@ -2,7 +2,7 @@
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 
-namespace Nabeey.Domain.Entities;
+namespace Nabeey.Domain.Entities.QuizQuestions;
 
 public class QuizQuestion : Auditable
 {

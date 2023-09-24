@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Nabeey.DataAccess.Migrations
 {
-    public partial class InitialMig : Migration
+    public partial class initialMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,7 +126,6 @@ namespace Nabeey.DataAccess.Migrations
                     Email = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    PasswordSalt = table.Column<string>(type: "text", nullable: true),
                     UserRole = table.Column<int>(type: "integer", nullable: false),
                     AssetId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -199,7 +198,11 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     AnswerId = table.Column<long>(type: "bigint", nullable: false),
                     QuestionId = table.Column<long>(type: "bigint", nullable: false),
-                    IsTrue = table.Column<bool>(type: "boolean", nullable: false)
+                    IsTrue = table.Column<bool>(type: "boolean", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -361,16 +364,17 @@ namespace Nabeey.DataAccess.Migrations
                 name: "QuizQuestions",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     QuizId = table.Column<long>(type: "bigint", nullable: false),
                     QuestionId = table.Column<long>(type: "bigint", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizQuestions", x => new { x.QuizId, x.QuestionId });
+                    table.PrimaryKey("PK_QuizQuestions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_QuizQuestions_Questions_QuestionId",
                         column: x => x.QuestionId,
@@ -390,7 +394,11 @@ namespace Nabeey.DataAccess.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ArticleId = table.Column<long>(type: "bigint", nullable: false)
+                    ArticleId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -483,6 +491,11 @@ namespace Nabeey.DataAccess.Migrations
                 name: "IX_QuizQuestions_QuestionId",
                 table: "QuizQuestions",
                 column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizQuestions_QuizId",
+                table: "QuizQuestions",
+                column: "QuizId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_ContentCategoryId",

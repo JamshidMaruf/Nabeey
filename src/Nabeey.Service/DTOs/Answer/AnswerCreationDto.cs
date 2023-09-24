@@ -1,4 +1,6 @@
-﻿namespace Nabeey.Service.DTOs.Answer;
+﻿using Nabeey.Domain.Entities.Assets;
+
+namespace Nabeey.Service.DTOs.Answer;
 
 public class AnswerCreationDto
 {

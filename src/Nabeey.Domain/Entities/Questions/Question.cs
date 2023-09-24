@@ -2,6 +2,8 @@
 using Nabeey.Domain.Commons;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.QuestionAnswers;
+using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Domain.Entities.Quizzes;
 
 namespace Nabeey.Domain.Entities.Questions;
 

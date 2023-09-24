@@ -8,6 +8,7 @@ using Nabeey.Domain.Entities.ContentBooks;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
+using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
 
@@ -15,6 +16,8 @@ namespace Nabeey.DataAccess.Contexts;
 
 public class AppDbContext : DbContext
 {
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    { }
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Asset> Assets { get; set; }
@@ -32,8 +35,6 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserArticle> UserArticles { get; set; }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,7 +61,6 @@ public class AppDbContext : DbContext
 
         // Quizzes <=> Questions
         var quizQuestion = modelBuilder.Entity<QuizQuestion>();
-        quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
         quizQuestion.HasOne(qq => qq.Quiz).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuizId);
         quizQuestion.HasOne(qq => qq.Question).WithMany(qq => qq.QuizQuestions).HasForeignKey(qq => qq.QuestionId);
 

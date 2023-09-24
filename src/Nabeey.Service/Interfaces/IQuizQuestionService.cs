@@ -6,10 +6,10 @@ namespace Nabeey.Service.Interfaces;
 
 public interface IQuizQuestionService
 {
-    Task<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto);
-    Task<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto);
-    Task<bool> RemoveAsync(long id);
-    Task<QuizQuestionResultDto> RetrieveAsync(long id);
-    Task<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id);
-    Task<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync();
+    ValueTask<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto);
+    ValueTask<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto);
+    ValueTask<bool> RemoveAsync(long id);
+    ValueTask<QuizQuestionResultDto> RetrieveAsync(long id);
+    ValueTask<List<QuestionResultDto>> RetrieveByQuiz(long id);
+    ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync();
 }

@@ -1,4 +1,4 @@
-﻿namespace Nabeey.Service.DTOs.ContentVideo;
+﻿namespace Nabeey.Service.DTOs.ContentVideos;
 
 public class ContentVideoCreationDto
 {

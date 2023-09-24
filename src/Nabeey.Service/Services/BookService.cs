@@ -66,7 +66,7 @@ public class BookService : IBookService
         return mappedBook;
     }
 
-    public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params,Filter filter,  string search = null)
+    public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params, Filter filter,  string search = null)
     {
         var books = this.repository.SelectAll()
                     .ToPaginate(@params)
