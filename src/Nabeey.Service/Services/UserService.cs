@@ -63,10 +63,11 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<IEnumerable<UserResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null)
+    public async Task<IEnumerable<UserResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var users = await this.userRepository.SelectAll()
             .ToPaginate(@params)
+            .OrderBy(filter)
             .ToListAsync();
 
         if(search is not null) 
