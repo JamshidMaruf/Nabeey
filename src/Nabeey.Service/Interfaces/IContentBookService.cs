@@ -9,5 +9,5 @@ public interface IContentBookService
     Task<ContentBookResultDto> UpdateAsync(ContentBookUpdateDto dto);
     Task<bool> DeleteAsync(long id);
     Task<ContentBookResultDto> GetByIdAsync(long id);
-    Task<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
+    ValueTask<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

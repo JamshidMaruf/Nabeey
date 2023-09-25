@@ -72,12 +72,11 @@ public class ContentBookService : IContentBookService
         return this.mapper.Map<ContentBookResultDto>(contentBook);
     }
 
-    public async Task<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var contentBooks = await this.contentBookRepository.SelectAll()
-            .ToPaginate(@params)
-            .OrderBy(filter)
-            .ToListAsync();
+        var contentBooks = (await this.contentBookRepository.SelectAll().ToListAsync())
+                                                                        .OrderBy(filter)
+                                                                        .ToPaginate(@params);
 
         if (search is not null)
         {

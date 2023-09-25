@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Service.DTOs.ContentVideos;
+using Nabeey.Domain.Entities.Contents;
 
 namespace Nabeey.Service.Services;
 
@@ -59,9 +60,10 @@ public class ContentVideoService : IContentVideoService
 
     public async Task<IEnumerable<ContentVideoResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var contentVideos = await this.contentVideoRepository.SelectAll(includes: new[] { "Content", "Asset" })
-            .ToPaginate(@params)
-            .ToListAsync();
+        var contentVideos = (await this.contentVideoRepository.SelectAll(includes: new[] { "Content", "Asset" })
+                                                                .ToListAsync())
+                                                                .OrderBy(filter)
+                                                                .ToPaginate(@params);
 
         return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(contentVideos);
     }
