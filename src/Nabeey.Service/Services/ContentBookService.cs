@@ -79,9 +79,7 @@ public class ContentBookService : IContentBookService
                                                                         .ToPaginate(@params);
 
         if (search is not null)
-        {
             contentBooks = contentBooks.Where(contentBook => contentBook.Book.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
 
         return this.mapper.Map<IEnumerable<ContentBookResultDto>>(contentBooks);
     }

@@ -73,10 +73,8 @@ public class BookService : IBookService
                                                         .OrderBy(filter)
                                                         .ToPaginate(@params);
 
-        if (search is not null)
-        {
-            books = books.Where(book => book.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
+        if(search is not null)
+            books = books.Where(book => book.Title.Contains(search, StringComparison.OrdinalIgnoreCase));
 
         return this.mapper.Map<IEnumerable<BookResultDto>>(books);
     }

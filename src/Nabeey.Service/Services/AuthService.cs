@@ -24,9 +24,8 @@ public class AuthService : IAuthService
 
     public async Task<string> GenerateTokenAsync(string phone, string originalPassword)
     {
-        var user = await this.userRepository.SelectAsync(u => u.Phone.Equals(phone));
-        if (user is null)
-            throw new NotFoundException("This user is not found");
+        var user = await this.userRepository.SelectAsync(u => u.Phone.Equals(phone))
+            ?? throw new NotFoundException("This user is not found");
 
         bool verifiedPassword = PasswordHash.Verify(user.PasswordHash, originalPassword);
         if (!verifiedPassword)
