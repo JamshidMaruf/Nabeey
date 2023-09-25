@@ -29,7 +29,7 @@ public class MappingProfile : Profile
         // Answer
         CreateMap<Answer, AnswerResultDto>();
         CreateMap<AnswerCreationDto, Answer>();
-        CreateMap<AnswerResultDto, Answer>();
+        CreateMap<AnswerUpdateDto, Answer>();
 
         //Article
         CreateMap<Article, ArticleResultDto>();
