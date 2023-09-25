@@ -16,12 +16,17 @@ public static class ServicesCollection
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddAutoMapper(typeof(MappedProfile));
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuizService, QuizService>();
-        services.AddScoped<IArticleService, ArticleService>();
-        services.AddScoped<IQuestionService, QuestionService>();
-        services.AddScoped<IBookService, BookService>();
         services.AddScoped<IQuizQuestionService, QuizQuestionService>();
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IAnswerService, AnswerService>();
+        services.AddScoped<IAssetService, AssetService>();
+        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IContentBookService, ContentBookService>();
+        services.AddScoped<IContentVideoService, ContentVideoService>();
+
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)

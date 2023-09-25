@@ -18,7 +18,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> PostAsync(UserCreationDto dto)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.AddAsync(dto)
     });
@@ -27,7 +27,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> PutAsync(UserUpdateDto dto)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.ModifyAsync(dto)
     });
@@ -36,7 +36,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> DeleteAsync(long id)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.RemoveAsync(id)
     });
@@ -45,7 +45,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> GetByIdAsync(long id)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.RetrieveByIdAsync(id)
     });
@@ -54,7 +54,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.RetrieveAllAsync(@params,filter,search)
     });
@@ -63,7 +63,7 @@ public class UserController : BaseController
     public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.userService.UpgradeRoleAsync(id, role)
     });

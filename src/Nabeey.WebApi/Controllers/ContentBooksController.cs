@@ -18,7 +18,7 @@ public class ContentBooksController : BaseController
     public async Task<IActionResult> PostAsync(ContentBookCreationDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.contentBookService.AddAsync(dto)
         });
@@ -27,7 +27,7 @@ public class ContentBooksController : BaseController
     public async Task<IActionResult> UpdateAsync(ContentBookUpdateDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.contentBookService.UpdateAsync(dto)
         });
@@ -36,7 +36,7 @@ public class ContentBooksController : BaseController
     public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.contentBookService.DeleteAsync(id)
         });
@@ -45,7 +45,7 @@ public class ContentBooksController : BaseController
     public async Task<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.contentBookService.GetByIdAsync(id)
         });
@@ -54,7 +54,7 @@ public class ContentBooksController : BaseController
     public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.contentBookService.GetAllAsync(@params, filter, search)
         });

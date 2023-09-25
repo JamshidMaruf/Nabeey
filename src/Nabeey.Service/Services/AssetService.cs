@@ -36,7 +36,7 @@ public class AssetService : IAssetService
             FilePath = filePath,
         };
         await this.repository.CreateAsync(asset);
-        var result = await this.repository.SaveAsync();
+        await this.repository.SaveAsync();
         return asset;
     }
 
