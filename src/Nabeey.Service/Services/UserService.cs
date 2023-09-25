@@ -65,15 +65,13 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<UserResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var users = await this.userRepository.SelectAll()
-            .ToPaginate(@params)
-            .OrderBy(filter)
-            .ToListAsync();
+        var users = (await this.userRepository.SelectAll().ToListAsync())
+                                                            .OrderBy(filter)
+                                                            .ToPaginate(@params);
 
         if(search is not null) 
-        {
-            users = users.Where(user => user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
+            users = users.Where(user => user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase));
+        
         return this.mapper.Map<IEnumerable<UserResultDto>>(users);
     }
 

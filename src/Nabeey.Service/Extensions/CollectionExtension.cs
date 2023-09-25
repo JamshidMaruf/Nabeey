@@ -9,13 +9,13 @@ namespace Nabeey.Service.Extensions;
 
 public static class CollectionExtension
 {
-    public static IQueryable<T> ToPaginate<T>(this IQueryable<T> values, PaginationParams @params)
+    public static IEnumerable<T> ToPaginate<T>(this IEnumerable<T> values, PaginationParams @params)
     {
         var source = values.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
         return source;
     }
 
-    public static IEnumerable<TEntity> ToPagedList<TEntity>(this IQueryable<TEntity> entities, PaginationParams @params)
+    public static IEnumerable<TEntity> ToPagedList<TEntity>(this IEnumerable<TEntity> entities, PaginationParams @params)
         where TEntity : Auditable
     {
         if (@params.PageSize == 0 && @params.PageIndex == 0)
@@ -39,26 +39,24 @@ public static class CollectionExtension
         }
 
         return @params.PageIndex > 0 && @params.PageSize > 0 ?
-            entities.OrderBy(e => e.Id)
-                .Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize) :
+            entities.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize) :
                     throw new CustomException(400, "Please, enter valid numbers");
     }
-
-    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
+        
+    public static IEnumerable<TEntity> OrderBy<TEntity>(this IEnumerable<TEntity> collect, Filter filter)
     {
-        if (filter.OrderBy is null)
-            return collect;
+        var prop = filter.OrderBy ?? "Id";
 
         var property = typeof(TEntity).GetProperties().FirstOrDefault(n
-            => n.Name.ToLower().Equals(filter.OrderBy.ToLower())
-            );
+            => n.Name.Equals(prop, StringComparison.OrdinalIgnoreCase))
+            ?? typeof(TEntity).GetProperty("Id");
 
-        if (property is null)
+        if (property.Name is "Id" && !filter.IsDesc)
             return collect;
 
         if (filter.IsDesc)
-            return collect.OrderByDescending(x => property);
+            return collect.OrderByDescending(x => property.GetValue(x));
 
-        return collect.OrderBy(x => property);
+        return collect.OrderBy(x => property.GetValue(x));
     }
 }

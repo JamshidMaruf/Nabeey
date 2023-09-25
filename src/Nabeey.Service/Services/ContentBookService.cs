@@ -74,15 +74,12 @@ public class ContentBookService : IContentBookService
 
     public async Task<IEnumerable<ContentBookResultDto>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var contentBooks = await this.contentBookRepository.SelectAll()
-            .ToPaginate(@params)
-            .OrderBy(filter)
-            .ToListAsync();
+        var contentBooks = (await this.contentBookRepository.SelectAll().ToListAsync())
+                                                                        .OrderBy(filter)
+                                                                        .ToPaginate(@params);
 
         if (search is not null)
-        {
-            contentBooks = contentBooks.Where(contentBook => contentBook.Book.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
+            contentBooks = contentBooks.Where(contentBook => contentBook.Book.Title.Contains(search, StringComparison.OrdinalIgnoreCase));
 
         return this.mapper.Map<IEnumerable<ContentBookResultDto>>(contentBooks);
     }
