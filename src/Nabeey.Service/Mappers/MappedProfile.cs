@@ -40,9 +40,10 @@ public class MappedProfile : Profile
         CreateMap<ContentVideoUpdateDto, ContentVideo>();
 
         // ContentAudio
-        CreateMap<ContentAudio, ContentCategoryResultDto>();
-        CreateMap<ContentAudioCreationDto, ContentCategory>();
-        CreateMap<ContentAudioUpdateDto, ContentCategory>();
+
+        CreateMap<ContentAudio, ContentCategoryResultDto>().ReverseMap();
+        CreateMap<ContentAudioCreationDto, ContentCategory>().ReverseMap();
+
 
         //User
         CreateMap<User, UserResultDto>();

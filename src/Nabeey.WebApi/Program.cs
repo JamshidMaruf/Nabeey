@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.Contexts;
+using Nabeey.Service.Helpers;
 using Nabeey.Service.Mappers;
 using Nabeey.WebApi.Extensions;
 using Nabeey.WebApi.Middlewares;
@@ -27,6 +28,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddServices();
 var app = builder.Build();
+
+PathHelper.WebRootPath = Path.GetFullPath("wwwroot");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
