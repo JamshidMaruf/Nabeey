@@ -20,7 +20,7 @@ public class QuizService : IQuizService
         this.quizRepository = quizRepository;
         this.categoryRepository = categoryRepository;
     }
-    public async Task<QuizResultDto> AddAsync(QuizCreationDto dto)
+    public async ValueTask<QuizResultDto> AddAsync(QuizCreationDto dto)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Name.Equals(dto.Name));
         if (existQuiz is not null)
@@ -38,7 +38,7 @@ public class QuizService : IQuizService
         return this.mapper.Map<QuizResultDto>(mappedCategory);
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException($"This quiz is not found with id : {id}");
@@ -49,7 +49,7 @@ public class QuizService : IQuizService
         return true;
     }
 
-    public async Task<QuizResultDto> ModifyAsync(QuizUpdateDto dto)
+    public async ValueTask<QuizResultDto> ModifyAsync(QuizUpdateDto dto)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.Id))
             ?? throw new NotFoundException($"This quiz is not found with id : {dto.Id}");
@@ -61,14 +61,14 @@ public class QuizService : IQuizService
         return this.mapper.Map<QuizResultDto>(existQuiz);
     }
 
-    public async Task<QuizResultDto> RetrieveAsync(long id)
+    public async ValueTask<QuizResultDto> RetrieveAsync(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException($"This quiz is not found with id : {id}");
 
         return this.mapper.Map<QuizResultDto>(existQuiz);
     }
-    public async Task<IEnumerable<QuizResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync()
     {
         var allQuizzes = await this.quizRepository.SelectAll(
             includes: new[] { "ContentCategory" }).ToListAsync();

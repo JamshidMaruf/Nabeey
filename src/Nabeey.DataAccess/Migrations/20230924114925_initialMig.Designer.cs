@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nabeey.DataAccess.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230924114925_initialMig")]
+    partial class initialMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +32,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -82,33 +84,6 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ArticleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId", "ArticleId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("UserArticles");
-                });
-
             modelBuilder.Entity("Nabeey.Domain.Entities.Assets.Asset", b =>
                 {
                     b.Property<long>("Id")
@@ -145,7 +120,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Author")
@@ -176,7 +151,7 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.ContentBooks.ContentBook", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -243,7 +218,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -300,7 +275,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -332,7 +307,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -394,7 +369,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -490,12 +465,12 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Quizzes");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.UserArticle", b =>
                 {
-                    b.Property<long>("QuizId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("QuestionId")
+                    b.Property<long>("ArticleId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -510,11 +485,11 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("QuizId", "QuestionId");
+                    b.HasKey("UserId", "ArticleId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("ArticleId");
 
-                    b.ToTable("QuizQuestions");
+                    b.ToTable("UserArticles");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
@@ -525,7 +500,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -560,147 +535,15 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "imona.kabirova@example.com",
-                            FirstName = "Imona",
-                            IsDeleted = false,
-                            LastName = "Kabirova",
-                            PasswordHash = "a",
-                            Phone = "9001234567",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jamshid.zayniev@example.com",
-                            FirstName = "Jamshid",
-                            IsDeleted = false,
-                            LastName = "Zayniev",
-                            PasswordHash = "a",
-                            Phone = "9007654321",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "anastasiya.tomchuk@example.com",
-                            FirstName = "Anastasiya",
-                            IsDeleted = false,
-                            LastName = "Tomchuk",
-                            PasswordHash = "a",
-                            Phone = "9009876543",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "iskandar.kodirov@example.com",
-                            FirstName = "Iskandar",
-                            IsDeleted = false,
-                            LastName = "Kodirov",
-                            PasswordHash = "a",
-                            Phone = "9012345678",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "nodirshax.allanazarov@example.com",
-                            FirstName = "Nodirshax",
-                            IsDeleted = false,
-                            LastName = "Allanazarov",
-                            PasswordHash = "a",
-                            Phone = "9012345679",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "asilbek.abdurashidov@example.com",
-                            FirstName = "Asilbek",
-                            IsDeleted = false,
-                            LastName = "Abdurashidov",
-                            PasswordHash = "a",
-                            Phone = "9012345679",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jasurbek.ergashev@example.com",
-                            FirstName = "Jasurbek",
-                            IsDeleted = false,
-                            LastName = "Ergashev",
-                            PasswordHash = "a",
-                            Phone = "9012345680",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "takhmina.saidova@example.com",
-                            FirstName = "Takhmina",
-                            IsDeleted = false,
-                            LastName = "Saidova",
-                            PasswordHash = "a",
-                            Phone = "9012345681",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "asadbek.qarshiyev@example.com",
-                            FirstName = "Asadbek",
-                            IsDeleted = false,
-                            LastName = "Qarshiyev",
-                            PasswordHash = "a",
-                            Phone = "9012345682",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "sardor.sohinazarov@example.com",
-                            FirstName = "Sardor",
-                            IsDeleted = false,
-                            LastName = "Sohinazarov",
-                            PasswordHash = "a",
-                            Phone = "9012345683",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "raykhona.isroilova@example.com",
-                            FirstName = "Raykhona",
-                            IsDeleted = false,
-                            LastName = "Isroilova",
-                            PasswordHash = "a",
-                            Phone = "9012345684",
-                            UserRole = 1
-                        });
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Answers.Answer", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -716,35 +559,18 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("Content");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Articles.Article", "Article")
-                        .WithMany("UserArticles")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
-                        .WithMany("UserArticles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Nabeey.Domain.Entities.Books.Book", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.ContentBooks.ContentBook", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Books.Book", "Book")
                         .WithMany()
@@ -771,12 +597,6 @@ namespace Nabeey.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentImage", null)
-                        .WithOne("Content")
-                        .HasForeignKey("Nabeey.Domain.Entities.Contexts.Content", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("ContentCategory");
                 });
 
@@ -784,7 +604,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
                         .WithMany()
@@ -801,7 +623,15 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
+                        .WithMany()
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
 
@@ -812,7 +642,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
                         .WithMany()
@@ -848,7 +680,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -883,30 +717,32 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("ContentCategory");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.UserArticle", b =>
                 {
-                    b.HasOne("Nabeey.Domain.Entities.Questions.Question", "Question")
-                        .WithMany("QuizQuestions")
-                        .HasForeignKey("QuestionId")
+                    b.HasOne("Nabeey.Domain.Entities.Articles.Article", "Article")
+                        .WithMany("UserArticles")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nabeey.Domain.Entities.Quizzes.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizId")
+                    b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
+                        .WithMany("UserArticles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.Navigation("Article");
 
-                    b.Navigation("Quiz");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -919,12 +755,6 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Articles.Article", b =>
                 {
                     b.Navigation("UserArticles");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentImage", b =>
-                {
-                    b.Navigation("Content")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Questions.Question", b =>

@@ -1,9 +1,11 @@
-﻿namespace Nabeey.Service.DTOs.QuestionAnswers;
+﻿using Nabeey.Service.DTOs.Answer;
+
+namespace Nabeey.Service.DTOs.QuestionAnswers;
 
 public class QuestionAnswerResultDto
 {
     public long Id { get; set; }
-    public long AnswerId { get; set; }
-    public long QuestionId { get; set; }
+    public AnswerResultDto Answer { get; set; }
+    public QuestionAnswerResultDto Question { get; set; }
     public bool IsTrue { get; set; }
 }
