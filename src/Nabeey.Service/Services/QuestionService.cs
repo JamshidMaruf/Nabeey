@@ -19,10 +19,6 @@ public class QuestionService : IQuestionService
     }
     public async ValueTask<QuestionResultDto> AddAsync(QuestionCreationDto dto)
     {
-        var question = await repository.SelectAsync(x => x.AssetId.Equals(dto.AssetId));
-        if (question is not null)
-            throw new AlreadyExistException("Already exist!");
-
         var mapQuestion = mapper.Map<Question>(dto);
         await repository.InsertAsync(mapQuestion);
         await repository.SaveAsync();

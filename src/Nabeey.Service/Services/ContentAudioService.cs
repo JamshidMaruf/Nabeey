@@ -5,7 +5,7 @@ using Nabeey.Service.Interfaces;
 using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.DataAccess.IRepositories;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.Service.Services;
 
@@ -26,16 +26,15 @@ public class ContentAudioService : IContentAudioService
         if (!Directory.Exists(webrootPath))
             Directory.CreateDirectory(webrootPath);
 
-        var fileExtension = Path.GetExtension(dto.File.FileName);
+        var fileExtension = Path.GetExtension(dto.Audio.FileName);
         var fileName = $"{Guid.NewGuid().ToString("N")}{fileExtension}";
         var fullPath = Path.Combine(webrootPath, fileName);  
 
         var fileStream = new FileStream(fullPath, FileMode.OpenOrCreate);
-        await fileStream.WriteAsync(dto.File.ToByte());
+        await fileStream.WriteAsync(dto.Audio.ToByte());
 
         var createdContentAudio = new ContentAudio
         {
-            AssetId = dto.AssetId,
             ContentId = dto.ContentId,
         };
 

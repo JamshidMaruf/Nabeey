@@ -80,7 +80,7 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id)
+    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveByQuiz(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException("This quiz is not found");
@@ -98,21 +98,19 @@ public class QuizQuestionService : IQuizQuestionService
 
         ShuffleQuestions(questions);
 
-        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
+        return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(questions);
     }
 
-    private IEnumerable<Question> ShuffleQuestions(IEnumerable<Question> questions)
+    private static IEnumerable<Question> ShuffleQuestions(IEnumerable<Question> questions)
     {
         List<Question> questionList = questions.ToList();
-        Random random = new Random();
+        var random = new Random();
         int n = questionList.Count;
         while (n > 1)
         {
             n--;
             int k = random.Next(n + 1);
-            Question value = questionList[k];
-            questionList[k] = questionList[n];
-            questionList[n] = value;
+            (questionList[k], questionList[n]) = (questionList[n], questionList[k]);
         }
         return questionList;
     }

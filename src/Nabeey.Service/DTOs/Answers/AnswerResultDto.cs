@@ -1,4 +1,3 @@
-﻿using Nabeey.Domain.Entities.Assets;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Questions;
 
