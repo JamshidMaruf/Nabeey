@@ -26,6 +26,7 @@ public static class ServicesCollection
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IContentBookService, ContentBookService>();
         services.AddScoped<IContentVideoService, ContentVideoService>();
+
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
@@ -80,6 +81,4 @@ public static class ServicesCollection
                 });
         });
     }
-
-
 }

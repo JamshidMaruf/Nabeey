@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nabeey.DataAccess.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230924114925_initialMig")]
+    partial class initialMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +32,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -82,33 +84,6 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ArticleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId", "ArticleId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("UserArticles");
-                });
-
             modelBuilder.Entity("Nabeey.Domain.Entities.Assets.Asset", b =>
                 {
                     b.Property<long>("Id")
@@ -145,7 +120,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Author")
@@ -174,191 +149,9 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3L,
-                            Author = "George Orwell",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Dystopian novel",
-                            IsDeleted = false,
-                            Text = "Text 3",
-                            Title = "1984"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Author = "Harper Lee",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Classic novel",
-                            IsDeleted = false,
-                            Text = "Text 4",
-                            Title = "To Kill a Mockingbird"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Author = "F. Scott Fitzgerald",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "American classic",
-                            IsDeleted = false,
-                            Text = "Text 5",
-                            Title = "The Great Gatsby"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Author = "Jane Austen",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Romantic novel",
-                            IsDeleted = false,
-                            Text = "Text 6",
-                            Title = "Pride and Prejudice"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Author = "J.D. Salinger",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Coming-of-age novel",
-                            IsDeleted = false,
-                            Text = "Text 7",
-                            Title = "The Catcher in the Rye"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Author = "J.R.R. Tolkien",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Epic fantasy",
-                            IsDeleted = false,
-                            Text = "Text 8",
-                            Title = "Lord of the Rings"
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Author = "J.K. Rowling",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Fantasy novel",
-                            IsDeleted = false,
-                            Text = "Text 9",
-                            Title = "Harry Potter and the Sorcerer's Stone"
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Author = "J.R.R. Tolkien",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Fantasy adventure",
-                            IsDeleted = false,
-                            Text = "Text 10",
-                            Title = "The Hobbit"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            Author = "Charles Dickens",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Roman klassikasi",
-                            IsDeleted = false,
-                            Text = "Matni 11",
-                            Title = "Oliver Twist"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            Author = "Arthyr Konan Doil",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Mashhur detektiv qissalari",
-                            IsDeleted = false,
-                            Text = "Matni 12",
-                            Title = "Sherlok Holms"
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            Author = "Fyodor Dostoyevski",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Rus roman klassikasi",
-                            IsDeleted = false,
-                            Text = "Matni 13",
-                            Title = "Qo'shiqchi"
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            Author = "H. P. Lovecraft",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Fantastika",
-                            IsDeleted = false,
-                            Text = "Matni 14",
-                            Title = "Zulumotlar va qo'rqinlar vaqti"
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            Author = "Stephen King",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "G'azablandiruvchi roman",
-                            IsDeleted = false,
-                            Text = "Matni 15",
-                            Title = "Qorquv"
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            Author = "Herman Melville",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Qayiq ko'prik qirg'ishi",
-                            IsDeleted = false,
-                            Text = "Matni 16",
-                            Title = "Mobi-Dik"
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            Author = "Munis Xo'ja",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Xalq qahramoni tarixiy roman",
-                            IsDeleted = false,
-                            Text = "Matni 17",
-                            Title = "Andijonlik"
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            Author = "Alexander Duma",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Maktab roman klassikasi",
-                            IsDeleted = false,
-                            Text = "Matni 18",
-                            Title = "Sulton Kuzo"
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            Author = "Edgar Allan Poe",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "G'azallar",
-                            IsDeleted = false,
-                            Text = "Matni 19",
-                            Title = "Qo'rqinchli g'azal"
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            Author = "Ivan Denisovich",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Olam shekillari roman",
-                            IsDeleted = false,
-                            Text = "Matni 20",
-                            Title = "Bir kunda"
-                        });
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.ContentBooks.ContentBook", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -425,7 +218,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -482,7 +275,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -514,7 +307,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ContentId")
@@ -576,7 +369,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -672,12 +465,12 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Quizzes");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.UserArticle", b =>
                 {
-                    b.Property<long>("QuizId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("QuestionId")
+                    b.Property<long>("ArticleId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -692,11 +485,11 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("QuizId", "QuestionId");
+                    b.HasKey("UserId", "ArticleId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("ArticleId");
 
-                    b.ToTable("QuizQuestions");
+                    b.ToTable("UserArticles");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
@@ -707,7 +500,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
+                    b.Property<long>("AssetId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -742,147 +535,15 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "imona.kabirova@example.com",
-                            FirstName = "Imona",
-                            IsDeleted = false,
-                            LastName = "Kabirova",
-                            PasswordHash = "a",
-                            Phone = "9001234567",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jamshid.zayniev@example.com",
-                            FirstName = "Jamshid",
-                            IsDeleted = false,
-                            LastName = "Zayniev",
-                            PasswordHash = "a",
-                            Phone = "9007654321",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "anastasiya.tomchuk@example.com",
-                            FirstName = "Anastasiya",
-                            IsDeleted = false,
-                            LastName = "Tomchuk",
-                            PasswordHash = "a",
-                            Phone = "9009876543",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "iskandar.kodirov@example.com",
-                            FirstName = "Iskandar",
-                            IsDeleted = false,
-                            LastName = "Kodirov",
-                            PasswordHash = "a",
-                            Phone = "9012345678",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "nodirshax.allanazarov@example.com",
-                            FirstName = "Nodirshax",
-                            IsDeleted = false,
-                            LastName = "Allanazarov",
-                            PasswordHash = "a",
-                            Phone = "9012345679",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "asilbek.abdurashidov@example.com",
-                            FirstName = "Asilbek",
-                            IsDeleted = false,
-                            LastName = "Abdurashidov",
-                            PasswordHash = "a",
-                            Phone = "9012345679",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "jasurbek.ergashev@example.com",
-                            FirstName = "Jasurbek",
-                            IsDeleted = false,
-                            LastName = "Ergashev",
-                            PasswordHash = "a",
-                            Phone = "9012345680",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "takhmina.saidova@example.com",
-                            FirstName = "Takhmina",
-                            IsDeleted = false,
-                            LastName = "Saidova",
-                            PasswordHash = "a",
-                            Phone = "9012345681",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "asadbek.qarshiyev@example.com",
-                            FirstName = "Asadbek",
-                            IsDeleted = false,
-                            LastName = "Qarshiyev",
-                            PasswordHash = "a",
-                            Phone = "9012345682",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "sardor.sohinazarov@example.com",
-                            FirstName = "Sardor",
-                            IsDeleted = false,
-                            LastName = "Sohinazarov",
-                            PasswordHash = "a",
-                            Phone = "9012345683",
-                            UserRole = 1
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "raykhona.isroilova@example.com",
-                            FirstName = "Raykhona",
-                            IsDeleted = false,
-                            LastName = "Isroilova",
-                            PasswordHash = "a",
-                            Phone = "9012345684",
-                            UserRole = 1
-                        });
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Answers.Answer", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -898,35 +559,18 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("Content");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Articles.Article", "Article")
-                        .WithMany("UserArticles")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
-                        .WithMany("UserArticles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Nabeey.Domain.Entities.Books.Book", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.ContentBooks.ContentBook", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Books.Book", "Book")
                         .WithMany()
@@ -953,12 +597,6 @@ namespace Nabeey.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentImage", null)
-                        .WithOne("Content")
-                        .HasForeignKey("Nabeey.Domain.Entities.Contexts.Content", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("ContentCategory");
                 });
 
@@ -966,7 +604,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
                         .WithMany()
@@ -983,7 +623,15 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
+                        .WithMany()
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
 
@@ -994,7 +642,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
                         .WithMany()
@@ -1030,7 +680,9 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -1065,30 +717,32 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("ContentCategory");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizQuestion", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.UserArticle", b =>
                 {
-                    b.HasOne("Nabeey.Domain.Entities.Questions.Question", "Question")
-                        .WithMany("QuizQuestions")
-                        .HasForeignKey("QuestionId")
+                    b.HasOne("Nabeey.Domain.Entities.Articles.Article", "Article")
+                        .WithMany("UserArticles")
+                        .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nabeey.Domain.Entities.Quizzes.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizId")
+                    b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
+                        .WithMany("UserArticles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.Navigation("Article");
 
-                    b.Navigation("Quiz");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
                 });
@@ -1101,12 +755,6 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Articles.Article", b =>
                 {
                     b.Navigation("UserArticles");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentImage", b =>
-                {
-                    b.Navigation("Content")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Questions.Question", b =>

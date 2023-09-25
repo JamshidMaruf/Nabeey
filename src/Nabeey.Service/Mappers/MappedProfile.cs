@@ -1,23 +1,15 @@
 ﻿using AutoMapper;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Service.DTOs.ContentCategories;
-namespace Nabeey.Service.Mappers;
-
-using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
-using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.Contents;
-using Nabeey.Domain.Entities.QuestionAnswers;
+using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.Questions;
+using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
-using Nabeey.Service.DTOs.Answer;
 using Nabeey.Service.DTOs.Articles;
-using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.DTOs.ContentAudio;
-using Nabeey.Service.DTOs.ContentBooks;
+using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.ContentImages;
 using Nabeey.Service.DTOs.Contents;
 using Nabeey.Service.DTOs.ContentVideos;
@@ -26,34 +18,36 @@ using Nabeey.Service.DTOs.QuestionAnswers;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
 
+namespace Nabeey.Service.Mappers;
+
 public class MappedProfile : Profile
 {
     public MappedProfile()
     {
-		// ContentCategory
-		CreateMap<ContentCategory, ContentCategoryResultDto>();
-		CreateMap<ContentCategoryCreationDto, ContentCategory>();
-		CreateMap<ContentCategoryUpdateDto, ContentCategory>();
+        // ContentCategory
+        CreateMap<ContentCategory, ContentCategoryResultDto>();
+        CreateMap<ContentCategoryCreationDto, ContentCategory>();
+        CreateMap<ContentCategoryUpdateDto, ContentCategory>();
 
-		// ContentImage
-		CreateMap<ContentImage, ContentImageResultDto>();
-		CreateMap<ContentImageCreationDto, ContentImage>();
-		CreateMap<ContentImageUpdateDto, ContentImage>();
+        // ContentImage
+        CreateMap<ContentImage, ContentImageResultDto>();
+        CreateMap<ContentImageCreationDto, ContentImage>();
+        CreateMap<ContentImageUpdateDto, ContentImage>();
 
-		// ContentVideo
-		CreateMap<ContentVideo, ContentVideoResultDto>();
-		CreateMap<ContentVideoCreationDto, ContentVideo>();
+        // ContentVideo
+        CreateMap<ContentVideo, ContentVideoResultDto>();
+        CreateMap<ContentVideoCreationDto, ContentVideo>();
         CreateMap<ContentVideoUpdateDto, ContentVideo>();
 
-		// ContentAudio
-		CreateMap<ContentAudio, ContentCategoryResultDto>();
+        // ContentAudio
+        CreateMap<ContentAudio, ContentCategoryResultDto>();
         CreateMap<ContentAudioCreationDto, ContentCategory>();
         CreateMap<ContentAudioUpdateDto, ContentCategory>();
 
-		//User
-		CreateMap<User, UserResultDto>();
-		CreateMap<UserCreationDto, User>();
-		CreateMap<UserUpdateDto, User>();
+        //User
+        CreateMap<User, UserResultDto>();
+        CreateMap<UserCreationDto, User>();
+        CreateMap<UserUpdateDto, User>();
 
         // Answer
         CreateMap<Answer, AnswerResultDto>();
@@ -98,5 +92,6 @@ public class MappedProfile : Profile
         CreateMap<Quiz, QuizResultDto>();
         CreateMap<QuizCreationDto, Quiz>();
         CreateMap<QuizUpdateDto, Quiz>();
+
     }
 }
