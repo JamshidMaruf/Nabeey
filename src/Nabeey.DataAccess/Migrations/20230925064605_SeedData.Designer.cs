@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230924140109_AddedSeedData")]
-    partial class AddedSeedData
+    [Migration("20230925064605_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -176,6 +176,188 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3L,
+                            Author = "George Orwell",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Dystopian novel",
+                            IsDeleted = false,
+                            Text = "Text 3",
+                            Title = "1984"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Author = "Harper Lee",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Classic novel",
+                            IsDeleted = false,
+                            Text = "Text 4",
+                            Title = "To Kill a Mockingbird"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Author = "F. Scott Fitzgerald",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "American classic",
+                            IsDeleted = false,
+                            Text = "Text 5",
+                            Title = "The Great Gatsby"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            Author = "Jane Austen",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Romantic novel",
+                            IsDeleted = false,
+                            Text = "Text 6",
+                            Title = "Pride and Prejudice"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Author = "J.D. Salinger",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Coming-of-age novel",
+                            IsDeleted = false,
+                            Text = "Text 7",
+                            Title = "The Catcher in the Rye"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Author = "J.R.R. Tolkien",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Epic fantasy",
+                            IsDeleted = false,
+                            Text = "Text 8",
+                            Title = "Lord of the Rings"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            Author = "J.K. Rowling",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fantasy novel",
+                            IsDeleted = false,
+                            Text = "Text 9",
+                            Title = "Harry Potter and the Sorcerer's Stone"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            Author = "J.R.R. Tolkien",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fantasy adventure",
+                            IsDeleted = false,
+                            Text = "Text 10",
+                            Title = "The Hobbit"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            Author = "Charles Dickens",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Roman klassikasi",
+                            IsDeleted = false,
+                            Text = "Matni 11",
+                            Title = "Oliver Twist"
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            Author = "Arthyr Konan Doil",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Mashhur detektiv qissalari",
+                            IsDeleted = false,
+                            Text = "Matni 12",
+                            Title = "Sherlok Holms"
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            Author = "Fyodor Dostoyevski",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Rus roman klassikasi",
+                            IsDeleted = false,
+                            Text = "Matni 13",
+                            Title = "Qo'shiqchi"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            Author = "H. P. Lovecraft",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fantastika",
+                            IsDeleted = false,
+                            Text = "Matni 14",
+                            Title = "Zulumotlar va qo'rqinlar vaqti"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            Author = "Stephen King",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "G'azablandiruvchi roman",
+                            IsDeleted = false,
+                            Text = "Matni 15",
+                            Title = "Qorquv"
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            Author = "Herman Melville",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Qayiq ko'prik qirg'ishi",
+                            IsDeleted = false,
+                            Text = "Matni 16",
+                            Title = "Mobi-Dik"
+                        },
+                        new
+                        {
+                            Id = 17L,
+                            Author = "Munis Xo'ja",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Xalq qahramoni tarixiy roman",
+                            IsDeleted = false,
+                            Text = "Matni 17",
+                            Title = "Andijonlik"
+                        },
+                        new
+                        {
+                            Id = 18L,
+                            Author = "Alexander Duma",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Maktab roman klassikasi",
+                            IsDeleted = false,
+                            Text = "Matni 18",
+                            Title = "Sulton Kuzo"
+                        },
+                        new
+                        {
+                            Id = 19L,
+                            Author = "Edgar Allan Poe",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "G'azallar",
+                            IsDeleted = false,
+                            Text = "Matni 19",
+                            Title = "Qo'rqinchli g'azal"
+                        },
+                        new
+                        {
+                            Id = 20L,
+                            Author = "Ivan Denisovich",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Olam shekillari roman",
+                            IsDeleted = false,
+                            Text = "Matni 20",
+                            Title = "Bir kunda"
+                        });
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
