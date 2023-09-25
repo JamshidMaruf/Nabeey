@@ -1,6 +1,6 @@
 ﻿using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.DTOs.Articles;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.DTOs.ContentCategories;
 

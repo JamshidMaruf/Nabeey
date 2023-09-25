@@ -24,7 +24,6 @@ public static class ServicesCollection
         services.AddScoped<IAnswerService, AnswerService>();
         services.AddScoped<IAssetService, AssetService>();
         services.AddScoped<IBookService, BookService>();
-        services.AddScoped<IContentBookService, ContentBookService>();
         services.AddScoped<IContentVideoService, ContentVideoService>();
 
     }

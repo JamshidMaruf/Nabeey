@@ -1,5 +1,5 @@
 ﻿using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.Service.Interfaces;
 

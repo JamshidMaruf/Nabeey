@@ -1,7 +1,7 @@
 ﻿using Nabeey.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.WebApi.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using Nabeey.Domain.Entities.Assets;
 
-namespace Nabeey.Service.DTOs.Answer;
+namespace Nabeey.Service.DTOs.Answers;
 
 public class AnswerCreationDto
 {

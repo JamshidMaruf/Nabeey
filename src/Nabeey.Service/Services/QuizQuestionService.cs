@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
-using Nabeey.Service.DTOs.Question;
+using Nabeey.Service.DTOs.Questions;
 using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Service.DTOs.QuizQuestions;
 

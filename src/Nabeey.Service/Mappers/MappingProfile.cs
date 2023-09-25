@@ -7,11 +7,10 @@ using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.DTOs.Books;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.Contents;
 using Nabeey.Service.DTOs.ContentVideos;
-using Nabeey.Service.DTOs.Question;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
 
@@ -24,8 +23,11 @@ public class MappingProfile : Profile
         // ContentCategory
         CreateMap<ContentCategory, ContentCategoryResultDto>();
         CreateMap<ContentCategoryCreationDto, ContentCategory>();
-        CreateMap<ContentCategoryResultDto, ContentCategory>();
 
+        //Article
+        CreateMap<Article, ArticleResultDto>();
+        CreateMap<ArticleCreationDto, Article>();
+        CreateMap<ArticleUpdateDto, Article>();
 
         // ContentVideo
         CreateMap<ContentVideo, ContentVideoResultDto>();
@@ -33,7 +35,7 @@ public class MappingProfile : Profile
         CreateMap<ContentVideoUpdateDto, ContentVideo>();
 
         // ContentAudio
-        CreateMap<ContentAudio, ContentCategoryResultDto>();
+        CreateMap<ContentAudio, ContentAudioResultDto>();
         CreateMap<ContentAudioCreationDto, ContentCategory>();
 
 
@@ -53,17 +55,17 @@ public class MappingProfile : Profile
         CreateMap<BookUpdateDto, Book>();
 
         //Content
-        CreateMap<Content, ContentResultDto>();
-        CreateMap<ContentResultDto, Content>();
+        CreateMap<Content, ContentResultDto>().ReverseMap();
 
         //Question
-        CreateMap<Question, QuestionResultDto>();
-        CreateMap<QuestionCreationDto, Question>();
-        CreateMap<QuestionUpdateDto, Question>();
+        //CreateMap<Question, QuestionResultDto>();
+        //CreateMap<QuestionCreationDto, Question>();
+        //CreateMap<QuestionUpdateDto, Question>();
 
         //Quizz
         CreateMap<Quiz, ResultDto>();
         CreateMap<QuizCreationDto, Quiz>();
         CreateMap<QuizUpdateDto, Quiz>();
+
     }
 }

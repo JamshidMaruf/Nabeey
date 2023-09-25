@@ -5,7 +5,7 @@ using Nabeey.Service.Interfaces;
 using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.DataAccess.IRepositories;
-using Nabeey.Service.DTOs.ContentAudio;
+using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.Service.Services;
 

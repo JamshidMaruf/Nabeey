@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Answers;
-using Nabeey.Service.DTOs.Answer;
+using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
 
