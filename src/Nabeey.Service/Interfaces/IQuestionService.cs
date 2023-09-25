@@ -1,4 +1,4 @@
-﻿using Nabeey.Service.DTOs.Question;
+﻿using Nabeey.Service.DTOs.Questions;
 
 namespace Nabeey.Service.Interfaces;
 

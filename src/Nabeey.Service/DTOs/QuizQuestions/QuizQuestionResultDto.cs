@@ -1,4 +1,4 @@
-﻿using Nabeey.Service.DTOs.Question;
+﻿using Nabeey.Service.DTOs.Questions;
 using Nabeey.Domain.Entities.Quizzes;
 
 namespace Nabeey.Service.DTOs.QuizQuestions;
