@@ -1,21 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Nabeey.Service.DTOs.Users;
 
 public class UserCreationDto
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-
-    [Required, Phone]
-    public string Phone { get; set; }
-
-    [Required, EmailAddress]
-    public string Email { get; set; }
-
-    [Required, StringLength(100, MinimumLength = 6)]
-    public string Password { get; set; } = string.Empty;
-
-    [Compare("Password", ErrorMessage = "The passwords do not match.")]
-    public string ConfirmPassword { get; set; } = string.Empty;
+	public string FirstName { get; set; }
+	public string LastName { get; set; }
+	public string Email { get; set; }
+	public string Phone { get; set; }
+	public IFormFile Image { get; set; }
 }

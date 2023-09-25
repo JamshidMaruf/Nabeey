@@ -1,4 +1,4 @@
-﻿namespace Nabeey.Service.DTOs.Quizzes.QuizQuestions;
+﻿namespace Nabeey.Service.DTOs.QuizQuestions;
 
 public class QuizQuestionUpdateDto
 {

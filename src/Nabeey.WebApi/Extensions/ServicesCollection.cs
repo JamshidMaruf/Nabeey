@@ -15,7 +15,7 @@ public static class ServicesCollection
     public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddAutoMapper(typeof(MappedProfile));
+        services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuizService, QuizService>();

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
-using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
 using Nabeey.Service.DTOs.Question;
 using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Service.DTOs.QuizQuestions;
 
 namespace Nabeey.Service.Services;
 
@@ -37,7 +37,7 @@ public class QuizQuestionService : IQuizQuestionService
         var mapped = this.mapper.Map<QuizQuestion>(dto);
         mapped.Quiz = existQuiz;
         mapped.Question = existQuestion;
-        await this.quizQuestionRepository.CreateAsync(mapped);
+        await this.quizQuestionRepository.InsertAsync(mapped);
         await this.quizQuestionRepository.SaveAsync();
 
         return this.mapper.Map<QuizQuestionResultDto>(mapped);

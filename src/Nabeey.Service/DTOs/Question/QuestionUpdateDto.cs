@@ -1,8 +1,10 @@
-﻿namespace Nabeey.Service.DTOs.Question;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Nabeey.Service.DTOs.Question;
 
 public class QuestionUpdateDto
 {
     public long Id { get; set; }
-    public long AssetId { get; set; }
-    public string Text { get; set; }
+	public string Text { get; set; }
+	public IFormFile File { get; set; }
 }

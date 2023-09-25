@@ -20,7 +20,7 @@ public class QuizService : IQuizService
         this.quizRepository = quizRepository;
         this.categoryRepository = categoryRepository;
     }
-    public async ValueTask<QuizResultDto> AddAsync(QuizCreationDto dto)
+    public async ValueTask<ResultDto> AddAsync(QuizCreationDto dto)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Name.Equals(dto.Name));
         if (existQuiz is not null)
@@ -32,10 +32,10 @@ public class QuizService : IQuizService
         var mappedCategory = this.mapper.Map<Quiz>(dto);
         mappedCategory.ContentCategory = existCategory;
 
-        await this.quizRepository.CreateAsync(mappedCategory);
+        await this.quizRepository.InsertAsync(mappedCategory);
         await this.quizRepository.SaveAsync();
 
-        return this.mapper.Map<QuizResultDto>(mappedCategory);
+        return this.mapper.Map<ResultDto>(mappedCategory);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -49,7 +49,7 @@ public class QuizService : IQuizService
         return true;
     }
 
-    public async ValueTask<QuizResultDto> ModifyAsync(QuizUpdateDto dto)
+    public async ValueTask<ResultDto> ModifyAsync(QuizUpdateDto dto)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.Id))
             ?? throw new NotFoundException($"This quiz is not found with id : {dto.Id}");
@@ -58,21 +58,21 @@ public class QuizService : IQuizService
         this.quizRepository.Update(existQuiz);
         await this.quizRepository.SaveAsync();
 
-        return this.mapper.Map<QuizResultDto>(existQuiz);
+        return this.mapper.Map<ResultDto>(existQuiz);
     }
 
-    public async ValueTask<QuizResultDto> RetrieveAsync(long id)
+    public async ValueTask<ResultDto> RetrieveAsync(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
             ?? throw new NotFoundException($"This quiz is not found with id : {id}");
 
-        return this.mapper.Map<QuizResultDto>(existQuiz);
+        return this.mapper.Map<ResultDto>(existQuiz);
     }
-    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<ResultDto>> RetrieveAllAsync()
     {
         var allQuizzes = await this.quizRepository.SelectAll(
             includes: new[] { "ContentCategory" }).ToListAsync();
 
-        return this.mapper.Map<IEnumerable<QuizResultDto>>(allQuizzes);
+        return this.mapper.Map<IEnumerable<ResultDto>>(allQuizzes);
     }
 }

@@ -39,7 +39,7 @@ public class ContentAudioService : IContentAudioService
             ContentId = dto.ContentId,
         };
 
-        await this.contentAudioRepository.CreateAsync(createdContentAudio);
+        await this.contentAudioRepository.InsertAsync(createdContentAudio);
         await this.contentAudioRepository.SaveAsync();
 
         return createdContentAudio;

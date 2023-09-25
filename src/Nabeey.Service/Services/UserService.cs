@@ -32,7 +32,7 @@ public class UserService : IUserService
         var mappedUser= mapper.Map<User>(dto);
 
         mappedUser.PasswordHash= PasswordHash.Encrypt(dto.Password);
-        await this.userRepository.CreateAsync(mappedUser);
+        await this.userRepository.InsertAsync(mappedUser);
         await this.userRepository.SaveAsync();
 
         var result = this.mapper.Map<UserResultDto>(mappedUser);

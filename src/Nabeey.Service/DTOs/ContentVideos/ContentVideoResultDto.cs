@@ -5,6 +5,9 @@ namespace Nabeey.Service.DTOs.ContentVideos;
 
 public class ContentVideoResultDto
 {
-    public ContentResultDto Content { get; set; }
-    public AssetResultDto Asset { get; set; }
+	public long Id { get; set; }
+	public string Title { get; set; }
+	public string Discription { get; set; }
+	public ContentResultDto Content { get; set; }
+	public AssetResultDto Video { get; set; }
 }

@@ -1,65 +1,64 @@
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.Contexts;
-using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Commons;
+using System.Linq.Expressions;
+using Nabeey.DataAccess.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.DataAccess.IRepositories;
 
 namespace Nabeey.DataAccess.Repositories;
 
-
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditable
 {
-    private readonly AppDbContext _context;
-    private readonly DbSet<TEntity> _table;
-
+	private readonly AppDbContext context;
+    private readonly DbSet<TEntity> table;
     public Repository(AppDbContext context)
     {
-        _context = context;
-        _table = _context.Set<TEntity>();
+		this.context = context;
+        this.table = this.context.Set<TEntity>();
     }
 
-    public async ValueTask<TEntity> CreateAsync(TEntity entity)
+    public async ValueTask<TEntity> InsertAsync(TEntity entity)
     {
-        await _table.AddAsync(entity);
+        await this.table.AddAsync(entity);
         return entity;
     }
 
     public void Update(TEntity entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;
-        _context.Update(entity).State = EntityState.Modified;
+        this.context.Update(entity).State = EntityState.Modified;
     }
 
     public void Delete(TEntity entity)
     {
         entity.IsDeleted = true;
-        _context.Update(entity).State = EntityState.Deleted;
+        this.context.Update(entity).State = EntityState.Deleted;
     }
 
     public void Destroy(TEntity entity)
     {
-        _context.Remove(entity);
+        this.context.Remove(entity);
     }
 
     public async ValueTask<TEntity> SelectAsync(Expression<Func<TEntity, bool>> expression, string[] includes = null)
     {
-        IQueryable<TEntity> entities = expression == null ? _table.AsQueryable() : _table.Where(expression).AsQueryable();
+        IQueryable<TEntity> entities = expression == null ? this.table.AsQueryable() : this.table.Where(expression).AsQueryable();
         
-        if(includes!=null)
+        if(includes is not null)
             foreach (var include in includes)
                 entities = entities.Include(include);
 
         return await entities.FirstOrDefaultAsync();
     }
 
-    public IQueryable<TEntity> SelectAll(Expression<Func<TEntity, bool>> expression = null, string[] includes = null, bool isTracking = true)
+    public IQueryable<TEntity> SelectAll(
+        Expression<Func<TEntity, bool>> expression = null, string[] includes = null, bool isTracking = true)
     {
-        IQueryable<TEntity> entities = expression == null ? _table.AsQueryable() 
-            : _table.Where(expression).AsQueryable();
+        IQueryable<TEntity> entities = expression == null ? this.table.AsQueryable() 
+            : this.table.Where(expression).AsQueryable();
 
         entities = isTracking ? entities.AsNoTracking() : entities;
         
-        if(includes!=null)
+        if(includes is not null)
             foreach (var include in includes)
                 entities = entities.Include(include);
 
@@ -68,7 +67,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
 
     public async ValueTask<bool> SaveAsync()
     {
-        var rowsAffetted = await _context.SaveChangesAsync();
+        var rowsAffetted = await this.context.SaveChangesAsync();
         return rowsAffetted > 0;
     }
 }

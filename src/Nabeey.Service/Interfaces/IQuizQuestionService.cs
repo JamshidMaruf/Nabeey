@@ -1,5 +1,5 @@
 using Nabeey.Service.DTOs.Question;
-using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
+using Nabeey.Service.DTOs.QuizQuestions;
 
 namespace Nabeey.Service.Interfaces;
 

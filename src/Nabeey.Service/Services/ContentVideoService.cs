@@ -32,7 +32,7 @@ public class ContentVideoService : IContentVideoService
                     ?? throw new NotFoundException($"This content is not found with ID: {dto.ContentId}");
 
         var mappedContentVideo = this.mapper.Map<ContentVideo>(dto);
-        await this.contentVideoRepository.CreateAsync(mappedContentVideo);
+        await this.contentVideoRepository.InsertAsync(mappedContentVideo);
         await this.contentVideoRepository.SaveAsync();
 
         return this.mapper.Map<ContentVideoResultDto>(mappedContentVideo);

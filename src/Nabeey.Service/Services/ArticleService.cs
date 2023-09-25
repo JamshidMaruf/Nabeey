@@ -29,7 +29,7 @@ public class ArticleService : IArticleService
         var mapped = this.mapper.Map<Article>(dto);
         mapped.Content = existContent;
 
-        await this.articleRepository.CreateAsync(mapped);
+        await this.articleRepository.InsertAsync(mapped);
         await this.articleRepository.SaveAsync();
 
         return this.mapper.Map<ArticleResultDto>(mapped);

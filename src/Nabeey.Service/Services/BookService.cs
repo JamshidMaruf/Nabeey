@@ -28,7 +28,7 @@ public class BookService : IBookService
             throw new AlreadyExistException($"This title is already exist {dto.Title}");
         
         var mappedBook=this.mapper.Map<Book>(dto);
-        await this.repository.CreateAsync(mappedBook);
+        await this.repository.InsertAsync(mappedBook);
         await this.repository.SaveAsync();
 
         return this.mapper.Map<BookResultDto>(mappedBook);

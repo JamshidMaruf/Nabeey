@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Service.DTOs.Quizzes;
-using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 

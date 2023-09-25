@@ -24,7 +24,7 @@ public class QuestionService : IQuestionService
             throw new AlreadyExistException("Already exist!");
 
         var mapQuestion = mapper.Map<Question>(dto);
-        await repository.CreateAsync(mapQuestion);
+        await repository.InsertAsync(mapQuestion);
         await repository.SaveAsync();
 
         var res = mapper.Map<QuestionResultDto>(mapQuestion);

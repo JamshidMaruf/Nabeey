@@ -25,7 +25,7 @@ public class AnswerService : IAnswerService
             throw new AlreadyExistException("Already exist!");
 
         var mapAnswer = mapper.Map<Answer>(dto);
-        await repository.CreateAsync(mapAnswer);
+        await repository.InsertAsync(mapAnswer);
         await repository.SaveAsync();
 
         var res = mapper.Map<AnswerResultDto>(mapAnswer);

@@ -1,6 +1,6 @@
 ﻿using Nabeey.Domain.Entities.Quizzes;
 
-namespace Nabeey.Service.DTOs.Quizzes.QuizQuestions;
+namespace Nabeey.Service.DTOs.QuizQuestions;
 
 public class QuizQuestionCreationDto
 {

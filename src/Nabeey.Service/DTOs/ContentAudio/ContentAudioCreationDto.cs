@@ -4,7 +4,8 @@ namespace Nabeey.Service.DTOs.ContentAudio;
 
 public class ContentAudioCreationDto
 {
-    public long ContentId { get; set; }
-    public long AssetId { get; set; }
-    public IFormFile File { get; set; }
+	public string Title { get; set; }
+	public string Description { get; set; }
+	public long ContentId { get; set; }
+	public IFormFile Audio { get; set; }
 }

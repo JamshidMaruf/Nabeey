@@ -1,7 +1,12 @@
-﻿namespace Nabeey.Service.DTOs.ContentVideos;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Nabeey.Service.DTOs.ContentVideos;
 
 public class ContentVideoUpdateDto
 {
-    public long ContentId { get; set; }
-    public long AssetId { get; set; }
+	public long Id { get; set; }
+	public string Title { get; set; }
+	public string Discription { get; set; }
+	public IFormFile Video { get; set; }
+	public long ContentId { get; set; }
 }
