@@ -20,6 +20,7 @@ public static class ServicesCollection
         services.AddScoped<IQuizService, QuizService>();
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IBookService, BookService>();
         services.AddScoped<IQuizQuestionService, QuizQuestionService>();
     }
 

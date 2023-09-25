@@ -1,4 +1,6 @@
-﻿namespace Nabeey.Service.DTOs.Articles;
+﻿using Nabeey.Domain.Entities.Contexts;
+
+namespace Nabeey.Service.DTOs.Articles;
 
 public class ArticleCreationDto
 {

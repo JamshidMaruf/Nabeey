@@ -4,9 +4,9 @@ namespace Nabeey.Service.Interfaces;
 
 public interface IArticleService
 {
-    Task<ArticleResultDto> AddAsync(ArticleCreationDto dto);
-    Task<ArticleResultDto> ModifyAsync(ArticleUpdateDto dto);
-    Task<bool> DeleteAsync(long id);
-    Task<ArticleResultDto> RetrieveAsync(long id);
-    Task<IEnumerable<ArticleResultDto>> RetrieveAllAsync();
+    ValueTask<ArticleResultDto> AddAsync(ArticleCreationDto dto);
+    ValueTask<ArticleResultDto> ModifyAsync(ArticleUpdateDto dto);
+    ValueTask<bool> DeleteAsync(long id);
+    ValueTask<ArticleResultDto> RetrieveAsync(long id);
+    ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllAsync();
 }

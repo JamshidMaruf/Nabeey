@@ -21,7 +21,7 @@ public class ArticleService : IArticleService
         this.contentRepository = contentRepository;
     }
 
-    public async Task<ArticleResultDto> AddAsync(ArticleCreationDto dto)
+    public async ValueTask<ArticleResultDto> AddAsync(ArticleCreationDto dto)
     {
         var existContent = await this.contentRepository.SelectAsync(a => a.Id.Equals(dto.ContentId))
             ?? throw new NotFoundException($"This content is not found with id : {dto.ContentId}");
@@ -35,7 +35,7 @@ public class ArticleService : IArticleService
         return this.mapper.Map<ArticleResultDto>(mapped);
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
         var existArticle = await this.articleRepository.SelectAsync(a => a.Id.Equals(id))
            ?? throw new NotFoundException($"This article is not found with id : {id}");
@@ -46,7 +46,7 @@ public class ArticleService : IArticleService
         return true;
     }
 
-    public async Task<ArticleResultDto> ModifyAsync(ArticleUpdateDto dto)
+    public async ValueTask<ArticleResultDto> ModifyAsync(ArticleUpdateDto dto)
     {
         var existArticle = await this.articleRepository.SelectAsync(a => a.Id.Equals(dto.Id))
             ?? throw new NotFoundException($"This article is not found with id : {dto.Id}");
@@ -59,14 +59,14 @@ public class ArticleService : IArticleService
     }
 
 
-    public async Task<ArticleResultDto> RetrieveAsync(long id)
+    public async ValueTask<ArticleResultDto> RetrieveAsync(long id)
     {
         var existArticle = await this.articleRepository.SelectAsync(a => a.Id.Equals(id))
            ?? throw new NotFoundException($"This article is not found with id : {id}");
 
         return this.mapper.Map<ArticleResultDto>(existArticle);
     }
-    public async Task<IEnumerable<ArticleResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllAsync()
     {
         var allArticles = await this.articleRepository.SelectAll(includes: new[] { "Content" }).ToListAsync();
         return this.mapper.Map<IEnumerable<ArticleResultDto>>(allArticles); 

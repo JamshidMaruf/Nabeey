@@ -14,7 +14,7 @@ public class QuizzesController : BaseController
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> PostAsync(QuizCreationDto dto)
+        public async ValueTask<IActionResult> PostAsync(QuizCreationDto dto)
             => Ok(new Response
             {
                 StatusCode = 200,
@@ -23,7 +23,7 @@ public class QuizzesController : BaseController
             });
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateAsync(QuizUpdateDto dto)
+        public async ValueTask<IActionResult> UpdateAsync(QuizUpdateDto dto)
             => Ok(new Response
             {
                 StatusCode = 200,
@@ -32,7 +32,7 @@ public class QuizzesController : BaseController
             });
     
         [HttpDelete("delete/{id:long}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async ValueTask<IActionResult> DeleteAsync(long id)
             => Ok(new Response
             {
                 StatusCode = 200,
@@ -41,7 +41,7 @@ public class QuizzesController : BaseController
             });
     
         [HttpGet("get/{id:long}")]
-        public async Task<IActionResult> GetAsync(long id)
+        public async ValueTask<IActionResult> GetAsync(long id)
             => Ok(new Response
             {
                 StatusCode = 200,
@@ -50,7 +50,7 @@ public class QuizzesController : BaseController
             });
     
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAllAsync()
+        public async ValueTask<IActionResult> GetAllAsync()
             => Ok(new Response
             {
                 StatusCode = 200,

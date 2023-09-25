@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
 using Nabeey.Domain.Entities.Articles;
+using Nabeey.Domain.Entities.Books;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
+using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.Articles;
+using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.DTOs.ContentAudio;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.ContentImages;
 using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
+using Nabeey.Service.DTOs.Users;
+
 namespace Nabeey.Service.Mappers;
 
 public class MappedProfile : Profile
@@ -41,10 +46,20 @@ public class MappedProfile : Profile
         CreateMap<ContentAudioCreationDto, ContentCategory>().ReverseMap();
         CreateMap<ContentAudioUpdateDto, ContentCategory>().ReverseMap();
 
+        // User
+        CreateMap<User, UserResultDto>().ReverseMap();
+        CreateMap<UserCreationDto, User>().ReverseMap();
+        CreateMap<UserUpdateDto, User>().ReverseMap();
+
         //Quiz
         CreateMap<Quiz, QuizResultDto>().ReverseMap();
         CreateMap<Quiz, QuizCreationDto>().ReverseMap();
         CreateMap<QuizUpdateDto, Quiz>().ReverseMap();
+
+        //Quiz
+        CreateMap<Book, BookResultDto>().ReverseMap();
+        CreateMap<Book, BookCreationDto>().ReverseMap();
+        CreateMap<BookUpdateDto, Book>().ReverseMap();
 
         //Article
         CreateMap<Article, ArticleResultDto>().ReverseMap();
