@@ -60,6 +60,9 @@ public class AppDbContext : DbContext
         userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
         userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
 
+        // Quizzes <=> Questions
+        var quizQuestion = modelBuilder.Entity<QuizQuestion>();
+        quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
 
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
