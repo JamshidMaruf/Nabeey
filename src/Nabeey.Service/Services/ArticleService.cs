@@ -14,7 +14,7 @@ public class ArticleService : IArticleService
     private readonly IRepository<Article> articleRepository;
     private readonly IRepository<Content> contentRepository;
     private readonly IMapper mapper;
-    public ArticleService(IRepository<Article> articleRepository, IRepository<Content> contentRepository, IMapper mapper)
+    public ArticleService(IMapper mapper, IRepository<Article> articleRepository, IRepository<Content> contentRepository)
     {
         this.mapper = mapper;
         this.articleRepository = articleRepository;

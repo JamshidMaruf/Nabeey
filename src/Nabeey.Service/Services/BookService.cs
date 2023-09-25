@@ -6,6 +6,7 @@ using Nabeey.Service.Interfaces;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Books;
 using Nabeey.DataAccess.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nabeey.Service.Services;
 
@@ -58,7 +59,7 @@ public class BookService : IBookService
 
     public async Task<BookResultDto> GetByIdAsync(long id)
     {
-        Book existBook = this.repository.SelectAll().FirstOrDefault(b => b.Id.Equals(id));
+        Book existBook = await this.repository.SelectAll().FirstOrDefaultAsync(b => b.Id.Equals(id));
         if (existBook is not null)
             throw new NotFoundException($"This id is not found {id}");
 
@@ -68,10 +69,10 @@ public class BookService : IBookService
 
     public async Task<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params, Filter filter,  string search = null)
     {
-        var books = this.repository.SelectAll()
+        var books = await this.repository.SelectAll()
                     .ToPaginate(@params)
                     .OrderBy(filter)
-                    .ToList();
+                    .ToListAsync();
 
         if (search is not null)
         {

@@ -11,7 +11,7 @@ public class Question : Auditable
 {
     public string Text { get; set; }
 
-    public long AssetId { get; set; }
+    public long? AssetId { get; set; }
     public Asset Asset { get; set; }
 
     public IEnumerable<QuizQuestion> QuizQuestions { get; set; }

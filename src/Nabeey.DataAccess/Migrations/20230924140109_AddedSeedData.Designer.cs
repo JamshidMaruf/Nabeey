@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nabeey.DataAccess.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230924140109_AddedSeedData")]
+    partial class AddedSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,10 +213,7 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.Content", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("ContentCategoryId")
                         .HasColumnType("bigint");
@@ -319,8 +318,6 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasIndex("AssetId");
 
-                    b.HasIndex("ContentId");
-
                     b.ToTable("ContentImages");
                 });
 
@@ -414,38 +411,6 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasIndex("AssetId");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<long>("QuestionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("QuizId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("QuizId");
-
-                    b.ToTable("QuizQuestions");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.Quiz", b =>
@@ -804,8 +769,6 @@ namespace Nabeey.DataAccess.Migrations
                         .HasForeignKey("AssetId");
 
                     b.Navigation("Asset");
-
-                    b.Navigation("Content");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentVideo", b =>
@@ -851,25 +814,6 @@ namespace Nabeey.DataAccess.Migrations
                         .HasForeignKey("AssetId");
 
                     b.Navigation("Asset");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Questions.Question", "Question")
-                        .WithMany("QuizQuestions")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nabeey.Domain.Entities.Quizzes.Quiz", "Quiz")
-                        .WithMany("QuizQuestions")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.Quiz", b =>
@@ -931,11 +875,6 @@ namespace Nabeey.DataAccess.Migrations
                 {
                     b.Navigation("QuestionAnswers");
 
-                    b.Navigation("QuizQuestions");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.Quiz", b =>
-                {
                     b.Navigation("QuizQuestions");
                 });
 
