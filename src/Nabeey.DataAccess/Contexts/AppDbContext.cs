@@ -51,6 +51,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Quiz>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<QuizQuestion>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<UserArticle>().HasQueryFilter(u => !u.IsDeleted);
+        modelBuilder.Entity<QuestionAnswer>().HasQueryFilter(qa => !qa.IsDeleted);
 
         #region Many to many realationship --->>
         // Users <=> Articles
