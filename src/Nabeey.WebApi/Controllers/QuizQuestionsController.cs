@@ -18,7 +18,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> PostAsync(QuizQuestionCreationDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.AddAsync(dto)
         });
@@ -27,7 +27,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> UpdateAsync(QuizQuestionUpdateDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.ModifyAsync(dto)
         });
@@ -36,7 +36,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RemoveAsync(id)
         });
@@ -45,7 +45,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RetrieveAsync(id)
         });
@@ -54,7 +54,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> GetAllAsync()
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RetrieveAllAsync()
         });
@@ -63,7 +63,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> GetByQuizAsync(long quizId)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RetrieveByQuiz(quizId)
         });
