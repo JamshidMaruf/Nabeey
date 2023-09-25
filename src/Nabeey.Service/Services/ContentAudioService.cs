@@ -2,6 +2,7 @@
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Service.DTOs.ContentAudio;
@@ -12,18 +13,10 @@ public class ContentAudioService : IContentAudioService
 {
     private readonly IMapper mapper;
     private readonly IRepository<ContentAudio> contentAudioRepository;
-
-    public ContentAudioService(IMapper mapper, IRepository<ContentAudio> contentAudioRepository)
+    public ContentAudioService(IMapper mapper,IRepository<ContentAudio> contentAudioRepository)
     {
         this.mapper = mapper;
         this.contentAudioRepository = contentAudioRepository;
-    }
-
-    public async Task<bool> RemoveAsync(ContentAudio dto)
-    {
-        this.contentAudioRepository.Delete(dto);
-        await this.contentAudioRepository.SaveAsync();
-        return true;
     }
 
     public async Task<ContentAudio> UploadAsync(ContentAudioCreationDto dto)
@@ -50,5 +43,24 @@ public class ContentAudioService : IContentAudioService
         await this.contentAudioRepository.SaveAsync();
 
         return createdContentAudio;
+    }
+
+    public async Task<bool> RemoveAsync(long id)
+    {
+        var exisContentAudio = await this.contentAudioRepository.SelectAsync(expression: cv => cv.Id.Equals(id))
+                            ?? throw new NotFoundException("Not found");
+
+        this.contentAudioRepository.Delete(exisContentAudio);
+        await this.contentAudioRepository.SaveAsync();
+        return true;
+    }
+
+    public async Task<ContentAudioResultDto> RetrieveByIdAsync(long id)
+    {
+        var contentAudio =
+         await this.contentAudioRepository.SelectAsync(expression: cv => cv.Id.Equals(id), includes: new[] { "Content", "Asset" })
+         ?? throw new NotFoundException($"This content audio is not found with ID: {id}");
+
+        return this.mapper.Map<ContentAudioResultDto>(contentAudio);
     }
 }

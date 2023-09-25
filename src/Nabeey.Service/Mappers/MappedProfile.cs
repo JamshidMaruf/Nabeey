@@ -52,7 +52,6 @@ public class MappedProfile : Profile
         // ContentAudio
         CreateMap<ContentAudio, ContentCategoryResultDto>().ReverseMap();
         CreateMap<ContentAudioCreationDto, ContentCategory>().ReverseMap();
-        CreateMap<ContentAudioUpdateDto, ContentCategory>().ReverseMap();
 
         // User
         CreateMap<User, UserResultDto>().ReverseMap();
