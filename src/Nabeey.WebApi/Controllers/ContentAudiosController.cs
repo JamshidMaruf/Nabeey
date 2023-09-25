@@ -17,7 +17,7 @@ namespace Nabeey.WebApi.Controllers
         public async Task<IActionResult> PostAsync(ContentAudioCreationDto dto)
            => Ok(new Response
            {
-               StatusCode = 200,
+               Status = 200,
                Message = "Success",
                Data = await this.contentAudioService.UploadAsync(dto)
            });
@@ -26,7 +26,7 @@ namespace Nabeey.WebApi.Controllers
         public async Task<IActionResult> DeleteAsync(long id)
            => Ok(new Response
            {
-               StatusCode = 200,
+               Status = 200,
                Message = "Success",
                Data = await this.contentAudioService.RemoveAsync(id)
            });
@@ -35,7 +35,7 @@ namespace Nabeey.WebApi.Controllers
         public async Task<IActionResult> GetAsync(long id)
           => Ok(new Response
           {
-              StatusCode = 200,
+              Status = 200,
               Message = "Success",
               Data = await this.contentAudioService.RetrieveByIdAsync(id)
           });

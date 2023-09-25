@@ -1,7 +1,6 @@
 ﻿using Nabeey.Domain.Commons;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Contexts;
-using System.Text.Json.Serialization;
 
 namespace Nabeey.Domain.Entities.Articles;
 

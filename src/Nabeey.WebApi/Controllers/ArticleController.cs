@@ -18,7 +18,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> PostAsync(ArticleCreationDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.AddAsync(dto)
         });
@@ -27,7 +27,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> UpdateAsync(ArticleUpdateDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.ModifyAsync(dto)
         });
@@ -36,7 +36,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.DeleteAsync(id)
         });
@@ -45,7 +45,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RetrieveAsync(id)
         });
@@ -54,7 +54,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> GetAllAsync()
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.service.RetrieveAllAsync()
         });

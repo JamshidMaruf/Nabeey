@@ -20,10 +20,6 @@ public class AnswerService : IAnswerService
 
     public async ValueTask<AnswerResultDto> AddAsync(AnswerCreationDto dto)
     {
-        var answer = await repository.SelectAsync(x => x.AssetId.Equals(dto.AssetId));
-        if (answer is not null)
-            throw new AlreadyExistException("Already exist!");
-
         var mapAnswer = mapper.Map<Answer>(dto);
         await repository.InsertAsync(mapAnswer);
         await repository.SaveAsync();
