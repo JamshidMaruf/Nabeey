@@ -3,7 +3,7 @@ using Nabeey.Domain.Commons;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Configurations;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Nabeey.Service.Extensions;
 
@@ -30,7 +30,7 @@ public static class CollectionExtension
 
         var json = JsonConvert.SerializeObject(metaData);
 
-        if (HttpContextHelper.ResponseHeaders != null)
+        if(HttpContextHelper.ResponseHeaders is not null)
         {
             if (HttpContextHelper.ResponseHeaders.ContainsKey("X-Pagination"))
                 HttpContextHelper.ResponseHeaders.Remove("X-Pagination");
@@ -42,21 +42,28 @@ public static class CollectionExtension
             entities.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize) :
                     throw new CustomException(400, "Please, enter valid numbers");
     }
-        
-    public static IEnumerable<TEntity> OrderBy<TEntity>(this IEnumerable<TEntity> collect, Filter filter)
+
+    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
     {
-        var prop = filter.OrderBy ?? "Id";
+        if (filter.OrderBy is null)
+            return collect;
 
         var property = typeof(TEntity).GetProperties().FirstOrDefault(n
-            => n.Name.Equals(prop, StringComparison.OrdinalIgnoreCase))
-            ?? typeof(TEntity).GetProperty("Id");
+            => n.Name.ToLower().Equals(filter.OrderBy.ToLower())
+            );
 
-        if (property.Name is "Id" && !filter.IsDesc)
+        if (property is null)
             return collect;
 
         if (filter.IsDesc)
-            return collect.OrderByDescending(x => property.GetValue(x));
+            return collect.OrderByDescending(x => property);
 
-        return collect.OrderBy(x => property.GetValue(x));
+        return collect.OrderBy(x => property);
     }
+
+    private static object GetValueFromProperty(object item, string propName)
+         => item.GetType().GetProperties()
+            .FirstOrDefault(property 
+                => property.Name.Contains(propName, StringComparison.OrdinalIgnoreCase))
+            .GetValue(item);
 }
