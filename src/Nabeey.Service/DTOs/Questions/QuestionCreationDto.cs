@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Nabeey.Service.DTOs.Question;
+namespace Nabeey.Service.DTOs.Questions;
 
 public class QuestionCreationDto
 {

@@ -1,6 +1,6 @@
 ﻿using Nabeey.Service.DTOs.Assets;
 
-namespace Nabeey.Service.DTOs.Question;
+namespace Nabeey.Service.DTOs.Questions;
 
 public class QuestionResultDto
 {

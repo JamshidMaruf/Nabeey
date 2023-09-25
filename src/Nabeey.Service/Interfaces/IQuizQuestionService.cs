@@ -9,6 +9,6 @@ public interface IQuizQuestionService
     Task<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto);
     Task<bool> RemoveAsync(long id);
     Task<QuizQuestionResultDto> RetrieveAsync(long id);
-    Task<IEnumerable<Question>> RetrieveByQuiz(long id);
+    Task<IEnumerable<QuestionResultDto>> RetrieveByQuiz(long id);
     Task<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync();
 }
