@@ -1,5 +1,6 @@
 ﻿using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Helpers;
@@ -16,9 +17,9 @@ public class AssetService : IAssetService
         this.repository = repository;
     }
 
-    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto)
+    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto, UploadType type)
     {
-        var webRootPath = Path.Combine(PathHelper.WebRootPath, "Images");
+        var webRootPath = Path.Combine(PathHelper.WebRootPath, type.ToString());
 
         if (!Directory.Exists(webRootPath))
             Directory.CreateDirectory(webRootPath);
