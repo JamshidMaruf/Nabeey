@@ -1,9 +1,8 @@
 ﻿using Nabeey.Domain.Entities.Assets;
 using Nabeey.Service.DTOs.Assets;
-using Nabeey.Service.DTOs.Question;
-using Nabeey.Service.DTOs.QuestionAnswers;
+using Nabeey.Service.DTOs.Questions;
 
-namespace Nabeey.Service.DTOs.Answer;
+namespace Nabeey.Service.DTOs.Answers;
 
 public class AnswerResultDto
 {

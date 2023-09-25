@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Nabeey.Service.DTOs.Answer;
+namespace Nabeey.Service.DTOs.Answers;
 
 public class AnswerUpdateDto
 {

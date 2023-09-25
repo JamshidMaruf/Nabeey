@@ -1,6 +1,6 @@
 ﻿using Nabeey.Service.DTOs.Assets;
 
-namespace Nabeey.Service.DTOs.ContentAudio;
+namespace Nabeey.Service.DTOs.ContentAudios;
 
 public class ContentAudioResultDto
 {
