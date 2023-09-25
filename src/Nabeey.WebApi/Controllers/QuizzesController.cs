@@ -17,7 +17,7 @@ public class QuizzesController : BaseController
     public async Task<IActionResult> PostAsync(QuizCreationDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.quizService.AddAsync(dto)
         });
@@ -26,7 +26,7 @@ public class QuizzesController : BaseController
     public async Task<IActionResult> UpdateAsync(QuizUpdateDto dto)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.quizService.ModifyAsync(dto)
         });
@@ -35,7 +35,7 @@ public class QuizzesController : BaseController
     public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.quizService.DeleteAsync(id)
         });
@@ -44,7 +44,7 @@ public class QuizzesController : BaseController
     public async Task<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.quizService.RetrieveAsync(id)
         });
@@ -53,7 +53,7 @@ public class QuizzesController : BaseController
     public async Task<IActionResult> GetAllAsync()
         => Ok(new Response
         {
-            StatusCode = 200,
+            Status = 200,
             Message = "Success",
             Data = await this.quizService.RetrieveAllAsync()
         });

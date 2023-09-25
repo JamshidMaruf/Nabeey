@@ -3,7 +3,7 @@ using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
 
 namespace Nabeey.Service.Interfaces;
 
-public interface IQuizQuestion
+public interface IQuizQuestionService
 {
     Task<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto);
     Task<QuizQuestionResultDto> ModifyAsync(QuizQuestionUpdateDto dto);

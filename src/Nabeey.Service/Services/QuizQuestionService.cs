@@ -9,7 +9,7 @@ using Nabeey.Service.DTOs.Quizzes.QuizQuestions;
 
 namespace Nabeey.Service.Services;
 
-public class QuizQuestionService : IQuizQuestion
+public class QuizQuestionService : IQuizQuestionService
 {
     private readonly IRepository<QuizQuestion> quizQuestionRepository;
     private readonly IRepository<Question> questionRepository;

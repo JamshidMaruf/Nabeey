@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
-using Nabeey.Domain.Configurations;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Service.DTOs.ContentVideos;
-using Nabeey.Domain.Entities.Contents;
 
 namespace Nabeey.Service.Services;
 

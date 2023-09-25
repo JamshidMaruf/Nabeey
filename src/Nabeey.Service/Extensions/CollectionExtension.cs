@@ -3,7 +3,6 @@ using Nabeey.Domain.Commons;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Exceptions;
 using Nabeey.Domain.Configurations;
-using Microsoft.EntityFrameworkCore;
 
 namespace Nabeey.Service.Extensions;
 
@@ -43,27 +42,21 @@ public static class CollectionExtension
                     throw new CustomException(400, "Please, enter valid numbers");
     }
 
-    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> collect, Filter filter)
+    public static IEnumerable<TEntity> OrderBy<TEntity>(this IEnumerable<TEntity> collect, Filter filter)
     {
-        if (filter.OrderBy is null)
-            return collect;
+        var prop = filter.OrderBy ?? "Id";
 
         var property = typeof(TEntity).GetProperties().FirstOrDefault(n
-            => n.Name.ToLower().Equals(filter.OrderBy.ToLower())
-            );
+            => n.Name.Equals(prop, StringComparison.OrdinalIgnoreCase));
 
-        if (property is null)
+        property ??= typeof(TEntity).GetProperty("Id");
+
+        if (property.Name is "Id" && !filter.IsDesc)
             return collect;
 
         if (filter.IsDesc)
-            return collect.OrderByDescending(x => property);
+            return collect.OrderByDescending(x => property.GetValue(x));
 
-        return collect.OrderBy(x => property);
+        return collect.OrderBy(x => property.GetValue(x));
     }
-
-    private static object GetValueFromProperty(object item, string propName)
-         => item.GetType().GetProperties()
-            .FirstOrDefault(property 
-                => property.Name.Contains(propName, StringComparison.OrdinalIgnoreCase))
-            .GetValue(item);
 }

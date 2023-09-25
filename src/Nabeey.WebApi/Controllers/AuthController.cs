@@ -15,7 +15,7 @@ namespace Nabeey.WebApi.Controllers
         public async Task<IActionResult> GenerateTokenAsync(string phone, string password)
     => Ok(new Response
     {
-        StatusCode = 200,
+        Status = 200,
         Message = "Success",
         Data = await this.authService.GenerateTokenAsync(phone, password)
     });
