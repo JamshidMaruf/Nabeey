@@ -42,6 +42,10 @@ https://github.com/jakhangir-esanov/Nabeey
 
 We invite contributions from the GitHub community to help us enhance Nabeey further. Whether you are a developer, content creator, or designer, your skills and ideas can contribute to the growth and improvement of this educational platform. Check out our [Contribution Guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) to get started.
 
+## License:
+
+This project is released under the Apache - 2.0 License. See the [LICENSE](https://github.com/wonderboy1w3/Nabeey/blob/devs/LICENSE) file for details.
+
 ## Contact
 
 For any questions or feedback, please reach out to alibaba.esanov@gmail.com.
