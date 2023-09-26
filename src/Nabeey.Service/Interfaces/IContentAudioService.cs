@@ -1,11 +1,12 @@
-﻿using Nabeey.Domain.Entities.Contexts;
+﻿using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.Service.Interfaces;
 
 public interface IContentAudioService
 {
-    Task<ContentAudio> UploadAsync(ContentAudioCreationDto dto);
-    Task<bool> RemoveAsync(long id);
-    Task<ContentAudioResultDto> RetrieveByIdAsync(long id);
+    ValueTask<ContentAudioResultDto> AddAsync(ContentAudioCreationDto dto);
+    ValueTask<bool> RemoveAsync(long id);
+    ValueTask<ContentAudioResultDto> RetrieveByIdAsync(long id);
+    ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search);
 }

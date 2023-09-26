@@ -8,4 +8,6 @@ public class ContentVideoCreationDto
 	public string Discription { get; set; }
 	public IFormFile Video { get; set; }
 	public long ContentId { get; set; }
+
+    public string VideoPath { get; set; }
 }

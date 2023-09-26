@@ -10,4 +10,6 @@ public class ContentVideoResultDto
 	public string Discription { get; set; }
 	public ContentResultDto Content { get; set; }
 	public AssetResultDto Video { get; set; }
+
+    public string VideoPath { get; set; }
 }

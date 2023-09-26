@@ -10,4 +10,6 @@ public class ContentVideo : Auditable
 
     public long? AssetId { get; set; }
     public Asset Asset { get; set; }
+
+    public string VideoPath { get; set; }
 }

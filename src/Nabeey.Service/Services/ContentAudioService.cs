@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
-using Nabeey.Service.Helpers;
+using Nabeey.Domain.Enums;
+using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
-using Nabeey.Service.Exceptions;
-using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Service.DTOs.Assets;
+using Nabeey.Domain.Configurations;
+using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Service.DTOs.ContentAudios;
 
 namespace Nabeey.Service.Services;
@@ -12,54 +15,70 @@ namespace Nabeey.Service.Services;
 public class ContentAudioService : IContentAudioService
 {
     private readonly IMapper mapper;
+    private readonly IRepository<Content> contentRepository;
     private readonly IRepository<ContentAudio> contentAudioRepository;
-    public ContentAudioService(IMapper mapper,IRepository<ContentAudio> contentAudioRepository)
+    private readonly IAssetService assetService;
+    public ContentAudioService(
+        IMapper mapper,
+        IAssetService assetService,
+        IRepository<Content> contentRepository,
+        IRepository<ContentAudio> contentAudioRepository)
     {
         this.mapper = mapper;
+        this.assetService = assetService;
+        this.contentRepository = contentRepository;
         this.contentAudioRepository = contentAudioRepository;
     }
 
-    public async Task<ContentAudio> UploadAsync(ContentAudioCreationDto dto)
+    public async ValueTask<ContentAudioResultDto> AddAsync(ContentAudioCreationDto dto)
     {
-        var webrootPath = Path.Combine(PathHelper.WebRootPath, "Audios");
+        var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(dto.ContentId))
+                      ?? throw new NotFoundException("This content is not found");
 
-        if (!Directory.Exists(webrootPath))
-            Directory.CreateDirectory(webrootPath);
+        if (dto.Audio is null)
+            throw new NotFoundException("This audio is not found");
 
-        var fileExtension = Path.GetExtension(dto.Audio.FileName);
-        var fileName = $"{Guid.NewGuid().ToString("N")}{fileExtension}";
-        var fullPath = Path.Combine(webrootPath, fileName);  
+        AssetCreationDto asset = new AssetCreationDto { FormFile = dto.Audio };
 
-        var fileStream = new FileStream(fullPath, FileMode.OpenOrCreate);
-        await fileStream.WriteAsync(dto.Audio.ToByte());
+        var audio = await this.assetService.UploadAsync(asset, UploadType.Audios);
+        var mappedAudio = this.mapper.Map<ContentAudio>(dto);
 
-        var createdContentAudio = new ContentAudio
-        {
-            ContentId = dto.ContentId,
-        };
+        mappedAudio.Audio = audio;
+        mappedAudio.Content = content;
 
-        await this.contentAudioRepository.InsertAsync(createdContentAudio);
+        await this.contentAudioRepository.InsertAsync(mappedAudio);
         await this.contentAudioRepository.SaveAsync();
 
-        return createdContentAudio;
+        return this.mapper.Map<ContentAudioResultDto>(mappedAudio);
     }
 
-    public async Task<bool> RemoveAsync(long id)
+    public async ValueTask<bool> RemoveAsync(long id)
     {
-        var exisContentAudio = await this.contentAudioRepository.SelectAsync(expression: cv => cv.Id.Equals(id))
-                            ?? throw new NotFoundException("Not found");
+        var existAudio = await this.contentAudioRepository.SelectAsync(a => a.Id.Equals(id))
+                        ?? throw new NotFoundException("This content audio is not found");
 
-        this.contentAudioRepository.Delete(exisContentAudio);
+        var isChecked = await this.assetService.RemoveAsync(existAudio.Audio);
+        this.contentAudioRepository.Delete(existAudio);
         await this.contentAudioRepository.SaveAsync();
         return true;
     }
 
-    public async Task<ContentAudioResultDto> RetrieveByIdAsync(long id)
+    public async ValueTask<ContentAudioResultDto> RetrieveByIdAsync(long id)
     {
-        var contentAudio =
-         await this.contentAudioRepository.SelectAsync(expression: cv => cv.Id.Equals(id), includes: new[] { "Content", "Asset" })
-         ?? throw new NotFoundException($"This content audio is not found with ID: {id}");
+        var existAudio =
+            await this.contentAudioRepository.SelectAsync(a => a.Id.Equals(id), includes: new[] { "Content", "Audio" })
+            ?? throw new NotFoundException("This content audio is not found");
 
-        return this.mapper.Map<ContentAudioResultDto>(contentAudio);
+        return this.mapper.Map<ContentAudioResultDto>(existAudio);
+    }
+
+    public async ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search)
+    {
+        var existAudios = (await this.contentAudioRepository.SelectAll(includes: new[] { "Content", "Audio" })
+                                                            .ToListAsync())
+                                                            .OrderBy(filter)
+                                                            .ToPaginate(@params);
+
+        return this.mapper.Map<IEnumerable<ContentAudioResultDto>>(existAudios);
     }
 }
