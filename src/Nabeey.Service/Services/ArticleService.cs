@@ -44,7 +44,7 @@ public class ArticleService : IArticleService
         var user = await this.userRepository.SelectAsync(u => u.Id.Equals(HttpContextHelper.GetUserId))
             ?? throw new NotFoundException("This user is not Found");
 
-        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image });
+        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
 
         var existContent = await this.contentRepository.SelectAsync(a => a.Id.Equals(dto.ContentId))
             ?? throw new NotFoundException($"This content is not found with id : {dto.ContentId}");

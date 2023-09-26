@@ -19,12 +19,14 @@ public static class ServicesCollection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuizService, QuizService>();
-        services.AddScoped<IQuizQuestionService, QuizQuestionService>();
-        services.AddScoped<IQuestionService, QuestionService>();
-        services.AddScoped<IAnswerService, AnswerService>();
-        services.AddScoped<IAssetService, AssetService>();
         services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IAssetService, AssetService>();
+        services.AddScoped<IAnswerService, AnswerService>();
+        services.AddScoped<IArticleService, ArticleService>();
+        services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IContentVideoService, ContentVideoService>();
+        services.AddScoped<IQuizQuestionService, QuizQuestionService>();
+        services.AddScoped<IQuestionAnswerService, QuestionAnswerService>();
         services.AddScoped<IContentCategoryService, ContentCategoryService>();
 
     }

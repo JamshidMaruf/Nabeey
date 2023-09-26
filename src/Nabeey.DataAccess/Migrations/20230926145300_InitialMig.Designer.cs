@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230926174921_First")]
-    partial class First
+    [Migration("20230926145300_InitialMig")]
+    partial class InitialMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,45 +88,18 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContentId");
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ArticleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserArticles");
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Assets.Asset", b =>
@@ -404,11 +377,11 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AssetId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("ImageId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -421,7 +394,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Questions");
                 });
@@ -540,7 +513,8 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId");
+                    b.HasIndex("AssetId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -567,33 +541,22 @@ namespace Nabeey.DataAccess.Migrations
                     b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
                         .WithMany("Articles")
                         .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
 
-                    b.Navigation("Content");
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Articles.UserArticle", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Articles.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
-                        .WithMany("UserArticles")
+                        .WithMany("Articles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Article");
+                    b.Navigation("Content");
+
+                    b.Navigation("Image");
 
                     b.Navigation("User");
                 });
@@ -712,11 +675,11 @@ namespace Nabeey.DataAccess.Migrations
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Questions.Question", b =>
                 {
-                    b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
+                    b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Image")
                         .WithMany()
-                        .HasForeignKey("AssetId");
+                        .HasForeignKey("ImageId");
 
-                    b.Navigation("Asset");
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
@@ -760,8 +723,9 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId");
+                        .WithOne()
+                        .HasForeignKey("Nabeey.Domain.Entities.Users.User", "AssetId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Asset");
                 });
@@ -789,9 +753,9 @@ namespace Nabeey.DataAccess.Migrations
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
                 {
-                    b.Navigation("Quizzes");
+                    b.Navigation("Articles");
 
-                    b.Navigation("UserArticles");
+                    b.Navigation("Quizzes");
                 });
 #pragma warning restore 612, 618
         }

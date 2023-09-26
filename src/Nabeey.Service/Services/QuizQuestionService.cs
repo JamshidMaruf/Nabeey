@@ -102,12 +102,18 @@ public class QuizQuestionService : IQuizQuestionService
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(quizId))
             ?? throw new NotFoundException("This quiz is not found");
 
-        IEnumerable<Question> questions = new List<Question>();
+        List<Question> questions = new List<Question>();
         var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
 
         foreach (var item in quizQuestions)
             if (item.QuizId == existQuiz.Id)
-                questions = questions.Append(item.Question);
+            {
+                questions.Add(item.Question);
+                if (questions.Count == existQuiz.QuestionCount)
+                {
+                    break;
+                }
+            }
 
         ShuffleQuestions(questions);
 
