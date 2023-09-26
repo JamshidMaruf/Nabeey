@@ -8,6 +8,6 @@ public interface IContentVideoService
     ValueTask<ContentVideoResultDto> AddAsync(ContentVideoCreationDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<ContentVideoResultDto> RetrieveByIdAsync(long id);
-    IEnumerable<ContentVideoResultDto> RetrieveAsync(PaginationParams @params, Filter filter, string search = null);
+    ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null);
     ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAllByContentIdAsync(long contentId);
 }
