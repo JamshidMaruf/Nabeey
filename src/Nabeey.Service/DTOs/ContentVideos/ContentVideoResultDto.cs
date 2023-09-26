@@ -11,5 +11,5 @@ public class ContentVideoResultDto
 	public ContentResultDto Content { get; set; }
 	public AssetResultDto Video { get; set; }
 
-    public string VideoPath { get; set; }
+  public string VideoPath { get; set; }
 }

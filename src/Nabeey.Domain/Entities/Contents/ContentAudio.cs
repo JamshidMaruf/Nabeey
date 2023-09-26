@@ -11,6 +11,6 @@ public class ContentAudio : Auditable
 	public long ContentId { get; set; }
     public Content Content { get; set; }
 
-    public long? AudioId { get; set; }
+    public long AudioId { get; set; }
     public Asset Audio { get; set; }
 }

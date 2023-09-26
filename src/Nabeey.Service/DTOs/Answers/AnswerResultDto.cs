@@ -9,4 +9,5 @@ public class AnswerResultDto
 	public string Text { get; set; }
 	public AssetResultDto Asset { get; set; }
 	public QuestionResultDto Question { get; set; }
+    public bool IsTrue { get; set; }
 }

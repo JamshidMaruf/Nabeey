@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using Nabeey.Service.Exceptions;
-using Nabeey.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
-using Nabeey.Service.DTOs.Questions;
-using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Service.DTOs.QuizQuestions;
+using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Service.Exceptions;
+using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
 
@@ -86,13 +85,13 @@ public class QuizQuestionService : IQuizQuestionService
             ?? throw new NotFoundException("This quiz is not found");
 
         IEnumerable<Question> questions = new List<Question>();
-        var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz","Question"}).ToListAsync();
+        var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
 
         foreach (var item in quizQuestions)
         {
             if (item.QuizId == existQuiz.Id)
             {
-               questions = questions.Append(item.Question);
+                questions = questions.Append(item.Question);
             }
         }
 

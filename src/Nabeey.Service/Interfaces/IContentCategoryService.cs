@@ -10,5 +10,5 @@ public interface IContentCategoryService
 	ValueTask<ContentCategoryResultDto> ModifyAsync(ContentCategoryUpdateDto dto);
 	ValueTask<bool> RemoveAsync(long id);
 	ValueTask<ContentCategoryResultDto> RetrieveByIdAsync(long id);
-	ValueTask<IEnumerable<ContentResultDto>> RetrieveAllAsnyc(PaginationParams @params, Filter filter, string search = null);
+	ValueTask<IEnumerable<ContentResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

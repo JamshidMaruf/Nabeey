@@ -1,15 +1,16 @@
 ﻿using Nabeey.Domain.Commons;
 using Nabeey.Domain.Entities.Assets;
+using System.Security.Cryptography;
 
 namespace Nabeey.Domain.Entities.Contexts;
 
 public class ContentVideo : Auditable
 {
+    public string Title { get; set; }
+    public string Description { get; set; }
+
     public long ContentId { get; set; }
     public Content Content { get; set; }
-
-    public long? AssetId { get; set; }
-    public Asset Asset { get; set; }
 
     public string VideoPath { get; set; }
 }
