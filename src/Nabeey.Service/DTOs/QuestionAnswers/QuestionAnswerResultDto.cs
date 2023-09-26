@@ -1,5 +1,7 @@
 ﻿using Nabeey.Service.DTOs.Answer;
+using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.DTOs.Question;
+using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
 

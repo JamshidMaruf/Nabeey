@@ -5,7 +5,8 @@ namespace Nabeey.Service.Interfaces;
 
 public interface IContentAudioService
 {
-    Task<ContentAudio> UploadAsync(ContentAudioCreationDto dto);
-    Task<bool> RemoveAsync(long id);
-    Task<ContentAudioResultDto> RetrieveByIdAsync(long id);
+    ValueTask<ContentAudio> UploadAsync(ContentAudioCreationDto dto);
+    ValueTask<bool> RemoveAsync(long id);
+    ValueTask<ContentAudioResultDto> RetrieveByIdAsync(long id);
+    ValueTask<ContentAudioResultDto> RetrieveByContentIdAsync(long contentId);
 }

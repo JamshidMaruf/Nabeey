@@ -2,5 +2,5 @@
 
 public interface IAuthService
 {
-    Task<string> GenerateTokenAsync(string phone, string originalPassword);
+    ValueTask<string> GenerateTokenAsync(string phone, string originalPassword);
 }

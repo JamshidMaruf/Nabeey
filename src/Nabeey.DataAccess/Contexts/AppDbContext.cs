@@ -71,32 +71,30 @@ public class AppDbContext : DbContext
         //userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
 
         // Quizzes <=> Questions
-        // Quiz jadvali uchun Fluent API konfiguratsiyasi
         modelBuilder.Entity<Quiz>()
-            .HasOne(q => q.User) // User bilan bog'lash
-            .WithMany(u => u.Quizzes) // Bir nechta quizzes bo'lishi mumkin
-            .HasForeignKey(q => q.UserId) // Fkni o'rnating
-            .OnDelete(DeleteBehavior.Restrict); // O'chirishni cheklang
+            .HasOne(q => q.User)
+            .WithMany(u => u.Quizzes)
+            .HasForeignKey(q => q.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Quiz>()
-            .HasOne(q => q.ContentCategory) // ContentCategory bilan bog'lash
-            .WithMany(cc => cc.Quizzes) // Bir nechta quizzes bo'lishi mumkin
-            .HasForeignKey(q => q.ContentCategoryId) // Fkni o'rnating
-            .OnDelete(DeleteBehavior.Restrict); // O'chirishni cheklang
-
-        // QuizQuestion jadvali uchun Fluent API konfiguratsiyasi
-        modelBuilder.Entity<QuizQuestion>()
-            .HasKey(qq => new { qq.QuizId, qq.QuestionId }); // Primariy kalit
+            .HasOne(q => q.ContentCategory)
+            .WithMany()
+            .HasForeignKey(q => q.ContentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<QuizQuestion>()
-            .HasOne(qq => qq.Quiz) // Quiz bilan bog'lash
-            .WithMany(q => q.QuizQuestions) // Bir nechta quiz questions bo'lishi mumkin
-            .HasForeignKey(qq => qq.QuizId); // Fkni o'rnating
+            .HasKey(qq => new { qq.QuizId, qq.QuestionId });
 
         modelBuilder.Entity<QuizQuestion>()
-            .HasOne(qq => qq.Question) // Question bilan bog'lash
-            .WithMany() // Question bilan bog'lash uchun nechta quiz questionlari kerak emas
-            .HasForeignKey(qq => qq.QuestionId); // Fkni o'rnating
+            .HasOne(qq => qq.Quiz)
+            .WithMany()
+            .HasForeignKey(qq => qq.QuizId);
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasOne(qq => qq.Question)
+            .WithMany()
+            .HasForeignKey(qq => qq.QuestionId);
 
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
