@@ -59,11 +59,11 @@ public class UserController : BaseController
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await this.userService.RetrieveAllAsync(@params,filter,search)
+            Data = await this.userService.RetrieveAllAsync(@params,search)
         });
 
     [HttpPatch("upgrade-role")]
-    public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
+    public async ValueTask<IActionResult> UpgradeRolAsync(long id, Role role)
         => Ok(new Response
         {
             StatusCode = 200,

@@ -5,9 +5,9 @@ using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Books;
-using Nabeey.DataAccess.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities.Contents;
+using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Contexts;
 
 namespace Nabeey.Service.Services;
@@ -45,28 +45,53 @@ public class BookService : IBookService
         return this.mapper.Map<BookResultDto>(mappedBook);
     }
 
-    public ValueTask<bool> DeleteAsync(long id)
+    public async ValueTask<BookResultDto> RetrieveByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var book = await this.bookRepository.SelectAsync(b => b.Id.Equals(id))
+            ?? throw new NotFoundException("This book is not found");
+        
+        return this.mapper.Map<BookResultDto>(book);   
     }
 
-    public ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto)
+    public async ValueTask<bool> DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var book = await this.bookRepository.SelectAsync(b => b.Id.Equals(id))
+            ?? throw new NotFoundException("This book is not found");
+
+        this.bookRepository.Delete(book);
+        await this.contentBookRepository.SaveAsync();
+        return true;
     }
 
-    public ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto)
     {
-        throw new NotImplementedException();
+        var book =await this.bookRepository.SelectAsync(b => b.Id.Equals(dto.Id))
+            ?? throw new NotFoundException("This book is not found");
+
+        var mapBook = this.mapper.Map(dto, book);
+        this.bookRepository.Update(mapBook);
+        await this.bookRepository.SaveAsync();
+
+        return this.mapper.Map<BookResultDto>(mapBook);
     }
 
-    public ValueTask<IEnumerable<BookResultDto>> RetrieveAllByContentIdAsync(long contentId)
+    public async ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null)
     {
-        throw new NotImplementedException();
+        var books = await this.bookRepository.SelectAll()
+            .ToPaginate(@params)
+            .ToListAsync();
+
+        if(search is not null)
+            books = books.Where(user => user.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+       
+        return this.mapper.Map<IEnumerable<BookResultDto>>(books);
     }
 
-    public ValueTask<BookResultDto> RetrieveByIdAsync(long id)
+    public async ValueTask<IEnumerable<BookResultDto>> RetrieveAllByContentIdAsync(long contentId)
     {
-        throw new NotImplementedException();
+        var contents = await this.contentRepository.SelectAll().Where(q => q.ContentCategory.Id == contentId).ToListAsync()
+            ?? throw new NotFoundException($"This quetionId:{contentId} is not found ");
+
+        return this.mapper.Map<IEnumerable<BookResultDto>>(contents);
     }
 }

@@ -9,6 +9,6 @@ public interface IBookService
     ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto);
     ValueTask<bool> DeleteAsync(long id);
     ValueTask<BookResultDto> RetrieveByIdAsync(long id);
-    ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params,Filter filter, string search = null);
+    ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null);
     ValueTask<IEnumerable<BookResultDto>> RetrieveAllByContentIdAsync(long contentId);
 }

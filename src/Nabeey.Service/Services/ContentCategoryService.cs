@@ -82,6 +82,8 @@ public class ContentCategoryService : IContentCategoryService
         var categories = await this.repository.SelectAll()
                                               .ToPaginate(@params)
                                               .ToListAsync();
+        if (search is not null)
+            categories = categories.Where(category => category.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
 
         return this.mapper.Map<IEnumerable<ContentCategoryResultDto>>(categories);
     }
