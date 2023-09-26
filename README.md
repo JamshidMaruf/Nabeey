@@ -24,6 +24,29 @@ With its diverse range of multimedia content, Nabeey aims to make learning about
 
 - **Education and Empowerment:** Nabeey isn't just a platform for passive learning; it's a tool for empowerment. By understanding the life and teachings of Prophet Muhammad (peace be upon him), users can gain valuable insights into history, ethics, and principles that can positively impact their lives.
 
+## How to use
+
+1. **Clone the repository:**
+```
+https://github.com/jakhangir-esanov/Nabeey
+```
+2. **Configure Database:**
+- Update the database connection details in the appsetting.json.
+- Execute database migrations to create the necessary tables.
+
+3. **Build and Launch:**
+- Build the application using Visual Studio or the .NET CLI.
+- Start the application.
+
 ## Contributions Welcome:
 
 We invite contributions from the GitHub community to help us enhance Nabeey further. Whether you are a developer, content creator, or designer, your skills and ideas can contribute to the growth and improvement of this educational platform. Check out our [Contribution Guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) to get started.
+
+## Contact
+
+For any questions or feedback, please reach out to alibaba.esanov@gmail.com.
+
+## Acknowledgments
+
+We extend our heartfelt gratitude to our dedicated contributors whose unwavering support and expertise have played a pivotal role in elevating Nabeey into an indispensable application, delivering outstanding products to our cherished users. Your exceptional contributions have been instrumental in our journey towards excellence.
+
