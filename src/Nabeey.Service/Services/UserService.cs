@@ -23,7 +23,7 @@ public class UserService : IUserService
         this.userRepository = repository;
     }
 
-    public async Task<UserResultDto> AddAsync(UserCreationDto dto)
+    public async ValueTask<UserResultDto> AddAsync(UserCreationDto dto)
     {
         User user = await userRepository.SelectAsync(x => x.Phone.Equals(dto.Phone));
         if (user is not null)
@@ -39,7 +39,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<UserResultDto> ModifyAsync(UserUpdateDto dto)
+    public async ValueTask<UserResultDto> ModifyAsync(UserUpdateDto dto)
     {
         User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(dto.Id))
             ?? throw new NotFoundException($"This user is not found with ID = {dto.Id}");
@@ -53,7 +53,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<bool> RemoveAsync(long id)
+    public async ValueTask<bool> RemoveAsync(long id)
     {
         User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(id))
     ?? throw new NotFoundException($"This user is not found with ID = {id}");
@@ -75,7 +75,7 @@ public class UserService : IUserService
         return this.mapper.Map<IEnumerable<UserResultDto>>(users);
     }
 
-    public async Task<IEnumerable<UserResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<UserResultDto>> RetrieveAllAsync()
     {
         var users = await this.userRepository.SelectAll()
             .ToListAsync();
@@ -83,7 +83,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<UserResultDto> RetrieveByIdAsync(long id)
+    public async ValueTask<UserResultDto> RetrieveByIdAsync(long id)
     {
         User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(id))
     ?? throw new NotFoundException($"This user is not found with ID = {id}");
@@ -92,7 +92,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<UserResultDto> UpgradeRoleAsync(long id, Role role)
+    public async ValueTask<UserResultDto> UpgradeRoleAsync(long id, Role role)
     {
         User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(id))
             ?? throw new NotFoundException($"This user is not found with ID = {id}");

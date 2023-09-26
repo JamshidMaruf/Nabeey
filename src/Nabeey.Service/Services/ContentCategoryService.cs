@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Service.DTOs.ContentCategories;
+using Nabeey.Service.DTOs.Contents;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
 
@@ -68,9 +70,14 @@ public class ContentCategoryService : IContentCategoryService
         return this.mapper.Map<ContentCategoryResultDto>(category);
     }
 
-    public async ValueTask<IEnumerable<ContentCategoryResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<ContentCategoryResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var categories = await this.repository.SelectAll().ToListAsync();
         return this.mapper.Map<IEnumerable<ContentCategoryResultDto>>(categories);
+    }
+
+    ValueTask<IEnumerable<ContentResultDto>> IContentCategoryService.RetrieveAllAsync(PaginationParams @params, Filter filter, string search)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Answers;
 using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.Exceptions;
@@ -61,10 +62,15 @@ public class AnswerService : IAnswerService
         return res;
     }
 
-    public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
         var answer = await repository.SelectAll().ToListAsync();
         var res = mapper.Map<IEnumerable<AnswerResultDto>>(answer);
         return res;
+    }
+
+    public ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllByQuestionIdAsync(long questionId)
+    {
+        throw new NotImplementedException();
     }
 }
