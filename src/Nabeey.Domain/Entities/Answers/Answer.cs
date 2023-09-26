@@ -15,6 +15,4 @@ public class Answer : Auditable
     public long QuestionId { get; set; }
     public Question Question { get; set; }
     public bool IsTrue { get; set; }
-
-    public ICollection<QuestionAnswer> QuestionAnswers { get; set; }
 }
