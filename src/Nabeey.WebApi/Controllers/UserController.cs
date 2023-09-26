@@ -14,57 +14,60 @@ public class UserController : BaseController
     {
         this.userService = userService;
     }
+
     [HttpPost("create")]
     public async ValueTask<IActionResult> PostAsync(UserCreationDto dto)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.AddAsync(dto)
-    });
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.AddAsync(dto)
+        });
 
     [HttpPut("update")]
     public async ValueTask<IActionResult> PutAsync(UserUpdateDto dto)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.ModifyAsync(dto)
-    });
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.ModifyAsync(dto)
+        });
 
     [HttpDelete("delete/{id:long}")]
     public async ValueTask<IActionResult> DeleteAsync(long id)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.RemoveAsync(id)
-    });
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.RemoveAsync(id)
+        });
 
     [HttpGet("get/{id:long}")]
     public async ValueTask<IActionResult> GetByIdAsync(long id)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.RetrieveByIdAsync(id)
-    });
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.RetrieveByIdAsync(id)
+        });
 
     [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.RetrieveAllAsync(@params,filter,search)
-    });
+    public async ValueTask<IActionResult> GetAllAsync(
+		[FromQuery] PaginationParams @params,
+		[FromQuery] Filter filter, string search)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.RetrieveAllAsync(@params,filter,search)
+        });
 
     [HttpPatch("upgrade-role")]
     public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
-    => Ok(new Response
-    {
-        Status = 200,
-        Message = "Success",
-        Data = await this.userService.UpgradeRoleAsync(id, role)
-    });
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.userService.UpgradeRoleAsync(id, role)
+        });
 }

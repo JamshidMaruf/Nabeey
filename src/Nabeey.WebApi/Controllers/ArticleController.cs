@@ -51,7 +51,9 @@ public class ArticleController : BaseController
         });
 
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAsync(PaginationParams @params, Filter filter, string search)
+    public async Task<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter, string search)
         => Ok(new Response
         {
             StatusCode = 200,

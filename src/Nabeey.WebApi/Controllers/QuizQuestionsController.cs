@@ -52,7 +52,9 @@ public class QuizQuestionsController : BaseController
         });
 
     [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync(PaginationParams @params, Filter filter, string search)
+    public async ValueTask<IActionResult> GetAllAsync(
+		[FromQuery] PaginationParams @params,
+		[FromQuery] Filter filter, string search)
         => Ok(new Response
         {
             StatusCode = 200,

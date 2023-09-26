@@ -24,7 +24,7 @@ public class ExceptionHandlerMiddleware
             context.Response.StatusCode = ex.StatusCode;
             await context.Response.WriteAsJsonAsync(new Response
             {
-                Status = context.Response.StatusCode,
+                StatusCode = context.Response.StatusCode,
                 Message = ex.Message,
             });
         }
@@ -33,7 +33,7 @@ public class ExceptionHandlerMiddleware
             context.Response.StatusCode = ex.StatusCode;
             await context.Response.WriteAsJsonAsync(new Response
             {
-                Status = context.Response.StatusCode,
+                StatusCode = context.Response.StatusCode,
                 Message = ex.Message,
             });
         }
@@ -42,7 +42,7 @@ public class ExceptionHandlerMiddleware
             context.Response.StatusCode = ex.StatusCode;
             await context.Response.WriteAsJsonAsync(new Response
             {
-                Status = context.Response.StatusCode,
+                StatusCode = context.Response.StatusCode,
                 Message = ex.Message,
             });
         }
@@ -52,7 +52,7 @@ public class ExceptionHandlerMiddleware
             this.logger.LogError(ex.ToString());
             await context.Response.WriteAsJsonAsync(new Response
             {
-                Status = context.Response.StatusCode,
+                StatusCode = context.Response.StatusCode,
                 Message = ex.Message,
             });
         }

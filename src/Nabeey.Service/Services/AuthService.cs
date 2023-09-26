@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         this.userRepository = repository;
     }
 
-    public async Task<string> GenerateTokenAsync(string phone, string originalPassword)
+    public async ValueTask<string> GenerateTokenAsync(string phone, string originalPassword)
     {
         var user = await this.userRepository.SelectAsync(u => u.Phone.Equals(phone))
             ?? throw new NotFoundException("This user is not found");
