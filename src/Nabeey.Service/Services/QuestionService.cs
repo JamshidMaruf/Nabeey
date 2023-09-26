@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
+using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
@@ -11,15 +12,22 @@ namespace Nabeey.Service.Services;
 public class QuestionService : IQuestionService
 {
     private readonly IRepository<Question> repository;
+    private readonly IAssetService assetService;
     private readonly IMapper mapper;
-    public QuestionService(IRepository<Question> repository, IMapper mapper)
+    public QuestionService(IRepository<Question> repository, IMapper mapper, IAssetService assetService)
     {
-        this.repository = repository;
         this.mapper = mapper;
+        this.repository = repository;
+        this.assetService = assetService;
     }
     public async ValueTask<QuestionResultDto> AddAsync(QuestionCreationDto dto)
     {
+        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File });
+
         var mapQuestion = mapper.Map<Question>(dto);
+        mapQuestion.Asset = imageAsset;
+        mapQuestion.AssetId = imageAsset.Id;
+
         await repository.InsertAsync(mapQuestion);
         await repository.SaveAsync();
 
@@ -45,8 +53,9 @@ public class QuestionService : IQuestionService
         var question = await repository.SelectAsync(x => x.Id.Equals(id))
             ?? throw new NotFoundException("Not found!");
 
-        repository.Delete(question);
-        await repository.SaveAsync();   
+        this.repository.Delete(question);
+        await this.assetService.RemoveAsync(question.Asset);
+        await this.repository.SaveAsync();   
 
         return true;
     }
@@ -56,14 +65,14 @@ public class QuestionService : IQuestionService
         var question = await repository.SelectAsync(x => x.Id.Equals(id))
             ?? throw new NotFoundException($"Could not find {id}");
 
-        var res = mapper.Map<QuestionResultDto>(question);
+        var res = this.mapper.Map<QuestionResultDto>(question);
         return res;
     }
 
     public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync()
     {
         var question = await repository.SelectAll().ToListAsync();
-        var res = mapper.Map<IEnumerable<QuestionResultDto>>(question);
+        var res = this.mapper.Map<IEnumerable<QuestionResultDto>>(question);
         return res;
     }
 }
