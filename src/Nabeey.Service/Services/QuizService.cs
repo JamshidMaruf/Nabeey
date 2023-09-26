@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Exceptions;
+using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
@@ -96,7 +98,7 @@ public class QuizService : IQuizService
         return true;
     }
 
-    public async ValueTask<QuizResultDto> RetrieveAsync(long id)
+    public async ValueTask<QuizResultDto> RetrieveByIdAsync(long id)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id),
             includes: new[] { "ContentCategory", "User" })
@@ -104,10 +106,24 @@ public class QuizService : IQuizService
 
         return this.mapper.Map<QuizResultDto>(existQuiz);
     }
-    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync()
+
+    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveByContentCategoryIdAsync(long contentId)
+    {
+        var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(contentId))
+            ?? throw new NotFoundException("This ContentCategory is not found");
+
+        var quizzes = await this.quizRepository.SelectAll()
+            .Where(c => c.ContentCategoryId == contentId).ToListAsync();
+
+        return this.mapper.Map<IEnumerable<QuizResultDto>>(quizzes);
+    }
+
+    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var allQuizzes = await this.quizRepository.SelectAll(
-            includes: new[] { "ContentCategory", "User" }).ToListAsync();
+            includes: new[] { "ContentCategory", "User" })
+            .ToPaginate(@params)
+            .ToListAsync();
 
         return this.mapper.Map<IEnumerable<QuizResultDto>>(allQuizzes);
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Interfaces;
@@ -18,7 +19,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> PostAsync(QuizQuestionCreationDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.AddAsync(dto)
         });
@@ -27,7 +28,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> UpdateAsync(QuizQuestionUpdateDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.ModifyAsync(dto)
         });
@@ -36,7 +37,7 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.RemoveAsync(id)
         });
@@ -45,26 +46,26 @@ public class QuizQuestionsController : BaseController
     public async ValueTask<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.RetrieveAsync(id)
         });
 
     [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync()
+    public async ValueTask<IActionResult> GetAllAsync(PaginationParams @params, Filter filter, string search)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.service.RetrieveAllAsync()
+            Data = await this.service.RetrieveAllAsync(@params, filter, search)
         });
 
     [HttpGet("get-byQuiz")]
     public async ValueTask<IActionResult> GetByQuizAsync(long quizId)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.service.RetrieveByQuiz(quizId)
+            Data = await this.service.RetrieveAllByQuizIdAsync(quizId)
         });
 }
