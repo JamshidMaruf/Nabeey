@@ -33,7 +33,7 @@ public class BooksController : BaseController
         });
 
     [HttpDelete("delete/{id:long}")]
-    public async Task<IActionResult> DeleAsync(long id)
+    public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
             StatusCode = 200,
@@ -53,7 +53,7 @@ public class BooksController : BaseController
     [HttpGet("get-all")]
     public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
-		[FromQuery] Filter filter, string search)
+		string search)
         => Ok(new Response
         {
             StatusCode = 200,
@@ -61,4 +61,12 @@ public class BooksController : BaseController
             Data = await this.bookService.RetrieveAllAsync(@params,search)
         });
 
+    [HttpGet("get-all-by-contentId")]
+    public async ValueTask<IActionResult> GetAllByContentIdAsync(long contentId)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.bookService.RetrieveAllByContentIdAsync(contentId)
+        });
 }

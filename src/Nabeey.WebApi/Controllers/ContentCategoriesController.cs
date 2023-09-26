@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -51,4 +52,15 @@ public class ContentCategoriesController : BaseController
            Message = "Success",
            Data = await this.contentCategoryService.RetrieveByIdAsync(id)
        });
+
+    [HttpGet("get-all")]
+    public async ValueTask<IActionResult> GetAllAsync(
+    [FromQuery] PaginationParams @params,Filter filter,
+    [FromQuery]  string search)
+    => Ok(new Response
+    {
+        StatusCode = 200,
+        Message = "Success",
+        Data = await this.contentCategoryService.RetrieveAllAsync(@params,filter, search)
+    });
 }
