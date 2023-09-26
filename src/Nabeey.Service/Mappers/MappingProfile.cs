@@ -21,8 +21,9 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // ContentCategory
-        CreateMap<ContentCategory, ContentCategoryResultDto>();
-        CreateMap<ContentCategoryCreationDto, ContentCategory>();
+        CreateMap<ContentCategory, ContentCategoryResultDto>().ReverseMap();
+        CreateMap<ContentCategoryCreationDto, ContentCategory>().ReverseMap();
+        CreateMap<ContentCategoryUpdateDto, ContentCategory>().ReverseMap();
 
         //Article
         CreateMap<Article, ArticleResultDto>();
@@ -63,9 +64,9 @@ public class MappingProfile : Profile
         //CreateMap<QuestionUpdateDto, Question>();
 
         //Quizz
-        CreateMap<Quiz, ResultDto>();
-        CreateMap<QuizCreationDto, Quiz>();
-        CreateMap<QuizUpdateDto, Quiz>();
+        CreateMap<Quiz, QuizResultDto>().ReverseMap();
+        CreateMap<QuizCreationDto, Quiz>().ReverseMap();
+        CreateMap<QuizUpdateDto, Quiz>().ReverseMap();
 
     }
 }
