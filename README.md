@@ -28,7 +28,7 @@ With its diverse range of multimedia content, Nabeey aims to make learning about
 
 1. **Clone the repository:**
 ```
-https://github.com/jakhangir-esanov/Nabeey
+https://github.com/wonderboy1w3/Nabeey
 ```
 2. **Configure Database:**
 - Update the database connection details in the appsetting.json.
