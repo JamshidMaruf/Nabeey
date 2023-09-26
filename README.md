@@ -10,6 +10,8 @@ With its diverse range of multimedia content, Nabeey aims to make learning about
 
 2. **Enriching Audio Narratives:** In addition to video content, Nabeey offers audio clips that provide in-depth insights and anecdotes related to the Prophet's life. These audio narratives are perfect for users who prefer to listen and learn or want to delve into specific topics in detail.
 
-3. **Interactive Quizzes:** Reinforce your knowledge and test your understanding with interactive quizzes. Nabeey's quizzes are designed to be fun and educational, making the learning process both enjoyable and effective.
+3. **Informative Articles:** Explore a library of articles that offer in-depth analysis, historical context, and scholarly perspectives on various aspects of Prophet Muhammad's life and teachings. Articles provide a textual resource for users who prefer to read and gain a deeper understanding.
 
-4. **Structured Content Sections:** Nabeey is organized into distinct sections, each focusing on a specific phase or aspect of Prophet Muhammad's life. Users can easily navigate between sections, making it convenient to explore the content in a chronological or thematic order.
+4. **Interactive Quizzes:** Reinforce your knowledge and test your understanding with interactive quizzes. Nabeey's quizzes are designed to be fun and educational, making the learning process both enjoyable and effective.
+
+5. **Structured Content Sections:** Nabeey is organized into distinct sections, each focusing on a specific phase or aspect of Prophet Muhammad's life. Users can easily navigate between sections, making it convenient to explore the content in a chronological or thematic order.
