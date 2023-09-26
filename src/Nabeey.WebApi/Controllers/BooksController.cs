@@ -33,7 +33,7 @@ public class BooksController : BaseController
         });
 
     [HttpDelete("delete/{id:long}")]
-    public async Task<IActionResult> DeleteAsync(long id)
+    public async Task<IActionResult> DeleAsync(long id)
         => Ok(new Response
         {
             StatusCode = 200,
@@ -58,7 +58,7 @@ public class BooksController : BaseController
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await this.bookService.RetrieveAllAsync(@params,filter,search)
+            Data = await this.bookService.RetrieveAllAsync(@params,search)
         });
 
 }

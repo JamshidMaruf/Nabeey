@@ -63,7 +63,7 @@ public class UserController : BaseController
         });
 
     [HttpPatch("upgrade-role")]
-    public async ValueTask<IActionResult> UpgradeRolAsync(long id, Role role)
+    public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
         => Ok(new Response
         {
             StatusCode = 200,
