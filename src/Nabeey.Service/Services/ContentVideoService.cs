@@ -60,17 +60,22 @@ public class ContentVideoService : IContentVideoService
         return this.mapper.Map<ContentVideoResultDto>(existVideo);
     }
 
-    public IEnumerable<ContentVideoResultDto> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var videos = this.contentVideoRepository.SelectAll(includes: new[] { "Content" })
-            .OrderBy(filter)
-            .ToPaginate(@params);
+        var videos = (await this.contentVideoRepository.SelectAll(includes: new[] { "Content" })
+                                                            .ToListAsync())
+                                                            .OrderBy(filter)
+                                                            .ToPaginate(@params);
 
         return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);
     }
 
-	public ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAllByContentIdAsync(long contentId)
+	public async ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAllByContentIdAsync(long contentId)
 	{
-		throw new NotImplementedException();
+        var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(contentId))
+            ?? throw new NotFoundException("This content is not found");
+
+		var videos = this.contentVideoRepository.SelectAll(c => c.ContentId.Equals(contentId));
+        return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);
 	}
 }

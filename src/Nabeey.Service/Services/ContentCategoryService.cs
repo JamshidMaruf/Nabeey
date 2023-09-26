@@ -14,10 +14,12 @@ public class ContentCategoryService : IContentCategoryService
 {
     private readonly IMapper mapper;
     private readonly IRepository<ContentCategory> repository;
-    public ContentCategoryService(IRepository<ContentCategory> repository, IMapper mapper)
+    private readonly IRepository<Content> contentRepository;
+    public ContentCategoryService(IRepository<ContentCategory> repository, IMapper mapper, IRepository<Content> contentRepository)
     {
         this.mapper = mapper;
         this.repository = repository;
+        this.contentRepository = contentRepository;
     }
 
     public async ValueTask<ContentCategoryResultDto> AddAsync(ContentCategoryCreationDto dto)
@@ -29,6 +31,10 @@ public class ContentCategoryService : IContentCategoryService
         var mappedCategory = this.mapper.Map<ContentCategory>(dto);
         await this.repository.InsertAsync(mappedCategory);
         await this.repository.SaveAsync();
+
+        var content = new Content { ContentCategoryId = mappedCategory.Id };
+        await this.contentRepository.InsertAsync(content);
+        await this.contentRepository.SaveAsync();
 
         return this.mapper.Map<ContentCategoryResultDto>(mappedCategory);
     }

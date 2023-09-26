@@ -7,23 +7,42 @@ using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Books;
 using Nabeey.DataAccess.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Contents;
+using Nabeey.Domain.Entities.Contexts;
 
 namespace Nabeey.Service.Services;
 
 public class BookService : IBookService
 {
     private readonly IMapper mapper;
-    private readonly IRepository<Book> repository;
+    private readonly IRepository<Book> bookRepository;
+    private readonly IRepository<Content> contentRepository;
+    private readonly IRepository<ContentBook> contentBookRepository;
 
-    public BookService(IMapper mapper, IRepository<Book> repository)
+    public BookService(IMapper mapper, IRepository<Book> bookRepository, IRepository<ContentBook> contentBookRepository)
     {
         this.mapper = mapper;
-        this.repository = repository;
+        this.bookRepository = bookRepository;
+        this.contentBookRepository = contentBookRepository;
     }
 
-    public ValueTask<BookResultDto> AddAsync(BookCreationDto dto)
+    public async ValueTask<BookResultDto> AddAsync(BookCreationDto dto)
     {
-        throw new NotImplementedException();
+        var content = await this.contentRepository.SelectAsync(content => content.Id.Equals(dto.ContentId))
+            ?? throw new NotFoundException("Content is not found");
+
+        var mappedBook = this.mapper.Map<Book>(dto);
+        await this.bookRepository.InsertAsync(mappedBook);
+
+        var contentBook = new ContentBook
+        {
+            BookId = mappedBook.Id,
+            ContentId = dto.ContentId
+        };
+        await this.contentBookRepository.InsertAsync(contentBook);
+        await this.contentBookRepository.SaveAsync();
+
+        return this.mapper.Map<BookResultDto>(mappedBook);
     }
 
     public ValueTask<bool> DeleteAsync(long id)
