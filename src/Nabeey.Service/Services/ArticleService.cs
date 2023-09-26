@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.Exceptions;
+using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
@@ -74,9 +76,23 @@ public class ArticleService : IArticleService
 
         return this.mapper.Map<ArticleResultDto>(existArticle);
     }
-    public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllAsync()
+
+    public ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByUserIdAsync(long userId)
     {
-        var allArticles = await this.articleRepository.SelectAll(includes: new[] { "Content" }).ToListAsync();
-        return this.mapper.Map<IEnumerable<ArticleResultDto>>(allArticles); 
+        throw new NotImplementedException();
+    }
+
+    public ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByContentIdAsync(long contentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
+    {
+        var allArticles = (await this.articleRepository.SelectAll(includes: new[] { "Content" })
+            .ToPaginate(@params)
+            .ToListAsync());
+
+        return this.mapper.Map<IEnumerable<ArticleResultDto>>(allArticles);
     }
 }

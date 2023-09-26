@@ -7,6 +7,8 @@ using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Domain.Configurations;
+using Nabeey.Service.Extensions;
 
 namespace Nabeey.Service.Services;
 
@@ -73,15 +75,20 @@ public class QuizQuestionService : IQuizQuestionService
         return this.mapper.Map<QuizQuestionResultDto>(quizQuestion);
     }
 
-    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync()
+
+
+    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var allQuizQuestion = await this.quizQuestionRepository.SelectAll().ToListAsync();
+        var allQuizQuestion = await this.quizQuestionRepository.SelectAll(
+            includes: new[] { "Quiz", "Question" })
+            .ToPaginate(@params)
+            .ToListAsync();
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveByQuiz(long id)
+    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllByQuizIdAsync(long quizId)
     {
-        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
+        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(quizId))
             ?? throw new NotFoundException("This quiz is not found");
 
         IEnumerable<Question> questions = new List<Question>();

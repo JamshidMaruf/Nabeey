@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -17,7 +18,7 @@ public class QuizzesController : BaseController
         public async ValueTask<IActionResult> PostAsync(QuizCreationDto dto)
             => Ok(new Response
             {
-                Status = 200,
+                StatusCode = 200,
                 Message = "Success",
                 Data = await this.quizService.AddAsync(dto)
             });
@@ -26,7 +27,7 @@ public class QuizzesController : BaseController
         public async ValueTask<IActionResult> UpdateAsync(QuizUpdateDto dto)
             => Ok(new Response
             {
-                Status = 200,
+                StatusCode = 200,
                 Message = "Success",
                 Data = await this.quizService.ModifyAsync(dto)
             });
@@ -35,7 +36,7 @@ public class QuizzesController : BaseController
         public async ValueTask<IActionResult> DeleteAsync(long id)
             => Ok(new Response
             {
-                Status = 200,
+                StatusCode = 200,
                 Message = "Success",
                 Data = await this.quizService.DeleteAsync(id)
             });
@@ -44,17 +45,17 @@ public class QuizzesController : BaseController
         public async ValueTask<IActionResult> GetAsync(long id)
             => Ok(new Response
             {
-                Status = 200,
+                StatusCode = 200,
                 Message = "Success",
-                Data = await this.quizService.RetrieveAsync(id)
+                Data = await this.quizService.RetrieveByIdAsync(id)
             });
     
         [HttpGet("get-all")]
-        public async ValueTask<IActionResult> GetAllAsync()
+        public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
             => Ok(new Response
             {
-                Status = 200,
+                StatusCode = 200,
                 Message = "Success",
-                Data = await this.quizService.RetrieveAllAsync()
+                Data = await this.quizService.RetrieveAllAsync(@params, filter, search)
             });
 }

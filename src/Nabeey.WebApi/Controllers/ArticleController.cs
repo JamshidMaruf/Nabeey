@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Articles;
-using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
@@ -15,10 +15,10 @@ public class ArticleController : BaseController
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> PostAsync(ArticleCreationDto dto)
+    public async Task<IActionResult> PostAsync([FromForm] ArticleCreationDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.AddAsync(dto)
         });
@@ -27,7 +27,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> UpdateAsync(ArticleUpdateDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.ModifyAsync(dto)
         });
@@ -36,7 +36,7 @@ public class ArticleController : BaseController
     public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.DeleteAsync(id)
         });
@@ -45,17 +45,17 @@ public class ArticleController : BaseController
     public async Task<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.service.RetrieveAsync(id)
         });
 
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync(PaginationParams @params, Filter filter, string search)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.service.RetrieveAllAsync()
+            Data = await this.service.RetrieveAllAsync(@params, filter, search)
         });
 }
