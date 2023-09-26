@@ -9,5 +9,5 @@ public interface IQuestionService
     ValueTask<QuestionResultDto> ModifyAsync(QuestionUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<QuestionResultDto> RetrieveByIdAsync(long id);
-    ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search);
+    ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

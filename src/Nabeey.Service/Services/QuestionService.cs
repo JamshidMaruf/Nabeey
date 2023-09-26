@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Questions;
+using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.Exceptions;
@@ -22,7 +24,7 @@ public class QuestionService : IQuestionService
     }
     public async ValueTask<QuestionResultDto> AddAsync(QuestionCreationDto dto)
     {
-        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File });
+        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File }, UploadType.Images);
 
         var mapQuestion = mapper.Map<Question>(dto);
         mapQuestion.Asset = imageAsset;
@@ -69,7 +71,7 @@ public class QuestionService : IQuestionService
         return res;
     }
 
-    public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync()
+    public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var question = await repository.SelectAll().ToListAsync();
         var res = this.mapper.Map<IEnumerable<QuestionResultDto>>(question);

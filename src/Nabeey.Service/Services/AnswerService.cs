@@ -69,8 +69,9 @@ public class AnswerService : IAnswerService
 
     public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var answers = (await this.repository.SelectAll().ToListAsync())
-                                            .ToPaginate(@params);
+        var answers = await this.repository.SelectAll()
+            .ToPaginate(@params)
+            .ToListAsync();
 
         return this.mapper.Map<IEnumerable<AnswerResultDto>>(answers);
     }

@@ -102,7 +102,7 @@ public class QuizService : IQuizService
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id),
             includes: new[] { "ContentCategory", "User" })
-            ?? throw new NotFoundException($"This quiz is not found with id : {id}");
+                ?? throw new NotFoundException($"This quiz is not found with id : {id}");
 
         return this.mapper.Map<QuizResultDto>(existQuiz);
     }

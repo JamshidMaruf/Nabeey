@@ -19,4 +19,6 @@ public class QuestionAnswer : Auditable
 
 	public long QuizId { get; set; }
 	public Quiz Quiz { get; set; }
+
+	public bool IsTrue { get; set; }
 }

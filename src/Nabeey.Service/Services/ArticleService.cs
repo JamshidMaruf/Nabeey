@@ -4,6 +4,7 @@ using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.Exceptions;
@@ -14,21 +15,25 @@ namespace Nabeey.Service.Services;
 
 public class ArticleService : IArticleService
 {
+    private readonly IMapper mapper;
+    private readonly IAssetService assetService;
     private readonly IRepository<Article> articleRepository;
     private readonly IRepository<Content> contentRepository;
-    private readonly IAssetService assetService;
-    private readonly IMapper mapper;
-    public ArticleService(IMapper mapper, IRepository<Article> articleRepository, IRepository<Content> contentRepository, IAssetService assetService)
+    public ArticleService(
+        IMapper mapper, 
+        IAssetService assetService,
+        IRepository<Article> articleRepository, 
+        IRepository<Content> contentRepository) 
     {
         this.mapper = mapper;
+        this.assetService = assetService;
         this.articleRepository = articleRepository;
         this.contentRepository = contentRepository;
-        this.assetService = assetService;
     }
 
     public async ValueTask<ArticleResultDto> AddAsync(ArticleCreationDto dto)
     {
-        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image });
+        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
 
         var existContent = await this.contentRepository.SelectAsync(a => a.Id.Equals(dto.ContentId))
             ?? throw new NotFoundException($"This content is not found with id : {dto.ContentId}");
