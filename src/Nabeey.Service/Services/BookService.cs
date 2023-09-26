@@ -21,61 +21,33 @@ public class BookService : IBookService
         this.repository = repository;
     }
 
-    public async Task<BookResultDto> AddAsync(BookCreationDto dto)
+    public ValueTask<BookResultDto> AddAsync(BookCreationDto dto)
     {
-        Book existBook = this.repository.SelectAll().FirstOrDefault(b=>b.Title.Equals(dto.Title));
-        if (existBook is not null)
-            throw new AlreadyExistException($"This title is already exist {dto.Title}");
-        
-        var mappedBook=this.mapper.Map<Book>(dto);
-        await this.repository.InsertAsync(mappedBook);
-        await this.repository.SaveAsync();
-
-        return this.mapper.Map<BookResultDto>(mappedBook);
+        throw new NotImplementedException();
     }
 
-    public async Task<BookResultDto> UpdateAsync(BookUpdateDto dto)
+    public ValueTask<bool> DeleteAsync(long id)
     {
-        Book existBook = this.repository.SelectAll().FirstOrDefault(b => b.Id.Equals(dto.Id));
-        if (existBook is not null)
-            throw new NotFoundException($"This id is not found {dto.Id}");
-
-        this.mapper.Map(dto, existBook);
-        this.repository.Update(existBook);
-        await this.repository.SaveAsync();
-        return this.mapper.Map<BookResultDto>(existBook);
+        throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto)
     {
-        Book existBook = this.repository.SelectAll().FirstOrDefault(b => b.Id.Equals(id));
-        if (existBook is not null)
-            throw new NotFoundException($"This id is not found {id}");
-        
-        this.repository.Delete(existBook);
-        await this.repository.SaveAsync();
-        return true;
+        throw new NotImplementedException();
     }
 
-    public async Task<BookResultDto> GetByIdAsync(long id)
+    public ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        Book existBook = await this.repository.SelectAll().FirstOrDefaultAsync(b => b.Id.Equals(id));
-        if (existBook is not null)
-            throw new NotFoundException($"This id is not found {id}");
-
-        BookResultDto mappedBook = this.mapper.Map<BookResultDto>(existBook);
-        return mappedBook;
+        throw new NotImplementedException();
     }
 
-    public async ValueTask<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params, Filter filter,  string search = null)
+    public ValueTask<IEnumerable<BookResultDto>> RetrieveAllByContentIdAsync(long contentId)
     {
-        var books = (await this.repository.SelectAll().ToListAsync())
-                                                        .OrderBy(filter)
-                                                        .ToPaginate(@params);
+        throw new NotImplementedException();
+    }
 
-        if(search is not null)
-            books = books.Where(book => book.Title.Contains(search, StringComparison.OrdinalIgnoreCase));
-
-        return this.mapper.Map<IEnumerable<BookResultDto>>(books);
+    public ValueTask<BookResultDto> RetrieveByIdAsync(long id)
+    {
+        throw new NotImplementedException();
     }
 }

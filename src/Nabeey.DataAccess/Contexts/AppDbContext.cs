@@ -100,7 +100,6 @@ public class AppDbContext : DbContext
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
         questionAnswer.HasKey(qa => new { qa.QuestionId, qa.AnswerId });
         questionAnswer.HasOne(qa => qa.Answer).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.AnswerId);
-        questionAnswer.HasOne(qa => qa.Question).WithMany(qa => qa.QuestionAnswers).HasForeignKey(qa => qa.QuestionId);
         #endregion
 
         #region SEED DATA
