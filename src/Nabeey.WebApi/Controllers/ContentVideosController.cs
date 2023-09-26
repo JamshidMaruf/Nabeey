@@ -41,7 +41,7 @@ public class ContentVideosController : BaseController
           Data = await this.contentVideoService.RetrieveByIdAsync(id)
       });
 
-    [HttpGet("get/{id:long}")]
+    [HttpGet("get-content/{id:long}")]
     public async Task<IActionResult> GetByContentIdAsync(long contentId)
       => Ok(new Response
       {

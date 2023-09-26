@@ -32,6 +32,8 @@ builder.Services.AddControllersWithViews()
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
+builder.Services.ConfigureSwagger();
+
 var app = builder.Build();
 
 PathHelper.WebRootPath = Path.GetFullPath("wwwroot");
