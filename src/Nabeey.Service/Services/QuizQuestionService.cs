@@ -14,13 +14,15 @@ namespace Nabeey.Service.Services;
 
 public class QuizQuestionService : IQuizQuestionService
 {
-    private readonly IRepository<QuizQuestion> quizQuestionRepository;
-    private readonly IRepository<Question> questionRepository;
-    private readonly IRepository<Quiz> quizRepository;
     private readonly IMapper mapper;
-    public QuizQuestionService(IMapper mapper, IRepository<Quiz> quizRepository,
-                               IRepository<QuizQuestion> quizQuestionRepository,
-                               IRepository<Question> questionRepository)
+    private readonly IRepository<Quiz> quizRepository;
+    private readonly IRepository<Question> questionRepository;
+    private readonly IRepository<QuizQuestion> quizQuestionRepository;
+    public QuizQuestionService(
+        IMapper mapper, 
+        IRepository<Quiz> quizRepository,
+        IRepository<Question> questionRepository,
+        IRepository<QuizQuestion> quizQuestionRepository)
     {
         this.mapper = mapper;
         this.quizRepository = quizRepository;

@@ -75,9 +75,4 @@ public class ContentCategoryService : IContentCategoryService
         var categories = await this.repository.SelectAll().ToListAsync();
         return this.mapper.Map<IEnumerable<ContentCategoryResultDto>>(categories);
     }
-
-    ValueTask<IEnumerable<ContentResultDto>> IContentCategoryService.RetrieveAllAsync(PaginationParams @params, Filter filter, string search)
-    {
-        throw new NotImplementedException();
-    }
 }
