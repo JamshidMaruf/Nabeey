@@ -15,3 +15,11 @@ With its diverse range of multimedia content, Nabeey aims to make learning about
 4. **Interactive Quizzes:** Reinforce your knowledge and test your understanding with interactive quizzes. Nabeey's quizzes are designed to be fun and educational, making the learning process both enjoyable and effective.
 
 5. **Structured Content Sections:** Nabeey is organized into distinct sections, each focusing on a specific phase or aspect of Prophet Muhammad's life. Users can easily navigate between sections, making it convenient to explore the content in a chronological or thematic order.
+
+## Why Nabeey?
+
+- **Engagement:** Nabeey is built to keep users engaged and interested throughout their learning journey. The combination of video, audio, and quizzes caters to different learning preferences, ensuring that users never get bored.
+
+- **Accessibility:** We believe that knowledge should be accessible to all. Nabeey is designed to be user-friendly and available to a global audience, allowing people from diverse backgrounds to access and appreciate the life of Prophet Muhammad (peace be upon him).
+
+- **Education and Empowerment:** Nabeey isn't just a platform for passive learning; it's a tool for empowerment. By understanding the life and teachings of Prophet Muhammad (peace be upon him), users can gain valuable insights into history, ethics, and principles that can positively impact their lives.
