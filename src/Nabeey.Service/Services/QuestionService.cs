@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Questions;
-using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.Exceptions;
+using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
@@ -24,11 +24,11 @@ public class QuestionService : IQuestionService
     }
     public async ValueTask<QuestionResultDto> AddAsync(QuestionCreationDto dto)
     {
-        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File }, UploadType.Images);
+        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image });
 
         var mapQuestion = mapper.Map<Question>(dto);
-        mapQuestion.Asset = imageAsset;
-        mapQuestion.AssetId = imageAsset.Id;
+        mapQuestion.Image = imageAsset;
+        mapQuestion.ImageId = imageAsset.Id;
 
         await repository.InsertAsync(mapQuestion);
         await repository.SaveAsync();
@@ -56,15 +56,15 @@ public class QuestionService : IQuestionService
             ?? throw new NotFoundException("Not found!");
 
         this.repository.Delete(question);
-        await this.assetService.RemoveAsync(question.Asset);
-        await this.repository.SaveAsync();   
+        await this.assetService.RemoveAsync(question.Image);
+        await this.repository.SaveAsync();
 
         return true;
     }
 
     public async ValueTask<QuestionResultDto> RetrieveByIdAsync(long id)
     {
-        var question = await repository.SelectAsync(x => x.Id.Equals(id))
+        var question = await repository.SelectAsync(x => x.Id.Equals(id), includes: new[] { "Image" })
             ?? throw new NotFoundException($"Could not find {id}");
 
         var res = this.mapper.Map<QuestionResultDto>(question);
@@ -73,7 +73,9 @@ public class QuestionService : IQuestionService
 
     public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var question = await repository.SelectAll().ToListAsync();
+        var question = await repository.SelectAll(includes: new[] { "Image" })
+            .ToPaginate(@params)
+            .ToListAsync();
         var res = this.mapper.Map<IEnumerable<QuestionResultDto>>(question);
         return res;
     }

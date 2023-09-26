@@ -51,12 +51,4 @@ public class QuestionsController : BaseController
             Data = await this.questionService.RetrieveByIdAsync(id)
         });
 
-    [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync()
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.questionService.RetrieveAllAsync()
-        });
 }

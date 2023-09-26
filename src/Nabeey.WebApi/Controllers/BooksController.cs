@@ -18,7 +18,7 @@ public class BooksController : BaseController
     public async Task<IActionResult> PostAsync([FromQuery]BookCreationDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.bookService.AddAsync(dto)
         });
@@ -27,16 +27,16 @@ public class BooksController : BaseController
     public async Task<IActionResult> UpdateAsync([FromQuery]BookUpdateDto dto)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.bookService.UpdateAsync(dto)
+            Data = await this.bookService.ModifyAsync(dto)
         });
 
     [HttpDelete("delete/{id:long}")]
     public async Task<IActionResult> DeleteAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
             Data = await this.bookService.DeleteAsync(id)
         });
@@ -45,18 +45,20 @@ public class BooksController : BaseController
     public async Task<IActionResult> GetAsync(long id)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.bookService.GetByIdAsync(id)
+            Data = await this.bookService.RetrieveByIdAsync(id)
         });
 
     [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params, [FromQuery] Filter filter, [FromQuery] string search)
+    public async ValueTask<IActionResult> GetAllAsync(
+		[FromQuery] PaginationParams @params,
+		[FromQuery] Filter filter, string search)
         => Ok(new Response
         {
-            Status = 200,
+            StatusCode = 200,
             Message = "Success",
-            Data = await this.bookService.GetAllAsync(@params,filter,search)
+            Data = await this.bookService.RetrieveAllAsync(@params,filter,search)
         });
 
 }

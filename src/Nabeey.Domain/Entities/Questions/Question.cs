@@ -12,8 +12,8 @@ public class Question : Auditable
 {
     public string Text { get; set; }
 
-    public long? AssetId { get; set; }
-    public Asset Asset { get; set; }
+    public long? ImageId { get; set; }
+    public Asset Image { get; set; }
 
     public ICollection<Answer> Answers { get; set; }
 }

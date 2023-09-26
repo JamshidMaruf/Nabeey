@@ -9,6 +9,6 @@ public interface IQuizService
     ValueTask<QuizResultDto> ModifyAsync(QuizUpdateDto dto);
     ValueTask<bool> DeleteAsync(long id);
     ValueTask<QuizResultDto> RetrieveByIdAsync(long id);
-    ValueTask<IEnumerable<QuizResultDto>> RetrieveByContentCategoryIdAsync(long contentId);
+    ValueTask<IEnumerable<QuizResultDto>> RetrieveByContentCategoryIdAsync(long contentCategoryId);
     ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
 }

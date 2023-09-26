@@ -51,7 +51,16 @@ public class QuizQuestionService : IQuizQuestionService
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == dto.Id)
             ?? throw new NotFoundException($"This quiz, question is not found with id : {dto.Id}");
 
+        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.QuizId))
+            ?? throw new NotFoundException($"This quiz is not found with id : {dto.QuizId}");
+
+        var existQuestion = await this.questionRepository.SelectAsync(q => q.Id.Equals(dto.QuestionId))
+            ?? throw new NotFoundException($"This question is not found with id : {dto.QuestionId}");
+
         this.mapper.Map(dto, quizQuestion);
+        quizQuestion.Quiz = existQuiz;
+        quizQuestion.Question = existQuestion;
+
         this.quizQuestionRepository.Update(quizQuestion);
         await this.quizQuestionRepository.SaveAsync();
 
