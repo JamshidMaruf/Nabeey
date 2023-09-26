@@ -23,3 +23,7 @@ With its diverse range of multimedia content, Nabeey aims to make learning about
 - **Accessibility:** We believe that knowledge should be accessible to all. Nabeey is designed to be user-friendly and available to a global audience, allowing people from diverse backgrounds to access and appreciate the life of Prophet Muhammad (peace be upon him).
 
 - **Education and Empowerment:** Nabeey isn't just a platform for passive learning; it's a tool for empowerment. By understanding the life and teachings of Prophet Muhammad (peace be upon him), users can gain valuable insights into history, ethics, and principles that can positively impact their lives.
+
+## Contributions Welcome:
+
+We invite contributions from the GitHub community to help us enhance Nabeey further. Whether you are a developer, content creator, or designer, your skills and ideas can contribute to the growth and improvement of this educational platform. Check out our [Contribution Guidelines](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors) to get started.
