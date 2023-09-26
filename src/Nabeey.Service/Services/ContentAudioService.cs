@@ -74,9 +74,9 @@ public class ContentAudioService : IContentAudioService
 
     public async ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search)
     {
-        var existAudios = this.contentAudioRepository.SelectAll(includes: new[] { "Content", "Audio" })
-            .OrderBy(filter)
-            .ToPaginate(@params);
+        var existAudios = await this.contentAudioRepository.SelectAll(includes: new[] { "Content", "Audio" })
+            .ToPaginate(@params)
+            .ToListAsync();
 
         return this.mapper.Map<IEnumerable<ContentAudioResultDto>>(existAudios);
     }
