@@ -12,20 +12,26 @@ namespace Nabeey.Service.Services;
 
 public class QuizService : IQuizService
 {
+    private readonly IMapper mapper;
     private readonly IRepository<Quiz> quizRepository;
     private readonly IRepository<User> userRepository;
     private readonly IRepository<ContentCategory> categoryRepository;
-    private readonly IMapper mapper;
-    public QuizService(IMapper mapper, IRepository<Quiz> quizRepository, IRepository<ContentCategory> categoryRepository, IRepository<User> userRepository)
+
+    public QuizService(
+        IMapper mapper,
+        IRepository<Quiz> quizRepository,
+        IRepository<User> userRepository,
+        IRepository<ContentCategory> categoryRepository)
     {
         this.mapper = mapper;
         this.quizRepository = quizRepository;
+        this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
     }
     public async ValueTask<QuizResultDto> AddAsync(QuizCreationDto dto)
     {
-        var existQuiz = await this.quizRepository.SelectAsync(q => q.Name.Equals(dto.Name));
+        var existQuiz = await this.quizRepository.SelectAsync(q => q.Name.ToLower().Equals(dto.Name.ToLower()));
         if (existQuiz is not null)
             throw new AlreadyExistException($"This quiz already exist with id : {dto.Name}");
 
@@ -42,7 +48,41 @@ public class QuizService : IQuizService
         await this.quizRepository.InsertAsync(mappedQuiz);
         await this.quizRepository.SaveAsync();
 
+        mappedQuiz.ContentCategory = existCategory;
+        mappedQuiz.User = existUser;
+
         return this.mapper.Map<QuizResultDto>(mappedQuiz);
+    }
+
+    public async ValueTask<QuizResultDto> ModifyAsync(QuizUpdateDto dto)
+    {
+        var quiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.Id))
+            ?? throw new NotFoundException($"This quiz is not found with id : {dto.Id}");
+
+        var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(dto.ContentCategoryId))
+            ?? throw new NotFoundException($"This content category is not found with id : {dto.ContentCategoryId}");
+
+        var existUser = await this.userRepository.SelectAsync(c => c.Id.Equals(dto.UserId))
+            ?? throw new NotFoundException($"This user is not found with id : {dto.UserId}");
+
+        if (!quiz.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase))
+        {
+            var existQuiz = await this.quizRepository.SelectAsync(q => q.Name.ToLower().Equals(dto.Name.ToLower()));
+            if (existQuiz is not null)
+                throw new AlreadyExistException($"This quiz already exist with id : {dto.Name}");
+        }
+
+        this.mapper.Map(dto, quiz);
+        quiz.StartTime = DateTime.Parse(quiz.StartTime.ToString());
+        quiz.EndTime = DateTime.Parse(quiz.EndTime.ToString());
+
+        this.quizRepository.Update(quiz);
+        await this.quizRepository.SaveAsync();
+
+        quiz.User = existUser;
+        quiz.ContentCategory = existCategory;
+
+        return this.mapper.Map<QuizResultDto>(quiz);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
@@ -56,21 +96,10 @@ public class QuizService : IQuizService
         return true;
     }
 
-    public async ValueTask<QuizResultDto> ModifyAsync(QuizUpdateDto dto)
-    {
-        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.Id))
-            ?? throw new NotFoundException($"This quiz is not found with id : {dto.Id}");
-
-        this.mapper.Map(dto, existQuiz);
-        this.quizRepository.Update(existQuiz);
-        await this.quizRepository.SaveAsync();
-
-        return this.mapper.Map<QuizResultDto>(existQuiz);
-    }
-
     public async ValueTask<QuizResultDto> RetrieveAsync(long id)
     {
-        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id))
+        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(id),
+            includes: new[] { "ContentCategory", "User" })
             ?? throw new NotFoundException($"This quiz is not found with id : {id}");
 
         return this.mapper.Map<QuizResultDto>(existQuiz);
@@ -78,7 +107,7 @@ public class QuizService : IQuizService
     public async ValueTask<IEnumerable<QuizResultDto>> RetrieveAllAsync()
     {
         var allQuizzes = await this.quizRepository.SelectAll(
-            includes: new[] { "ContentCategory" }).ToListAsync();
+            includes: new[] { "ContentCategory", "User" }).ToListAsync();
 
         return this.mapper.Map<IEnumerable<QuizResultDto>>(allQuizzes);
     }
