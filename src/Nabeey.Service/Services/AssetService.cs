@@ -1,9 +1,10 @@
-﻿using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Entities.Assets;
-using Nabeey.Service.DTOs.Assets;
-using Nabeey.Service.Extensions;
+﻿using Nabeey.Domain.Enums;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Interfaces;
+using Nabeey.Service.Extensions;
+using Nabeey.Service.DTOs.Assets;
+using Nabeey.Domain.Entities.Assets;
+using Nabeey.DataAccess.IRepositories;
 
 namespace Nabeey.Service.Services;
 
@@ -16,9 +17,9 @@ public class AssetService : IAssetService
         this.repository = repository;
     }
 
-    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto)
+    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto, UploadType type)
     {
-        var webRootPath = Path.Combine(PathHelper.WebRootPath, "Images");
+        var webRootPath = Path.Combine(PathHelper.WebRootPath, type.ToString());
 
         if (!Directory.Exists(webRootPath))
             Directory.CreateDirectory(webRootPath);
@@ -46,9 +47,9 @@ public class AssetService : IAssetService
             return false;
 
         var existAssetment = await repository.SelectAsync(a => a.Id.Equals(assetment.Id));
-
         if (existAssetment is null)
             return false;
+
         this.repository.Delete(existAssetment);
         var result = await this.repository.SaveAsync();
         return true;

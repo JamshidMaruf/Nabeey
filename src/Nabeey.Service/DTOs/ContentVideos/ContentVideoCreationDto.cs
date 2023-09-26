@@ -8,4 +8,6 @@ public class ContentVideoCreationDto
 	public string Description { get; set; }
     public string VideoLink { get; set; }
 	public long ContentId { get; set; }
+
+    public string VideoPath { get; set; }
 }

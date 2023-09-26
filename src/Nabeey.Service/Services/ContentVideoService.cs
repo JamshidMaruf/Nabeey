@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Configurations;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Domain.Configurations;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Service.DTOs.ContentVideos;
 
 namespace Nabeey.Service.Services;
 
@@ -16,8 +16,8 @@ public class ContentVideoService : IContentVideoService
     private readonly IRepository<Content> contentRepository;
     private readonly IRepository<ContentVideo> contentVideoRepository;
     public ContentVideoService(
-        IMapper mapper,
-        IRepository<Content> contentRepository,
+        IMapper mapper, 
+        IRepository<Content> contentRepository, 
         IRepository<ContentVideo> contentVideoRepository)
     {
         this.mapper = mapper;
@@ -27,43 +27,46 @@ public class ContentVideoService : IContentVideoService
 
     public async Task<ContentVideoResultDto> AddAsync(ContentVideoCreationDto dto)
     {
-        var content = await this.contentRepository
-                    .SelectAsync(expression: content => content.Id.Equals(dto.ContentId))
-                    ?? throw new NotFoundException($"This content is not found with ID: {dto.ContentId}");
+        var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(dto.ContentId))
+                      ?? throw new NotFoundException("This content is not found");
 
-        var mappedContentVideo = this.mapper.Map<ContentVideo>(dto);
-        await this.contentVideoRepository.InsertAsync(mappedContentVideo);
+        var isChecked = YouTubeLinkValidator.IsValidYouTubeLink(dto.VideoPath);
+        if (!isChecked)
+            throw new NotFoundException("This video is not found");
+
+        var mappedVideo = this.mapper.Map<ContentVideo>(dto);
+        mappedVideo.Content = content;
+        await this.contentVideoRepository.InsertAsync(mappedVideo);
         await this.contentVideoRepository.SaveAsync();
 
-        return this.mapper.Map<ContentVideoResultDto>(mappedContentVideo);
+        return this.mapper.Map<ContentVideoResultDto>(mappedVideo);
     }
 
     public async Task<bool> RemoveAsync(long id)
     {
-        var contentVideo = await this.contentVideoRepository.SelectAsync(expression: cv => cv.Id.Equals(id))
-                            ?? throw new NotFoundException($"This content video is not found with ID: {id}");
-
-        this.contentVideoRepository.Delete(contentVideo);
+        var existVideo = await this.contentVideoRepository.SelectAsync(v => v.Id.Equals(id))
+                    ?? throw new NotFoundException("This content video is not found");
+        
+        this.contentVideoRepository.Delete(existVideo);
         await this.contentVideoRepository.SaveAsync();
         return true;
     }
 
     public async Task<ContentVideoResultDto> RetrieveByIdAsync(long id)
     {
-        var contentVideo = 
-            await this.contentVideoRepository.SelectAsync(expression: cv => cv.Id.Equals(id) , includes: new[] { "Content", "Asset" })
-            ?? throw new NotFoundException($"This content video is not found with ID: {id}");
+        var existVideo = await this.contentVideoRepository.SelectAsync(v => v.Id.Equals(id), includes: new[] {"Content"})
+                    ?? throw new NotFoundException("This content video is not found");
 
-        return this.mapper.Map<ContentVideoResultDto>(contentVideo);
+        return this.mapper.Map<ContentVideoResultDto>(existVideo);
     }
 
     public async Task<IEnumerable<ContentVideoResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var contentVideos = (await this.contentVideoRepository.SelectAll(includes: new[] { "Content", "Asset" })
-                                                                .ToListAsync())
-                                                                .OrderBy(filter)
-                                                                .ToPaginate(@params);
+        var videos = (await this.contentVideoRepository.SelectAll(includes: new[] { "Content" })
+                                                            .ToListAsync())
+                                                            .OrderBy(filter)
+                                                            .ToPaginate(@params);
 
-        return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(contentVideos);
+        return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);
     }
 }
