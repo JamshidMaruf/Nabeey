@@ -71,8 +71,32 @@ public class AppDbContext : DbContext
         //userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
 
         // Quizzes <=> Questions
-        var quizQuestion = modelBuilder.Entity<QuizQuestion>();
-        quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
+        // Quiz jadvali uchun Fluent API konfiguratsiyasi
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.User) // User bilan bog'lash
+            .WithMany(u => u.Quizzes) // Bir nechta quizzes bo'lishi mumkin
+            .HasForeignKey(q => q.UserId) // Fkni o'rnating
+            .OnDelete(DeleteBehavior.Restrict); // O'chirishni cheklang
+
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.ContentCategory) // ContentCategory bilan bog'lash
+            .WithMany(cc => cc.Quizzes) // Bir nechta quizzes bo'lishi mumkin
+            .HasForeignKey(q => q.ContentCategoryId) // Fkni o'rnating
+            .OnDelete(DeleteBehavior.Restrict); // O'chirishni cheklang
+
+        // QuizQuestion jadvali uchun Fluent API konfiguratsiyasi
+        modelBuilder.Entity<QuizQuestion>()
+            .HasKey(qq => new { qq.QuizId, qq.QuestionId }); // Primariy kalit
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasOne(qq => qq.Quiz) // Quiz bilan bog'lash
+            .WithMany(q => q.QuizQuestions) // Bir nechta quiz questions bo'lishi mumkin
+            .HasForeignKey(qq => qq.QuizId); // Fkni o'rnating
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasOne(qq => qq.Question) // Question bilan bog'lash
+            .WithMany() // Question bilan bog'lash uchun nechta quiz questionlari kerak emas
+            .HasForeignKey(qq => qq.QuestionId); // Fkni o'rnating
 
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();

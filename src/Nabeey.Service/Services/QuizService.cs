@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.Quizzes;
+using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
@@ -12,13 +13,15 @@ namespace Nabeey.Service.Services;
 public class QuizService : IQuizService
 {
     private readonly IRepository<Quiz> quizRepository;
+    private readonly IRepository<User> userRepository;
     private readonly IRepository<ContentCategory> categoryRepository;
     private readonly IMapper mapper;
-    public QuizService(IMapper mapper, IRepository<Quiz> quizRepository, IRepository<ContentCategory> categoryRepository)
+    public QuizService(IMapper mapper, IRepository<Quiz> quizRepository, IRepository<ContentCategory> categoryRepository, IRepository<User> userRepository)
     {
         this.mapper = mapper;
         this.quizRepository = quizRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
     public async ValueTask<QuizResultDto> AddAsync(QuizCreationDto dto)
     {
@@ -27,15 +30,19 @@ public class QuizService : IQuizService
             throw new AlreadyExistException($"This quiz already exist with id : {dto.Name}");
 
         var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(dto.ContentCategoryId))
-            ?? throw new NotFoundException($"This Content category is not found with id : {dto.ContentCategoryId}");
+           ?? throw new NotFoundException($"This Content category is not found with id : {dto.ContentCategoryId}");
 
-        var mappedCategory = this.mapper.Map<Quiz>(dto);
-        mappedCategory.ContentCategory = existCategory;
+        var existUser = await this.userRepository.SelectAsync(c => c.Id.Equals(dto.UserId))
+            ?? throw new NotFoundException($"This Content category is not found with id : {dto.UserId}");
 
-        await this.quizRepository.InsertAsync(mappedCategory);
+        var mappedQuiz = this.mapper.Map<Quiz>(dto);
+        mappedQuiz.User = existUser;
+        mappedQuiz.ContentCategory = existCategory;
+
+        await this.quizRepository.InsertAsync(mappedQuiz);
         await this.quizRepository.SaveAsync();
 
-        return this.mapper.Map<QuizResultDto>(mappedCategory);
+        return this.mapper.Map<QuizResultDto>(mappedQuiz);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
