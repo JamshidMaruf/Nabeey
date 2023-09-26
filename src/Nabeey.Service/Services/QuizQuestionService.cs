@@ -97,12 +97,8 @@ public class QuizQuestionService : IQuizQuestionService
         var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
 
         foreach (var item in quizQuestions)
-        {
             if (item.QuizId == existQuiz.Id)
-            {
                 questions = questions.Append(item.Question);
-            }
-        }
 
         ShuffleQuestions(questions);
 
