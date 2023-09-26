@@ -71,8 +71,30 @@ public class AppDbContext : DbContext
         //userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
 
         // Quizzes <=> Questions
-        var quizQuestion = modelBuilder.Entity<QuizQuestion>();
-        quizQuestion.HasKey(qq => new { qq.QuizId, qq.QuestionId });
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.User)
+            .WithMany(u => u.Quizzes)
+            .HasForeignKey(q => q.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Quiz>()
+            .HasOne(q => q.ContentCategory)
+            .WithMany()
+            .HasForeignKey(q => q.ContentCategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasKey(qq => new { qq.QuizId, qq.QuestionId });
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasOne(qq => qq.Quiz)
+            .WithMany()
+            .HasForeignKey(qq => qq.QuizId);
+
+        modelBuilder.Entity<QuizQuestion>()
+            .HasOne(qq => qq.Question)
+            .WithMany()
+            .HasForeignKey(qq => qq.QuestionId);
 
         // Questions <=> Answers
         var questionAnswer = modelBuilder.Entity<QuestionAnswer>();

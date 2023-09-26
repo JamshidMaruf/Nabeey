@@ -16,6 +16,7 @@ public class QuizService : IQuizService
     private readonly IRepository<Quiz> quizRepository;
     private readonly IRepository<User> userRepository;
     private readonly IRepository<ContentCategory> categoryRepository;
+
     public QuizService(
         IMapper mapper,
         IRepository<Quiz> quizRepository,
@@ -26,6 +27,7 @@ public class QuizService : IQuizService
         this.quizRepository = quizRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
     public async ValueTask<QuizResultDto> AddAsync(QuizCreationDto dto)
     {
@@ -34,14 +36,14 @@ public class QuizService : IQuizService
             throw new AlreadyExistException($"This quiz already exist with id : {dto.Name}");
 
         var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(dto.ContentCategoryId))
-            ?? throw new NotFoundException($"This content category is not found with id : {dto.ContentCategoryId}");
+           ?? throw new NotFoundException($"This Content category is not found with id : {dto.ContentCategoryId}");
 
         var existUser = await this.userRepository.SelectAsync(c => c.Id.Equals(dto.UserId))
-            ?? throw new NotFoundException($"This user is not found with id : {dto.UserId}");
+            ?? throw new NotFoundException($"This Content category is not found with id : {dto.UserId}");
 
         var mappedQuiz = this.mapper.Map<Quiz>(dto);
-        mappedQuiz.StartTime = DateTime.Parse(mappedQuiz.StartTime.ToString());
-        mappedQuiz.EndTime = DateTime.Parse(mappedQuiz.EndTime.ToString());
+        mappedQuiz.User = existUser;
+        mappedQuiz.ContentCategory = existCategory;
 
         await this.quizRepository.InsertAsync(mappedQuiz);
         await this.quizRepository.SaveAsync();

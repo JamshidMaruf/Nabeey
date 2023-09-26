@@ -5,9 +5,10 @@ namespace Nabeey.Service.Interfaces;
 
 public interface IBookService
 {
-    Task<BookResultDto> AddAsync(BookCreationDto dto);
-    Task<BookResultDto> UpdateAsync(BookUpdateDto dto);
-    Task<bool> DeleteAsync(long id);
-    Task<BookResultDto> GetByIdAsync(long id);
-    ValueTask<IEnumerable<BookResultDto>> GetAllAsync(PaginationParams @params,Filter filter, string search = null);
+    ValueTask<BookResultDto> AddAsync(BookCreationDto dto);
+    ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto);
+    ValueTask<bool> DeleteAsync(long id);
+    ValueTask<BookResultDto> RetrieveByIdAsync(long id);
+    ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params,Filter filter, string search = null);
+    ValueTask<IEnumerable<BookResultDto>> RetrieveAllByContentIdAsync(long contentId);
 }

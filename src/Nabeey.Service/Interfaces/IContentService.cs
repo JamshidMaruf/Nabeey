@@ -6,5 +6,5 @@ namespace Nabeey.Service.Interfaces;
 public interface IContentService
 {
 	ValueTask<ContentResultDto> RetrieveByIdAsync(long id);
-	ValueTask<IEnumerable<ContentResultDto>> RetrieveAllAsnyc(PaginationParams @params, Filter filter, string search = null);
+	ValueTask<IEnumerable<ContentResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
 }
