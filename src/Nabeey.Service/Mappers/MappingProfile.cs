@@ -63,9 +63,9 @@ public class MappingProfile : Profile
         CreateMap<ArticleUpdateDto, Article>().ReverseMap(); ;
 
         //Book
-        CreateMap<Book, BookResultDto>().ReverseMap(); ;
-        CreateMap<BookCreationDto, Book>().ReverseMap(); ;
-        CreateMap<BookUpdateDto, Book>().ReverseMap(); ;
+        CreateMap<Book, BookResultDto>().ReverseMap(); 
+        CreateMap<BookCreationDto, Book>().ReverseMap(); 
+        CreateMap<BookUpdateDto, Book>().ReverseMap(); 
 
         //Content
         CreateMap<Content, ContentResultDto>().ReverseMap();
