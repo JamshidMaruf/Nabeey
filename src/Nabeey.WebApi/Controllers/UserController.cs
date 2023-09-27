@@ -54,12 +54,12 @@ public class UserController : BaseController
     [HttpGet("get-all")]
     public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
-		[FromQuery] Filter filter, string search)
+		 Filter filter, [FromQuery] string search)
         => Ok(new Response
         {
             StatusCode = 200,
             Message = "Success",
-            Data = await this.userService.RetrieveAllAsync(@params,filter,search)
+            Data = await this.userService.RetrieveAllAsync(@params,search)
         });
 
     [HttpPatch("upgrade-role")]
