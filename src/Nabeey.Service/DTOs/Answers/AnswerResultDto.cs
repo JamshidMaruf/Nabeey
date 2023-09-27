@@ -5,9 +5,9 @@ namespace Nabeey.Service.DTOs.Answers;
 
 public class AnswerResultDto
 {
-    public long Id { get; set; }
+	public long Id { get; set; }
 	public string Text { get; set; }
 	public AssetResultDto Asset { get; set; }
 	public QuestionResultDto Question { get; set; }
-    public bool IsTrue { get; set; }
+	public bool IsTrue { get; set; }
 }

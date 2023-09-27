@@ -7,8 +7,8 @@ namespace Nabeey.Service.DTOs.QuestionAnswers;
 
 public class QuestionAnswerResultDto
 {
-    public AnswerResultDto Answer { get; set; }
-    public QuestionResultDto Question { get; set; }
-    public QuizResultDto Quiz { get; set; }
-    public UserResultDto User { get; set; }
+	public AnswerResultDto Answer { get; set; }
+	public QuestionResultDto Question { get; set; }
+	public QuizResultDto Quiz { get; set; }
+	public UserResultDto User { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentCategories;
-using Nabeey.Service.DTOs.Contents;
 
 namespace Nabeey.Service.Interfaces;
 

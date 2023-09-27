@@ -1,5 +1,6 @@
-﻿using Nabeey.Domain.Enums;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Nabeey.Domain.Enums;
+using Nabeey.Service.DTOs.Assets;
 
 namespace Nabeey.Service.DTOs.Users;
 
@@ -11,5 +12,5 @@ public class UserResultDto
 	public string Email { get; set; }
 	public string Phone { get; set; }
 	public Role UserRole { get; set; }
-	public IFormFile Image { get; set; }
+	public AssetResultDto Asset { get; set; }
 }

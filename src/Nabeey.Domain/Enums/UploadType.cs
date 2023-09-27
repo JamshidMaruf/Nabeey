@@ -2,8 +2,8 @@
 
 public enum UploadType
 {
-    Images = 1,
-    Files,
-    Videos,
-    Audios
+	Images = 1,
+	Files,
+	Videos,
+	Audios
 }

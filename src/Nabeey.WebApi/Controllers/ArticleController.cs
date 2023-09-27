@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.Interfaces;
@@ -6,58 +7,63 @@ using Nabeey.WebApi.Models;
 
 namespace Nabeey.WebApi.Controllers;
 
+[Authorize]
 public class ArticleController : BaseController
 {
-    private readonly IArticleService service;
-    public ArticleController(IArticleService service)
-    {
-        this.service = service;
-    }
+	private readonly IArticleService service;
+	public ArticleController(IArticleService service)
+	{
+		this.service = service;
+	}
 
-    [HttpPost("create")]
-    public async Task<IActionResult> PostAsync([FromForm] ArticleCreationDto dto)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.AddAsync(dto)
-        });
+	[HttpPost("create")]
+	public async Task<IActionResult> PostAsync([FromForm] ArticleCreationDto dto)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.AddAsync(dto)
+		});
 
-    [HttpPut("update")]
-    public async Task<IActionResult> UpdateAsync(ArticleUpdateDto dto)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.ModifyAsync(dto)
-        });
 
-    [HttpDelete("delete/{id:long}")]
-    public async Task<IActionResult> DeleteAsync(long id)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.DeleteAsync(id)
-        });
+	[HttpPut("update")]
+	public async Task<IActionResult> UpdateAsync(ArticleUpdateDto dto)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.ModifyAsync(dto)
+		});
 
-    [HttpGet("get/{id:long}")]
-    public async Task<IActionResult> GetAsync(long id)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.RetrieveAsync(id)
-        });
 
-    [HttpGet("get-all")]
-    public async Task<IActionResult> GetAllAsync(
-        [FromQuery] PaginationParams @params,
-        [FromQuery] Filter filter, string search)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.RetrieveAllAsync(@params, filter, search)
-        });
+	[HttpDelete("delete/{id:long}")]
+	public async Task<IActionResult> DeleteAsync(long id)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.DeleteAsync(id)
+		});
+
+
+	[HttpGet("get/{id:long}")]
+	public async Task<IActionResult> GetAsync(long id)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.RetrieveAsync(id)
+		});
+
+
+	[HttpGet("get-all")]
+	public async Task<IActionResult> GetAllAsync(
+		[FromQuery] PaginationParams @params,
+		[FromQuery] Filter filter, string search)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.RetrieveAllAsync(@params, filter, search)
+		});
 }

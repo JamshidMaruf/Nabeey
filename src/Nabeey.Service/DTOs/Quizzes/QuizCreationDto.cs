@@ -1,8 +1,4 @@
-﻿using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Domain.Entities.Users;
-using Nabeey.Service.DTOs.Users;
-
-namespace Nabeey.Service.DTOs.Quizzes;
+﻿namespace Nabeey.Service.DTOs.Quizzes;
 
 public class QuizCreationDto
 {

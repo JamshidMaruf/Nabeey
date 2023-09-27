@@ -15,7 +15,7 @@ public class ContentAudiosController : BaseController
 	}
 
 	[HttpPost("create")]
-	public async ValueTask<IActionResult> PostAsync(ContentAudioCreationDto dto)
+	public async ValueTask<IActionResult> PostAsync([FromForm] ContentAudioCreationDto dto)
 	   => Ok(new Response
 	   {
 		   StatusCode = 200,
@@ -45,10 +45,20 @@ public class ContentAudiosController : BaseController
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
 		[FromQuery] Filter filter, string search)
+		  => Ok(new Response
+		  {
+			  StatusCode = 200,
+			  Message = "Success",
+			  Data = await this.contentAudioService.RetrieveAsync(@params, filter, search)
+		  });
+
+
+	[HttpGet("get-by-categoryId/{categoryId:long}")]
+	public async ValueTask<IActionResult> GetByCategoryIdAsync(long categoryId)
 	  => Ok(new Response
 	  {
 		  StatusCode = 200,
 		  Message = "Success",
-		  Data = await this.contentAudioService.RetrieveAsync(@params, filter, search)
+		  Data = await this.contentAudioService.RetrieveAllByCategoryIdAsync(categoryId)
 	  });
 }

@@ -8,16 +8,16 @@ namespace Nabeey.Domain.Entities.Users;
 
 public class User : Auditable
 {
-    public string FirstName { get; set; } 
-    public string LastName { get; set; } 
-    public string Email { get; set; }
-    public string Phone { get; set; }
-    public string PasswordHash { get; set; } = default!;
-    public Role UserRole { get; set; } = Role.User;
+	public string FirstName { get; set; }
+	public string LastName { get; set; }
+	public string Email { get; set; }
+	public string Phone { get; set; }
+	public string PasswordHash { get; set; } = default!;
+	public Role UserRole { get; set; } = Role.User;
 
-    public long? AssetId { get; set; }
-    public Asset Asset { get; set; }
+	public long? AssetId { get; set; }
+	public Asset Asset { get; set; }
 
-    public IEnumerable<Article> Articles { get; set; }
-    public ICollection<Quiz> Quizzes { get; set; }
+	public IEnumerable<Article> Articles { get; set; }
+	public ICollection<Quiz> Quizzes { get; set; }
 }
