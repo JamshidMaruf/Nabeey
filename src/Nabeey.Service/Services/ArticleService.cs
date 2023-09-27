@@ -4,11 +4,13 @@ using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.Users;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
+using Nabeey.Service.Helpers;
 using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
@@ -17,22 +19,31 @@ public class ArticleService : IArticleService
 {
     private readonly IMapper mapper;
     private readonly IAssetService assetService;
+    private readonly IRepository<User> userRepository;
     private readonly IRepository<Article> articleRepository;
     private readonly IRepository<Content> contentRepository;
     public ArticleService(
-        IMapper mapper, 
+        IMapper mapper,
         IAssetService assetService,
-        IRepository<Article> articleRepository, 
-        IRepository<Content> contentRepository) 
+        IRepository<User> userRepository,
+        IRepository<Article> articleRepository,
+        IRepository<Content> contentRepository)
     {
         this.mapper = mapper;
         this.assetService = assetService;
+        this.userRepository = userRepository;
         this.articleRepository = articleRepository;
         this.contentRepository = contentRepository;
     }
 
     public async ValueTask<ArticleResultDto> AddAsync(ArticleCreationDto dto)
     {
+        if (HttpContextHelper.GetUserId != 0)
+            throw new CustomException(401, "This user is not authorized");
+
+        var user = await this.userRepository.SelectAsync(u => u.Id.Equals(HttpContextHelper.GetUserId))
+            ?? throw new NotFoundException("This user is not Found");
+
         var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
 
         var existContent = await this.contentRepository.SelectAsync(a => a.Id.Equals(dto.ContentId))
@@ -40,6 +51,8 @@ public class ArticleService : IArticleService
 
         var mapped = this.mapper.Map<Article>(dto);
         mapped.Content = existContent;
+        mapped.User = user;
+        mapped.UserId = user.Id;
         mapped.Image = imageAsset;
         mapped.ImageId = imageAsset.Id;
 
@@ -82,19 +95,29 @@ public class ArticleService : IArticleService
         return this.mapper.Map<ArticleResultDto>(existArticle);
     }
 
-    public ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByUserIdAsync(long userId)
+    public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByUserIdAsync(long userId)
     {
-        throw new NotImplementedException();
+        var existUser = await this.userRepository.SelectAsync(u => u.Id == userId)
+            ?? throw new NotFoundException("This user is not found");
+
+        var userArticles = await this.articleRepository.SelectAll(a => a.UserId == userId).ToListAsync();
+        
+        return this.mapper.Map<IEnumerable<ArticleResultDto>>(userArticles);    
     }
 
-    public ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByContentIdAsync(long contentId)
+    public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllByContentIdAsync(long contentId)
     {
-        throw new NotImplementedException();
+        var existContent = await this.contentRepository.SelectAsync(u => u.Id == contentId)
+            ?? throw new NotFoundException("This user is not found");
+
+        var contentArticles = await this.articleRepository.SelectAll(a => a.UserId == contentId).ToListAsync();
+
+        return this.mapper.Map<IEnumerable<ArticleResultDto>>(contentArticles);
     }
 
     public async ValueTask<IEnumerable<ArticleResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var allArticles = (await this.articleRepository.SelectAll(includes: new[] { "Content" })
+        var allArticles = (await this.articleRepository.SelectAll(includes: new[] { "Content", "Image" })
             .ToPaginate(@params)
             .ToListAsync());
 

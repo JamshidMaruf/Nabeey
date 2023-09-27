@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Nabeey.Service\Nabeey.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

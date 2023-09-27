@@ -4,7 +4,7 @@ using Nabeey.Domain.Entities.Quizzes;
 
 namespace Nabeey.Domain.Entities.Users;
 
-public class UserCertificete : Auditable
+public class UserCertificate : Auditable
 {
 	public long UserId { get; set; }
 	public User User { get; set; }

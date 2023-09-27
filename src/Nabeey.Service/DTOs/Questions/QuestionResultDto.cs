@@ -6,5 +6,5 @@ public class QuestionResultDto
 {
 	public long Id { get; set; }
 	public string Text { get; set; }
-	public AssetResultDto File { get; set; }
+	public AssetResultDto Image { get; set; }
 }

@@ -51,7 +51,16 @@ public class QuizQuestionService : IQuizQuestionService
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == dto.Id)
             ?? throw new NotFoundException($"This quiz, question is not found with id : {dto.Id}");
 
+        var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.QuizId))
+            ?? throw new NotFoundException($"This quiz is not found with id : {dto.QuizId}");
+
+        var existQuestion = await this.questionRepository.SelectAsync(q => q.Id.Equals(dto.QuestionId))
+            ?? throw new NotFoundException($"This question is not found with id : {dto.QuestionId}");
+
         this.mapper.Map(dto, quizQuestion);
+        quizQuestion.Quiz = existQuiz;
+        quizQuestion.Question = existQuestion;
+
         this.quizQuestionRepository.Update(quizQuestion);
         await this.quizQuestionRepository.SaveAsync();
 
@@ -93,12 +102,18 @@ public class QuizQuestionService : IQuizQuestionService
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(quizId))
             ?? throw new NotFoundException("This quiz is not found");
 
-        IEnumerable<Question> questions = new List<Question>();
+        List<Question> questions = new List<Question>();
         var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
 
         foreach (var item in quizQuestions)
             if (item.QuizId == existQuiz.Id)
-                questions = questions.Append(item.Question);
+            {
+                questions.Add(item.Question);
+                if (questions.Count == existQuiz.QuestionCount)
+                {
+                    break;
+                }
+            }
 
         ShuffleQuestions(questions);
 

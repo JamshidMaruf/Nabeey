@@ -16,7 +16,7 @@ public class UserController : BaseController
     }
 
     [HttpPost("create")]
-    public async ValueTask<IActionResult> PostAsync(UserCreationDto dto)
+    public async ValueTask<IActionResult> PostAsync([FromForm]UserCreationDto dto)
         => Ok(new Response
         {
             StatusCode = 200,

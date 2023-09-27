@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Nabeey.Domain.Entities.QuestionAnswers;
-using Nabeey.Domain.Entities.Questions;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Domain.Entities.Contents;
-using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Answers;
-using Nabeey.Domain.Entities.Quizzes;
+using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.Users;
-using Nabeey.Domain.Enums;
+using Nabeey.Domain.Entities.Contents;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.QuestionAnswers;
+using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Domain.Entities.Quizzes;
+using Nabeey.Domain.Entities.Users;
 
 namespace Nabeey.DataAccess.Contexts;
 
@@ -32,8 +31,6 @@ public class AppDbContext : DbContext
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<QuizQuestion> QuizQuestions { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<UserArticle> UserArticles { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,7 +56,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Question>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<Quiz>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<QuizQuestion>().HasQueryFilter(u => !u.IsDeleted);
-        modelBuilder.Entity<UserArticle>().HasQueryFilter(u => !u.IsDeleted);
         modelBuilder.Entity<QuestionAnswer>().HasQueryFilter(qa => !qa.IsDeleted);
         #endregion
 
@@ -69,6 +65,25 @@ public class AppDbContext : DbContext
         //userArticle.HasKey(ua => new { ua.UserId, ua.ArticleId });
         //userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
         //userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
+
+        // Article and User
+        modelBuilder.Entity<Article>()
+          .HasOne(a => a.User)
+          .WithMany(u => u.Articles)
+          .HasForeignKey(a => a.UserId)
+          .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Article>()
+        .HasOne(a => a.Content)
+        .WithMany(c => c.Articles)
+        .HasForeignKey(a => a.ContentId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Asset)
+            .WithOne()
+            .HasForeignKey<User>(u => u.AssetId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         // Quizzes <=> Questions
         modelBuilder.Entity<Quiz>()
