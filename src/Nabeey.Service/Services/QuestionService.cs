@@ -69,7 +69,7 @@ public class QuestionService : IQuestionService
 
     public async ValueTask<QuestionResultDto> RetrieveByIdAsync(long id)
     {
-        var question = await repository.SelectAsync(x => x.Id.Equals(id), includes: new[] { "Image" })
+        var question = await repository.SelectAsync(x => x.Id.Equals(id), includes: new[] { "Answers","Image" })
             ?? throw new NotFoundException($"Could not find {id}");
 
         var res = this.mapper.Map<QuestionResultDto>(question);
@@ -78,10 +78,19 @@ public class QuestionService : IQuestionService
 
     public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var question = await repository.SelectAll(includes: new[] { "Image" })
-            .ToPaginate(@params)
-            .ToListAsync();
-        var res = this.mapper.Map<IEnumerable<QuestionResultDto>>(question);
-        return res;
+        var questions = await repository
+          .SelectAll()
+          .Include(q => q.Answers)
+          .Include(q => q.Image)
+          .ToPaginate(@params)
+          .ToListAsync();
+
+        if (search is not null)
+        {
+            questions = questions.Where(d => d.Text.Contains(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
     }
 }

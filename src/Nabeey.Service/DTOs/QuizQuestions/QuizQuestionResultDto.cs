@@ -11,5 +11,4 @@ public class QuizQuestionResultDto
     public QuizResultDto Quiz { get; set; }
     public QuestionResultDto Question { get; set; }
 
-    public ICollection<AnswerResultDto> Answers { get; set; }
 }

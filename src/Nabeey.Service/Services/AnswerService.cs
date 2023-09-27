@@ -8,6 +8,9 @@ using Nabeey.Domain.Entities.Answers;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Service.Extensions;
+using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Enums;
+using Nabeey.Service.DTOs.Assets;
 
 namespace Nabeey.Service.Services;
 
@@ -15,21 +18,32 @@ public class AnswerService : IAnswerService
 {
     private readonly IMapper mapper;
     private readonly IRepository<Answer> repository;
+    private readonly IAssetService assetService;
     private readonly IRepository<Question> quetionRepository;
 
-    public AnswerService(IRepository<Answer> repository, IMapper mapper, IRepository<Question> quetionRepository)
+    public AnswerService(IRepository<Answer> repository, IMapper mapper, IRepository<Question> quetionRepository, IAssetService assetService)
     {
         this.mapper = mapper;
         this.repository = repository;
+        this.assetService = assetService;
         this.quetionRepository = quetionRepository;
     }
 
     public async ValueTask<AnswerResultDto> AddAsync(AnswerCreationDto dto)
     {
-        Question existQuestion = await this.quetionRepository.SelectAsync(q => q.Equals(dto.QuestionId))
-            ?? throw new NotFoundException($"This quetionId is not found {dto.QuestionId}");
+        Question existQuestion = await this.quetionRepository.SelectAsync(q => q.Id.Equals(dto.QuestionId))
+            ?? throw new NotFoundException($"This questionId is not found {dto.QuestionId}");
+
+        var imageAsset = new Asset();
+        if (dto.Asset != null)
+        {
+            imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Asset }, UploadType.Images);
+        }
 
         Answer mapAnswer = mapper.Map<Answer>(dto);
+        mapAnswer.Asset = imageAsset;
+        mapAnswer.AssetId = imageAsset.Id;
+
         await this.repository.InsertAsync(mapAnswer);
         await this.repository.SaveAsync();
 
@@ -54,6 +68,7 @@ public class AnswerService : IAnswerService
             ?? throw new NotFoundException($"This id:{id} is not found ");
 
         this.repository.Delete(existAnswer);
+        await this.assetService.RemoveAsync(existAnswer.Asset);
         await this.repository.SaveAsync();
 
         return true;

@@ -74,16 +74,38 @@ public class AppDbContext : DbContext
           .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Article>()
-        .HasOne(a => a.Content)
-        .WithMany(c => c.Articles)
-        .HasForeignKey(a => a.ContentId)
-        .OnDelete(DeleteBehavior.Restrict);
+          .HasOne(a => a.Content)
+          .WithMany(c => c.Articles)
+          .HasForeignKey(a => a.ContentId)
+          .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<User>()
             .HasOne(u => u.Asset)
             .WithOne()
             .HasForeignKey<User>(u => u.AssetId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        //Question and Asset
+        modelBuilder.Entity<Question>()
+           .HasOne(q => q.Image)
+           .WithOne()
+           .HasForeignKey<Question>(q => q.ImageId);
+
+        modelBuilder.Entity<Answer>()
+           .HasOne(a => a.Asset)
+           .WithOne()
+           .HasForeignKey<Answer>(a => a.AssetId);
+
+        //Question and Answer
+        modelBuilder.Entity<Question>()
+            .HasMany(q => q.Answers)
+            .WithOne(a => a.Question) 
+            .HasForeignKey(a => a.QuestionId);
+
+        modelBuilder.Entity<Answer>()
+            .HasOne(a => a.Question)
+            .WithMany(q => q.Answers)
+            .HasForeignKey(a => a.QuestionId);
 
         // Quizzes <=> Questions
         modelBuilder.Entity<Quiz>()

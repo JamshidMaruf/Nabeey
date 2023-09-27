@@ -127,6 +127,16 @@ public class QuizService : IQuizService
             .ToPaginate(@params)
             .ToListAsync();
 
+        if (search is not null)
+        {
+            allQuizzes = allQuizzes.Where(d => d.Name.Contains(search,
+                StringComparison.OrdinalIgnoreCase)
+                || d.User.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.ContentCategory.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.QuestionCount.ToString().Equals(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         return this.mapper.Map<IEnumerable<QuizResultDto>>(allQuizzes);
     }
 }

@@ -7,6 +7,6 @@ public class AnswerCreationDto
 {
 	public string Text { get; set; }
 	public long QuestionId { get; set; }
-	public IFormFile File { get; set; }
+	public IFormFile? Asset { get; set; }
     public bool IsTrue { get; set; }
 }

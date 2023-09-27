@@ -82,7 +82,7 @@ public class QuizQuestionService : IQuizQuestionService
     public async ValueTask<QuizQuestionResultDto> RetrieveAsync(long id)
     {
         var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == id,
-            includes: new[] { "Quiz", "Question.Answers" })
+            includes: new[] { "Quiz.ContentCategory", "Question.Answers" })
             ?? throw new NotFoundException($"This quiz, question is not found with id : {id}");
 
         return this.mapper.Map<QuizQuestionResultDto>(quizQuestion);
@@ -93,9 +93,17 @@ public class QuizQuestionService : IQuizQuestionService
     public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var allQuizQuestion = await this.quizQuestionRepository.SelectAll(
-            includes: new[] { "Quiz", "Question" })
+            includes: new[] { "Quiz.ContentCategory", "Question.Answers" })
             .ToPaginate(@params)
             .ToListAsync();
+        if (search is not null)
+        {
+            allQuizQuestion = allQuizQuestion.Where(d => d.Quiz.Name.Contains(search,
+                StringComparison.OrdinalIgnoreCase)
+                || d.Question.Text.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.Quiz.QuestionCount.ToString().Equals(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
