@@ -15,7 +15,7 @@ namespace Nabeey.WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> PostAsync(AnswerCreationDto dto)
+        public async Task<IActionResult> PostAsync([FromForm]AnswerCreationDto dto)
             => Ok(new Response
             {
                 StatusCode = 200,

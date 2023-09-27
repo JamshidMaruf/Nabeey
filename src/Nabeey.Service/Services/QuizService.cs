@@ -46,6 +46,8 @@ public class QuizService : IQuizService
         var mappedQuiz = this.mapper.Map<Quiz>(dto);
         mappedQuiz.User = existUser;
         mappedQuiz.ContentCategory = existCategory;
+        mappedQuiz.StartTime = DateTime.Parse(mappedQuiz.StartTime.ToString());
+        mappedQuiz.EndTime = DateTime.Parse(mappedQuiz.EndTime.ToString());
 
         await this.quizRepository.InsertAsync(mappedQuiz);
         await this.quizRepository.SaveAsync();
@@ -124,6 +126,16 @@ public class QuizService : IQuizService
             includes: new[] { "ContentCategory", "User" })
             .ToPaginate(@params)
             .ToListAsync();
+
+        if (search is not null)
+        {
+            allQuizzes = allQuizzes.Where(d => d.Name.Contains(search,
+                StringComparison.OrdinalIgnoreCase)
+                || d.User.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.ContentCategory.Name.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.QuestionCount.ToString().Equals(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
 
         return this.mapper.Map<IEnumerable<QuizResultDto>>(allQuizzes);
     }
