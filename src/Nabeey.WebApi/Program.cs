@@ -35,7 +35,8 @@ builder.Services.AddControllersWithViews()
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-builder.Services.ConfigureSwagger();
+// JWT
+builder.Services.AddJwt(builder.Configuration);
 
 var app = builder.Build();
 
@@ -47,6 +48,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 

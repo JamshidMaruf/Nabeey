@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.Quizzes;
@@ -51,4 +52,14 @@ public class QuestionsController : BaseController
             Data = await this.questionService.RetrieveByIdAsync(id)
         });
 
+    [HttpGet("get-all")]
+    public async ValueTask<IActionResult> GetAllAsync(
+        [FromQuery] PaginationParams @params,
+        [FromQuery] Filter filter, string search)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.questionService.RetrieveAllAsync(@params, filter, search)
+        });
 }

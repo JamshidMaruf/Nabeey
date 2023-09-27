@@ -36,7 +36,6 @@ public class ContentCategoryService : IContentCategoryService
         var content = new Content { ContentCategoryId = mappedCategory.Id };
         await this.contentRepository.InsertAsync(content);
         await this.contentRepository.SaveAsync();
-
         return this.mapper.Map<ContentCategoryResultDto>(mappedCategory);
     }
 

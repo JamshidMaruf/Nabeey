@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Nabeey.DataAccess.Migrations
 {
-    public partial class InitialMig : Migration
+    public partial class ChangePropNameMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -314,8 +314,8 @@ namespace Nabeey.DataAccess.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    VideoLink = table.Column<string>(type: "text", nullable: true),
                     ContentId = table.Column<long>(type: "bigint", nullable: false),
-                    VideoPath = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)

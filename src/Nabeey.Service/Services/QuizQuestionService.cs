@@ -9,6 +9,7 @@ using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.Extensions;
+using Nabeey.Service.DTOs.Questions;
 
 namespace Nabeey.Service.Services;
 
@@ -80,7 +81,8 @@ public class QuizQuestionService : IQuizQuestionService
 
     public async ValueTask<QuizQuestionResultDto> RetrieveAsync(long id)
     {
-        var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == id)
+        var quizQuestion = await this.quizQuestionRepository.SelectAsync(q => q.Id == id,
+            includes: new[] { "Quiz.ContentCategory", "Question.Answers" })
             ?? throw new NotFoundException($"This quiz, question is not found with id : {id}");
 
         return this.mapper.Map<QuizQuestionResultDto>(quizQuestion);
@@ -91,33 +93,41 @@ public class QuizQuestionService : IQuizQuestionService
     public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var allQuizQuestion = await this.quizQuestionRepository.SelectAll(
-            includes: new[] { "Quiz", "Question" })
+            includes: new[] { "Quiz.ContentCategory", "Question.Answers" })
             .ToPaginate(@params)
             .ToListAsync();
+        if (search is not null)
+        {
+            allQuizQuestion = allQuizQuestion.Where(d => d.Quiz.Name.Contains(search,
+                StringComparison.OrdinalIgnoreCase)
+                || d.Question.Text.Contains(search, StringComparison.OrdinalIgnoreCase)
+                || d.Quiz.QuestionCount.ToString().Equals(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
         return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(allQuizQuestion);
     }
 
-    public async ValueTask<IEnumerable<QuizQuestionResultDto>> RetrieveAllByQuizIdAsync(long quizId)
+    public async ValueTask<IEnumerable<QuestionResultDto>> RetrieveAllByQuizIdAsync(long quizId)
     {
         var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(quizId))
             ?? throw new NotFoundException("This quiz is not found");
 
-        List<Question> questions = new List<Question>();
+        IEnumerable<Question> questions = new List<Question>();
         var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
 
         foreach (var item in quizQuestions)
             if (item.QuizId == existQuiz.Id)
             {
-                questions.Add(item.Question);
-                if (questions.Count == existQuiz.QuestionCount)
+                questions = questions.Append(item.Question);
+                if (questions.Count() == existQuiz.QuestionCount)
                 {
                     break;
                 }
             }
 
-        ShuffleQuestions(questions);
+        questions = ShuffleQuestions(questions);
 
-        return this.mapper.Map<IEnumerable<QuizQuestionResultDto>>(questions);
+        return this.mapper.Map<IEnumerable<QuestionResultDto>>(questions);
     }
 
     private static IEnumerable<Question> ShuffleQuestions(IEnumerable<Question> questions)

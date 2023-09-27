@@ -35,13 +35,13 @@ public static class CollectionExtension
 
         var json = JsonConvert.SerializeObject(metaData);
 
-        if(HttpContextHelper.ResponseHeaders is not null)
+       /* if(HttpContextHelper.ResponseHeaders is not null)
         {
             if (HttpContextHelper.ResponseHeaders.ContainsKey("X-Pagination"))
                 HttpContextHelper.ResponseHeaders.Remove("X-Pagination");
 
             HttpContextHelper.ResponseHeaders.Add("X-Pagination", json);
-        }
+        }*/
 
         return @params.PageIndex > 0 && @params.PageSize > 0 ?
             entities.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize) :

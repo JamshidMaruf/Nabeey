@@ -45,7 +45,6 @@ public class ContentAudioService : IContentAudioService
 
         mappedAudio.Audio = audio;
         mappedAudio.Content = content;
-
         await this.contentAudioRepository.InsertAsync(mappedAudio);
         await this.contentAudioRepository.SaveAsync();
 
