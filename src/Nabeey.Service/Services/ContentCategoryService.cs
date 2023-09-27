@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Configurations;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Service.DTOs.ContentCategories;
-using Nabeey.Service.DTOs.Contents;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Service.Extensions;
+using Nabeey.Domain.Configurations;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Service.DTOs.ContentCategories;
 
 namespace Nabeey.Service.Services;
 
 public class ContentCategoryService : IContentCategoryService
 {
     private readonly IMapper mapper;
-    private readonly IRepository<ContentCategory> repository;
     private readonly IRepository<Content> contentRepository;
+    private readonly IRepository<ContentCategory> repository;
+
     public ContentCategoryService(IRepository<ContentCategory> repository, IMapper mapper, IRepository<Content> contentRepository)
     {
         this.mapper = mapper;
@@ -78,7 +79,12 @@ public class ContentCategoryService : IContentCategoryService
 
     public async ValueTask<IEnumerable<ContentCategoryResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
-        var categories = await this.repository.SelectAll().ToListAsync();
+        var categories = await this.repository.SelectAll()
+                                              .ToPaginate(@params)
+                                              .ToListAsync();
+        if (search is not null)
+            categories = categories.Where(category => category.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+
         return this.mapper.Map<IEnumerable<ContentCategoryResultDto>>(categories);
     }
 }
