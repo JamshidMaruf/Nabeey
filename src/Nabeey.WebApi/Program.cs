@@ -15,6 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Authorization
+builder.Services.ConfigureSwagger();
+
 // Lowercase routing
 
 builder.Services.AddControllers(options =>
