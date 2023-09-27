@@ -335,19 +335,20 @@ namespace Nabeey.DataAccess.Migrations
                 name: "QuestionAnswers",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AnswerId = table.Column<long>(type: "bigint", nullable: false),
                     QuestionId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     QuizId = table.Column<long>(type: "bigint", nullable: false),
                     IsTrue = table.Column<bool>(type: "boolean", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionAnswers", x => new { x.QuestionId, x.AnswerId });
+                    table.PrimaryKey("PK_QuestionAnswers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_QuestionAnswers_Answers_AnswerId",
                         column: x => x.AnswerId,
@@ -378,16 +379,17 @@ namespace Nabeey.DataAccess.Migrations
                 name: "QuizQuestions",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     QuizId = table.Column<long>(type: "bigint", nullable: false),
                     QuestionId = table.Column<long>(type: "bigint", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizQuestions", x => new { x.QuizId, x.QuestionId });
+                    table.PrimaryKey("PK_QuizQuestions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_QuizQuestions_Questions_QuestionId",
                         column: x => x.QuestionId,
@@ -473,6 +475,11 @@ namespace Nabeey.DataAccess.Migrations
                 column: "AnswerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QuestionAnswers_QuestionId",
+                table: "QuestionAnswers",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuestionAnswers_QuizId",
                 table: "QuestionAnswers",
                 column: "QuizId");
@@ -491,6 +498,11 @@ namespace Nabeey.DataAccess.Migrations
                 name: "IX_QuizQuestions_QuestionId",
                 table: "QuizQuestions",
                 column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizQuestions_QuizId",
+                table: "QuizQuestions",
+                column: "QuizId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_ContentCategoryId",

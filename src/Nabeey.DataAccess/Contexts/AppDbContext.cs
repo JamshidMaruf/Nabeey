@@ -99,9 +99,6 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<QuizQuestion>()
-            .HasKey(qq => new { qq.QuizId, qq.QuestionId });
-
-        modelBuilder.Entity<QuizQuestion>()
             .HasOne(qq => qq.Quiz)
             .WithMany()
             .HasForeignKey(qq => qq.QuizId);
@@ -110,10 +107,6 @@ public class AppDbContext : DbContext
             .HasOne(qq => qq.Question)
             .WithMany()
             .HasForeignKey(qq => qq.QuestionId);
-
-        // Questions <=> Answers
-        var questionAnswer = modelBuilder.Entity<QuestionAnswer>();
-        questionAnswer.HasKey(qa => new { qa.QuestionId, qa.AnswerId });
         #endregion
     }
 }

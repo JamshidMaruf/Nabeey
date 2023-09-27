@@ -34,6 +34,9 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.ConfigureSwagger();
 
+// JWT
+builder.Services.AddJwt(builder.Configuration);
+
 var app = builder.Build();
 
 PathHelper.WebRootPath = Path.GetFullPath("wwwroot");
@@ -44,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
