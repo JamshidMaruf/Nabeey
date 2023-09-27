@@ -19,10 +19,11 @@ public class BookService : IBookService
     private readonly IRepository<Content> contentRepository;
     private readonly IRepository<ContentBook> contentBookRepository;
 
-    public BookService(IMapper mapper, IRepository<Book> bookRepository, IRepository<ContentBook> contentBookRepository)
+    public BookService(IMapper mapper, IRepository<Book> bookRepository, IRepository<ContentBook> contentBookRepository, IRepository<Content> contentRepository)
     {
         this.mapper = mapper;
         this.bookRepository = bookRepository;
+        this.contentRepository = contentRepository;
         this.contentBookRepository = contentBookRepository;
     }
 
@@ -33,6 +34,7 @@ public class BookService : IBookService
 
         var mappedBook = this.mapper.Map<Book>(dto);
         await this.bookRepository.InsertAsync(mappedBook);
+        await this.bookRepository.SaveAsync();
 
         var contentBook = new ContentBook
         {

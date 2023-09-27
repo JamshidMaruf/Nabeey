@@ -25,7 +25,7 @@ public class UserController : BaseController
         });
 
     [HttpPut("update")]
-    public async ValueTask<IActionResult> PutAsync(UserUpdateDto dto)
+    public async ValueTask<IActionResult> PutAsync([FromForm]UserUpdateDto dto)
         => Ok(new Response
         {
             StatusCode = 200,
@@ -54,7 +54,7 @@ public class UserController : BaseController
     [HttpGet("get-all")]
     public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
-		 Filter filter, [FromQuery] string search)
+		[FromQuery] string search)
         => Ok(new Response
         {
             StatusCode = 200,

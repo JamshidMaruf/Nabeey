@@ -55,12 +55,12 @@ public class ContentCategoriesController : BaseController
 
     [HttpGet("get-all")]
     public async ValueTask<IActionResult> GetAllAsync(
-    [FromQuery] PaginationParams @params,Filter filter,
+    [FromQuery] PaginationParams @params,
     [FromQuery]  string search)
     => Ok(new Response
     {
         StatusCode = 200,
         Message = "Success",
-        Data = await this.contentCategoryService.RetrieveAllAsync(@params,filter, search)
+        Data = await this.contentCategoryService.RetrieveAllAsync(@params, search)
     });
 }

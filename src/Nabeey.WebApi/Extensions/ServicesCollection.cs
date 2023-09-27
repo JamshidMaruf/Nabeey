@@ -77,7 +77,7 @@ public static class ServicesCollection
                 }
             };
 
-            setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            //setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
             setup.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
