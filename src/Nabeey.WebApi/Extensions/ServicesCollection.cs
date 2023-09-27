@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.DataAccess.Repositories;
-using Nabeey.Service.Interfaces;
+﻿using System.Text;
 using Nabeey.Service.Mappers;
 using Nabeey.Service.Services;
-using System.Text;
+using Microsoft.OpenApi.Models;
+using Nabeey.Service.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using Nabeey.DataAccess.Repositories;
+using Nabeey.DataAccess.IRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Nabeey.WebApi.Extensions;
 
@@ -19,14 +19,18 @@ public static class ServicesCollection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuizService, QuizService>();
-        services.AddScoped<IQuizQuestionService, QuizQuestionService>();
-        services.AddScoped<IQuestionService, QuestionService>();
-        services.AddScoped<IAnswerService, AnswerService>();
-        services.AddScoped<IAssetService, AssetService>();
         services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IAssetService, AssetService>();
+        services.AddScoped<IAnswerService, AnswerService>();
+        services.AddScoped<IArticleService, ArticleService>();
+        services.AddScoped<IContentService, ContentService>();
+        services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IContentVideoService, ContentVideoService>();
+        services.AddScoped<IQuizQuestionService, QuizQuestionService>();
+        services.AddScoped<IQuestionAnswerService, QuestionAnswerService>();
         services.AddScoped<IContentCategoryService, ContentCategoryService>();
 
+        services.AddHttpContextAccessor();
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.Contexts;
 using Nabeey.Service.Helpers;
-using Nabeey.Service.Mappers;
 using Nabeey.WebApi.Extensions;
 using Nabeey.WebApi.Middlewares;
 
@@ -32,6 +31,8 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 

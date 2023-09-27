@@ -11,6 +11,7 @@ using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.Contents;
 using Nabeey.Service.DTOs.ContentVideos;
+using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
 
@@ -59,11 +60,11 @@ public class MappingProfile : Profile
         CreateMap<Content, ContentResultDto>().ReverseMap();
 
         //Question
-        //CreateMap<Question, QuestionResultDto>();
-        //CreateMap<QuestionCreationDto, Question>();
-        //CreateMap<QuestionUpdateDto, Question>();
+        CreateMap<Question, QuestionResultDto>();
+        CreateMap<QuestionCreationDto, Question>();
+        CreateMap<QuestionUpdateDto, Question>();
 
-        //Quizz
+        //Quiz
         CreateMap<Quiz, QuizResultDto>().ReverseMap();
         CreateMap<QuizCreationDto, Quiz>().ReverseMap();
         CreateMap<QuizUpdateDto, Quiz>().ReverseMap();

@@ -107,13 +107,13 @@ public class QuizService : IQuizService
         return this.mapper.Map<QuizResultDto>(existQuiz);
     }
 
-    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveByContentCategoryIdAsync(long contentId)
+    public async ValueTask<IEnumerable<QuizResultDto>> RetrieveByContentCategoryIdAsync(long contentCategoryId)
     {
-        var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(contentId))
+        var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(contentCategoryId))
             ?? throw new NotFoundException("This ContentCategory is not found");
 
         var quizzes = await this.quizRepository.SelectAll()
-            .Where(c => c.ContentCategoryId == contentId).ToListAsync();
+            .Where(c => c.ContentCategoryId == contentCategoryId).ToListAsync();
 
         return this.mapper.Map<IEnumerable<QuizResultDto>>(quizzes);
     }

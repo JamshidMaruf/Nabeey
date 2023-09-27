@@ -18,6 +18,6 @@ public class User : Auditable
     public long? AssetId { get; set; }
     public Asset Asset { get; set; }
 
-    public IEnumerable<UserArticle> UserArticles { get; set; }
+    public IEnumerable<Article> Articles { get; set; }
     public ICollection<Quiz> Quizzes { get; set; }
 }
