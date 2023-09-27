@@ -121,6 +121,12 @@ public class ArticleService : IArticleService
             .ToPaginate(@params)
             .ToListAsync());
 
+        if (search is not null)
+        {
+            allArticles = allArticles.Where(d => d.Text.Contains(search,
+                StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         return this.mapper.Map<IEnumerable<ArticleResultDto>>(allArticles);
     }
 }

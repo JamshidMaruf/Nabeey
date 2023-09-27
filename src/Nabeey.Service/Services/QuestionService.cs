@@ -10,6 +10,7 @@ using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Nabeey.Service.Services;
 
@@ -32,8 +33,18 @@ public class QuestionService : IQuestionService
             imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
         }
 
-        var mapQuestion = mapper.Map<Question>(dto);
-        mapQuestion.Image = imageAsset;
+        var createImage = new Asset()
+        {
+            FileName = imageAsset.FileName,
+            FilePath = imageAsset.FilePath,
+        };
+
+        var mapQuestion = new Question
+        {
+            Text = dto.Text,
+            Image = createImage,
+        };
+
         mapQuestion.ImageId = imageAsset.Id;
 
         await repository.InsertAsync(mapQuestion);
