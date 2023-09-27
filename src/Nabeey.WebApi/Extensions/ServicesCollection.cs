@@ -25,11 +25,11 @@ public static class ServicesCollection
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<IContentService, ContentService>();
         services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IQuizResultService, QuizResultService>();
         services.AddScoped<IContentVideoService, ContentVideoService>();
         services.AddScoped<IQuizQuestionService, QuizQuestionService>();
         services.AddScoped<IQuestionAnswerService, QuestionAnswerService>();
         services.AddScoped<IContentCategoryService, ContentCategoryService>();
-
         services.AddHttpContextAccessor();
     }
 
@@ -77,12 +77,12 @@ public static class ServicesCollection
                 }
             };
 
-            setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            //setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
-            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    { jwtSecurityScheme, Array.Empty<string>() }
-                });
+            //setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            //    {
+            //        { jwtSecurityScheme, Array.Empty<string>() }
+            //    });
         });
     }
 }

@@ -30,12 +30,12 @@ public class ContentVideoService : IContentVideoService
         var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(dto.ContentId))
                       ?? throw new NotFoundException("This content is not found");
 
-        var isChecked = YouTubeLinkValidator.IsValidYouTubeLink(dto.VideoPath);
+        var isChecked = YouTubeLinkValidator.IsValidYouTubeLink(dto.VideoLink);
         if (!isChecked)
             throw new NotFoundException("This video is not found");
 
         var mappedVideo = this.mapper.Map<ContentVideo>(dto);
-        mappedVideo.Content = content;
+        mappedVideo.Content= content;
         await this.contentVideoRepository.InsertAsync(mappedVideo);
         await this.contentVideoRepository.SaveAsync();
 

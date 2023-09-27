@@ -41,7 +41,7 @@ public class QuizResultService : IQuizResultService
                     ?? throw new NotFoundException("This user is not found");
 
         var questionAnswers = await this.questionAnswerRepository.SelectAll(t => t.UserId.Equals(userId)
-                              && t.QuizId.Equals(quizId))
+                              && t.QuizId.Equals(quizId), includes: new[] { "Quiz" })
                               .ToListAsync();
 
         var correctAnswers = questionAnswers.Where(t => t.IsTrue).Count();
@@ -78,10 +78,10 @@ public class QuizResultService : IQuizResultService
         foreach (var  questionAnswer in questionAnswers)
         {
             var allQuestion = this.questionAnswerRepository.SelectAll(t => t.QuizId.Equals(quizId) 
-                              && t.UserId.Equals(questionAnswer.UserId));
+                              && t.UserId.Equals(questionAnswer.UserId), includes: new[] {"Quiz"});
 
             var correctAnswers = allQuestion.Where(t => t.IsTrue).Count();
-            var incorrectAnswers = allQuestion.Where(t => !t.IsTrue).Count();
+            var incorrectAnswers = questionAnswer.Quiz.QuestionCount - correctAnswers;
             var percentage = (correctAnswers * 100) / questionAnswer.Quiz.QuestionCount;
 
             result.Add(new ResultDto()

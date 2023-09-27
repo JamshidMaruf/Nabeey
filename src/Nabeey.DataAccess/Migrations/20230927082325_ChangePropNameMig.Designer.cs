@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230926145300_InitialMig")]
-    partial class InitialMig
+    [Migration("20230927082325_ChangePropNameMig")]
+    partial class ChangePropNameMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -319,7 +319,7 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("VideoPath")
+                    b.Property<string>("VideoLink")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
