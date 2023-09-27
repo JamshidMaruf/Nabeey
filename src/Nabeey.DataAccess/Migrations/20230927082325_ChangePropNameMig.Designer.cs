@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nabeey.DataAccess.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230927082325_ChangePropNameMig")]
+    partial class ChangePropNameMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,8 +55,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssetId")
-                        .IsUnique();
+                    b.HasIndex("AssetId");
 
                     b.HasIndex("QuestionId");
 
@@ -330,11 +331,8 @@ namespace Nabeey.DataAccess.Migrations
 
             modelBuilder.Entity("Nabeey.Domain.Entities.QuestionAnswers.QuestionAnswer", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<long>("QuestionId")
                         .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AnswerId")
                         .HasColumnType("bigint");
@@ -342,14 +340,14 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsTrue")
                         .HasColumnType("boolean");
-
-                    b.Property<long>("QuestionId")
-                        .HasColumnType("bigint");
 
                     b.Property<long>("QuizId")
                         .HasColumnType("bigint");
@@ -360,11 +358,9 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("QuestionId", "AnswerId");
 
                     b.HasIndex("AnswerId");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasIndex("QuizId");
 
@@ -398,40 +394,34 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId")
-                        .IsUnique();
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.QuizQuestions.QuizQuestion", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<long>("QuizId")
                         .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<long>("QuestionId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("QuizId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("Id")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("QuizId", "QuestionId");
 
                     b.HasIndex("QuestionId");
-
-                    b.HasIndex("QuizId");
 
                     b.ToTable("QuizQuestions");
                 });
@@ -532,8 +522,8 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Answers.Answer", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Asset")
-                        .WithOne()
-                        .HasForeignKey("Nabeey.Domain.Entities.Answers.Answer", "AssetId");
+                        .WithMany()
+                        .HasForeignKey("AssetId");
 
                     b.HasOne("Nabeey.Domain.Entities.Questions.Question", "Question")
                         .WithMany("Answers")
@@ -686,8 +676,8 @@ namespace Nabeey.DataAccess.Migrations
             modelBuilder.Entity("Nabeey.Domain.Entities.Questions.Question", b =>
                 {
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Image")
-                        .WithOne()
-                        .HasForeignKey("Nabeey.Domain.Entities.Questions.Question", "ImageId");
+                        .WithMany()
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Image");
                 });

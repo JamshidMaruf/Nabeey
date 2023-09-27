@@ -43,7 +43,7 @@ public class ContentService : IContentService
 
     public async ValueTask<ContentResultDto> RetrieveByIdAsync(long id)
     {
-        var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(id))
+        var content = await this.contentRepository.SelectAsync(c => c.Id.Equals(id), includes:new[] { "ContentCategory" })
                       ?? throw new NotFoundException("This content is not found");
 
         var contentBooks = this.contentBookRepository.SelectAll(b => b.ContentId.Equals(id));
@@ -77,7 +77,7 @@ public class ContentService : IContentService
 
     public async ValueTask<IEnumerable<ContentResultDto>> RetrieveAllAsnyc(PaginationParams @params, Filter filter, string search = null)
     {
-        var contents = (await this.contentRepository.SelectAll().ToListAsync()).ToPaginate(@params);
+        var contents = (await this.contentRepository.SelectAll(includes: new[] { "ContentCategory" }).ToListAsync()).ToPaginate(@params);
         var result = new List<ContentResultDto>();
         foreach(var content in contents)
         {
