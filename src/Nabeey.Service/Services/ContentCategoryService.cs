@@ -76,7 +76,7 @@ public class ContentCategoryService : IContentCategoryService
         return this.mapper.Map<ContentCategoryResultDto>(category);
     }
 
-    public async ValueTask<IEnumerable<ContentCategoryResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
+    public async ValueTask<IEnumerable<ContentCategoryResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null)
     {
         var categories = await this.repository.SelectAll()
                                               .ToPaginate(@params)
