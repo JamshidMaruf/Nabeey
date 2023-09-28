@@ -80,11 +80,11 @@ public class QuizService : IQuizService
 		quiz.StartTime = DateTime.Parse(quiz.StartTime.ToString());
 		quiz.EndTime = DateTime.Parse(quiz.EndTime.ToString());
 
-		this.quizRepository.Update(quiz);
-		await this.quizRepository.SaveAsync();
-
 		quiz.User = existUser;
 		quiz.ContentCategory = existCategory;
+
+		this.quizRepository.Update(quiz);
+		await this.quizRepository.SaveAsync();
 
 		return this.mapper.Map<QuizResultDto>(quiz);
 	}
@@ -114,8 +114,8 @@ public class QuizService : IQuizService
 		var existCategory = await this.categoryRepository.SelectAsync(c => c.Id.Equals(contentCategoryId))
 			?? throw new NotFoundException("This ContentCategory is not found");
 
-		var quizzes = await this.quizRepository.SelectAll()
-			.Where(c => c.ContentCategoryId == contentCategoryId).ToListAsync();
+		var quizzes = await this.quizRepository.SelectAll(c => c.ContentCategoryId == contentCategoryId,
+			includes: new[] {"User", "ContentCategory"}).ToListAsync();
 
 		return this.mapper.Map<IEnumerable<QuizResultDto>>(quizzes);
 	}

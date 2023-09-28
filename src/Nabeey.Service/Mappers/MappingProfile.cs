@@ -4,6 +4,7 @@ using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
 using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
@@ -15,6 +16,7 @@ using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.ContentVideos;
+using Nabeey.Service.DTOs.QuestionAnswers;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Service.DTOs.Quizzes;
@@ -83,5 +85,10 @@ public class MappingProfile : Profile
 		CreateMap<QuizQuestion, QuizQuestionResultDto>().ReverseMap();
 		CreateMap<QuizQuestion, QuizQuestionCreationDto>().ReverseMap();
 		CreateMap<QuizQuestion, QuizQuestionUpdateDto>().ReverseMap();
-	}
+
+        //QuestionAnswer
+        CreateMap<QuestionAnswer, QuestionAnswerResultDto>().ReverseMap();
+        CreateMap<QuestionAnswer, QuestionAnswerCreationDto>().ReverseMap();
+        CreateMap<QuestionAnswer, QuestionAnswerUpdateDto>().ReverseMap();
+    }
 }
