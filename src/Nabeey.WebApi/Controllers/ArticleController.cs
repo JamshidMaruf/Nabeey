@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
 namespace Nabeey.WebApi.Controllers;
 
-[Authorize]
 public class ArticleController : BaseController
 {
 	private readonly IArticleService service;
@@ -46,6 +46,8 @@ public class ArticleController : BaseController
 		});
 
 
+		
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async Task<IActionResult> GetAsync(long id)
 		=> Ok(new Response
@@ -56,6 +58,7 @@ public class ArticleController : BaseController
 		});
 
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async Task<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,

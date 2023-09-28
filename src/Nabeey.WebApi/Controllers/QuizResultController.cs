@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
@@ -12,6 +13,7 @@ public class QuizResultController : BaseController
 		this.quizResultService = quizResultService;
 	}
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetAsync(long userId, long quizId)
 		=> Ok(new Response
@@ -21,6 +23,7 @@ public class QuizResultController : BaseController
 			Data = await this.quizResultService.RetrieveByUserIdAsync(userId, quizId)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get")]
 	public async ValueTask<IActionResult> GetAsync(long quizId)
 		=> Ok(new Response
