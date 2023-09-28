@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Users;
+using Nabeey.Domain.Enums;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
 using Service.Helpers;

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
