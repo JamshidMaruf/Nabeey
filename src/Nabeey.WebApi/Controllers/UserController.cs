@@ -66,7 +66,6 @@ public class UserController : BaseController
 			Data = await this.userService.RetrieveAllAsync(@params, search)
 		});
 
-	[AllowAnonymous]
 	[HttpPatch("upgrade-role")]
 	public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
 		=> Ok(new Response
