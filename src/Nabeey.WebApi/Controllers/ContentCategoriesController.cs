@@ -25,7 +25,7 @@ public class ContentCategoriesController : BaseController
 
 
 	[HttpPut("update")]
-	public async ValueTask<IActionResult> PutAsync(ContentCategoryUpdateDto dto)
+	public async ValueTask<IActionResult> PutAsync([FromForm] ContentCategoryUpdateDto dto)
 	   => Ok(new Response
 	   {
 		   StatusCode = 200,

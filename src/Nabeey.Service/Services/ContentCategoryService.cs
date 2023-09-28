@@ -33,6 +33,8 @@ public class ContentCategoryService : IContentCategoryService
 		if (category is not null)
 			throw new AlreadyExistException("This category is already exists");
 
+		if (dto.Image is null)
+			throw new NotFoundException("Image is not found");
 
 		var uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
 		var image = new Asset
@@ -54,26 +56,42 @@ public class ContentCategoryService : IContentCategoryService
 		return this.mapper.Map<ContentCategoryResultDto>(mappedCategory);
 	}
 
-	public async ValueTask<ContentCategoryResultDto> ModifyAsync(ContentCategoryUpdateDto dto)
-	{
-		var category = await this.repository.SelectAsync(c => c.Id.Equals(dto.Id))
-			?? throw new NotFoundException("This category is not found");
+    public async ValueTask<ContentCategoryResultDto> ModifyAsync(ContentCategoryUpdateDto dto)
+    {
+        var category = await this.repository.SelectAsync(c => c.Id.Equals(dto.Id), includes: new[] {"Image"})
+            ?? throw new NotFoundException("This category is not found");
 
-		if (!category.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase))
-		{
-			var existCategory = await this.repository.SelectAsync(c => c.Name.ToLower().Equals(dto.Name.ToLower()));
-			if (existCategory is not null)
-				throw new AlreadyExistException("This category is already exists");
-		}
+        if (!category.Name.Equals(dto.Name, StringComparison.OrdinalIgnoreCase))
+        {
+            var existCategory = await this.repository.SelectAsync(c => c.Name.ToLower().Equals(dto.Name.ToLower()));
+            if (existCategory is not null)
+                throw new AlreadyExistException("This category is already exists");
+        }
 
-		var mappedCategory = this.mapper.Map(dto, category);
-		this.repository.Update(mappedCategory);
-		await this.repository.SaveAsync();
+        var uploadedImage = new Asset();
 
-		return this.mapper.Map<ContentCategoryResultDto>(mappedCategory);
-	}
+        if (dto.Image is not null)
+        {
+            uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+        }
 
-	public async ValueTask<bool> RemoveAsync(long id)
+        category.Description = dto.Description;
+        category.Name = dto.Name;
+
+        if (uploadedImage.Id > 0)
+        {
+            category.ImageId = uploadedImage.Id;
+            category.Image.FileName = uploadedImage.FileName;
+            category.Image.FilePath = uploadedImage.FilePath;
+        }
+
+        this.repository.Update(category);
+        await this.repository.SaveAsync();
+
+        return this.mapper.Map<ContentCategoryResultDto>(category);
+    }
+
+    public async ValueTask<bool> RemoveAsync(long id)
 	{
 		var category = await this.repository.SelectAsync(c => c.Id.Equals(id))
 			?? throw new NotFoundException("This category is not found");
