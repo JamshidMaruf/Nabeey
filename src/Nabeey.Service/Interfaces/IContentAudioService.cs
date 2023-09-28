@@ -9,6 +9,6 @@ public interface IContentAudioService
 	ValueTask<ContentAudioResultDto> AddAsync(ContentAudioCreationDto dto);
 	ValueTask<bool> RemoveAsync(long id);
 	ValueTask<ContentAudioResultDto> RetrieveByIdAsync(long id);
-	ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search);
+	ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null);
 	ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAllByCategoryIdAsync(long categoryId);
 }

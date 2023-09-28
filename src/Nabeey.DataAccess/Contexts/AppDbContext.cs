@@ -28,7 +28,7 @@ public class AppDbContext : DbContext
 	public DbSet<Quiz> Quizzes { get; set; }
 	public DbSet<QuizQuestion> QuizQuestions { get; set; }
 	public DbSet<User> Users { get; set; }
-
+	
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 
