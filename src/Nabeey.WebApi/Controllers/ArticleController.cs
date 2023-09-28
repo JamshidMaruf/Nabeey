@@ -27,7 +27,7 @@ public class ArticleController : BaseController
 
 
 	[HttpPut("update")]
-	public async Task<IActionResult> UpdateAsync(ArticleUpdateDto dto)
+	public async Task<IActionResult> UpdateAsync([FromForm] ArticleUpdateDto dto)
 		=> Ok(new Response
 		{
 			StatusCode = 200,
@@ -66,4 +66,22 @@ public class ArticleController : BaseController
 			Message = "Success",
 			Data = await this.service.RetrieveAllAsync(@params, filter, search)
 		});
+
+    [HttpGet("get-by-user/{userId:long}")]
+    public async Task<IActionResult> GetAllByUserIdAsync(long userId)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.service.RetrieveAllByUserIdAsync(userId)
+        });
+	
+	[HttpGet("get-by-category/{categoryId:long}")]
+    public async Task<IActionResult> GetAllByCategoryIdAsync(long categoryId)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.service.RetrieveAllByCategoryIdAsync(categoryId)
+        });
 }
