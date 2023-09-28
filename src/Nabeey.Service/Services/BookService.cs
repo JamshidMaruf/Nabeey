@@ -69,7 +69,9 @@ public class BookService : IBookService
 			?? throw new NotFoundException("This book is not found");
 
 		this.bookRepository.Delete(book);
-		await this.bookRepository.SaveAsync();
+		await this.assetService.RemoveAsync(book.Image);
+        await this.assetService.RemoveAsync(book.File);
+        await this.bookRepository.SaveAsync();
 		return true;
 	}
 
@@ -78,48 +80,47 @@ public class BookService : IBookService
 		var book = await this.bookRepository.SelectAsync(expression: b => b.Id.Equals(dto.Id), includes: new[] { "Image", "File" })
 			?? throw new NotFoundException("This book is not found");
 
-        var mappedBook = new Book
-        {
-			Id = dto.Id,
-            Title = dto.Title,
-            Description = dto.Description,
-            CategoryId = dto.CategoryId,
-            Author = dto.Author,
-        };
-
+		var updloadedImage = new Asset();
         if (dto.Image is not null)
 		{
 			await this.assetService.RemoveAsync(book.Image);
-			var updloadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
-			var createImage = new Asset()
-			{
-				FileName = updloadedImage.FileName,
-				FilePath = updloadedImage.FilePath,
-			};
-			mappedBook.ImageId = updloadedImage.Id;
-			mappedBook.Image = createImage;
+			updloadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
 		}
 
+		var updloadedFile = new Asset();
         if (dto.File is not null)
 		{
 			await this.assetService.RemoveAsync(book.File);
-			var updloadedFile = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File }, UploadType.Files);
-
-            var createFile = new Asset()
-            {
-                FileName = updloadedFile.FileName,
-                FilePath = updloadedFile.FilePath,
-            };
-
-			mappedBook.FileId = updloadedFile.Id;
-			mappedBook.File = createFile;
+			updloadedFile = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File }, UploadType.Files);
         }
 
+		if(updloadedImage.Id > 0)
+		{
+            book.Image ??= new Asset();
+            
+            book.ImageId = updloadedImage.Id;
+            book.Image.FileName = updloadedImage.FileName;
+            book.Image.FilePath = updloadedImage.FilePath;
+        }
 
-		this.bookRepository.Update(mappedBook);
+        if (updloadedFile.Id > 0)
+        {
+            book.File??= new Asset();
+
+            book.FileId = updloadedFile.Id;
+            book.File.FileName = updloadedImage.FileName;
+            book.File.FilePath = updloadedImage.FilePath;
+        }
+
+        book.Title = dto.Title;
+        book.Description = dto.Description;
+        book.CategoryId = dto.CategoryId;
+		book.Author = dto.Author;
+
+        this.bookRepository.Update(book);
 		await this.bookRepository.SaveAsync();
 
-		return this.mapper.Map<BookResultDto>(mappedBook);
+		return this.mapper.Map<BookResultDto>(book);
 	}
 
 	public async ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null)
