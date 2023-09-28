@@ -47,12 +47,22 @@ public class ArticleService : IArticleService
 		var existCategory = await this.categoryRepository.SelectAsync(a => a.Id.Equals(dto.CategoryId))
 			?? throw new NotFoundException($"This content is not found with id : {dto.CategoryId}");
 
-		var mapped = this.mapper.Map<Article>(dto);
-		mapped.Category = existCategory;
-		mapped.User = user;
-		mapped.UserId = user.Id;
-		mapped.Image = imageAsset;
-		mapped.ImageId = imageAsset.Id;
+		var createImage = new Asset
+		{
+			FileName = imageAsset.FileName,
+			FilePath = imageAsset.FilePath,
+		};
+
+		var mapped = new Article
+		{
+			Text = dto.Text,
+			CategoryId = dto.CategoryId,
+			Category = existCategory,
+			UserId = dto.UserId,
+			User = user,
+			ImageId = imageAsset.Id,
+			Image = createImage,
+		};
 
 		await this.articleRepository.InsertAsync(mapped);
 		await this.articleRepository.SaveAsync();
