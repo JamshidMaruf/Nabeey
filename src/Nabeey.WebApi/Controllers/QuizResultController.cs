@@ -1,4 +1,3 @@
-﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -13,9 +12,8 @@ public class QuizResultController : BaseController
 		this.quizResultService = quizResultService;
 	}
 
-	[AllowAnonymous]
-	[HttpGet("get/{id:long}")]
-	public async ValueTask<IActionResult> GetAsync(long userId, long quizId)
+    [HttpGet("get-by-quizId-userId/{quizId:long}/{userId:long}")]
+    public async ValueTask<IActionResult> GetAsync(long userId, long quizId)
 		=> Ok(new Response
 		{
 			StatusCode = 200,
@@ -23,9 +21,8 @@ public class QuizResultController : BaseController
 			Data = await this.quizResultService.RetrieveByUserIdAsync(userId, quizId)
 		});
 
-	[AllowAnonymous]
-	[HttpGet("get")]
-	public async ValueTask<IActionResult> GetAsync(long quizId)
+	[HttpGet("get-by-quizId/{quizId:long}")]
+	public async ValueTask<IActionResult> GetByQuizIdAsync(long quizId)
 		=> Ok(new Response
 		{
 			StatusCode = 200,
