@@ -26,7 +26,7 @@ public class UserController : BaseController
 			Data = await this.userService.AddAsync(dto)
 		});
 
-	[HttpPut("update")]
+    [HttpPut("update")]
 	public async ValueTask<IActionResult> PutAsync([FromForm] UserUpdateDto dto)
 		=> Ok(new Response
 		{
@@ -35,7 +35,7 @@ public class UserController : BaseController
 			Data = await this.userService.ModifyAsync(dto)
 		});
 
-	[HttpDelete("delete/{id:long}")]
+    [HttpDelete("delete/{id:long}")]
 	public async ValueTask<IActionResult> DeleteAsync(long id)
 		=> Ok(new Response
 		{
