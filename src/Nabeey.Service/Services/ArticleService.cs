@@ -133,7 +133,7 @@ public class ArticleService : IArticleService
 		var existUser = await this.userRepository.SelectAsync(expression: u => u.Id == userId, includes: new[] {"Asset" })
 			?? throw new NotFoundException("This user is not found");
 
-		var userArticles = await this.articleRepository.SelectAll(a => a.UserId == userId, includes: new[] { "User","Category", "Image" }).ToListAsync();
+		var userArticles = await this.articleRepository.SelectAll(a => a.UserId == userId, includes: new[] { "User.Asset", "Category", "Image" }).ToListAsync();
 
 		return this.mapper.Map<IEnumerable<ArticleResultDto>>(userArticles);
 	}
@@ -143,7 +143,7 @@ public class ArticleService : IArticleService
 		var existCategory = await this.categoryRepository.SelectAsync(expression: u => u.Id == categoryId, includes: new[] { "Image" })
 			?? throw new NotFoundException("This user is not found");
 
-		var contentArticles = await this.articleRepository.SelectAll(a => a.CategoryId == categoryId ,includes: new[] { "User", "Category", "Image" }).ToListAsync();
+		var contentArticles = await this.articleRepository.SelectAll(a => a.CategoryId == categoryId ,includes: new[] { "User.Asset", "Category", "Image" }).ToListAsync();
 
 		return this.mapper.Map<IEnumerable<ArticleResultDto>>(contentArticles);
 	}
