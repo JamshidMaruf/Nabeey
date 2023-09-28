@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Entities.Articles;
+using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Domain.Enums;
@@ -35,7 +36,7 @@ public class ArticleService : IArticleService
         this.articleRepository = articleRepository;
         this.contentRepository = contentRepository;
     }
-
+          
     public async ValueTask<ArticleResultDto> AddAsync(ArticleCreationDto dto)
     {
         if (HttpContextHelper.GetUserId != 0)
@@ -44,22 +45,37 @@ public class ArticleService : IArticleService
         var user = await this.userRepository.SelectAsync(u => u.Id.Equals(HttpContextHelper.GetUserId))
             ?? throw new NotFoundException("This user is not Found");
 
-        var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+        var imageAsset = new Asset();
+        if (dto.Image != null)
+        {
+            imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+        }
 
         var existContent = await this.contentRepository.SelectAsync(a => a.Id.Equals(dto.ContentId))
             ?? throw new NotFoundException($"This content is not found with id : {dto.ContentId}");
 
-        var mapped = this.mapper.Map<Article>(dto);
-        mapped.Content = existContent;
-        mapped.User = user;
-        mapped.UserId = user.Id;
-        mapped.Image = imageAsset;
-        mapped.ImageId = imageAsset.Id;
+        var createImage = new Asset()
+        {
+            FileName = imageAsset.FileName,
+            FilePath = imageAsset.FilePath,
+        };
 
-        await this.articleRepository.InsertAsync(mapped);
+        var mappedArticle = new Article()
+        {
+            Text = dto.Text,
+            ContentId = dto.ContentId,
+            Image = createImage
+        };
+
+        mappedArticle.Content = existContent;
+        mappedArticle.User = user;
+        mappedArticle.UserId = user.Id;
+        mappedArticle.ImageId = imageAsset.Id;
+
+        await this.articleRepository.InsertAsync(mappedArticle);
         await this.articleRepository.SaveAsync();
 
-        return this.mapper.Map<ArticleResultDto>(mapped);
+        return this.mapper.Map<ArticleResultDto>(mappedArticle);
     }
 
     public async ValueTask<bool> DeleteAsync(long id)
