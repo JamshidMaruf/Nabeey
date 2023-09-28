@@ -24,7 +24,7 @@ public class QuestionsController : BaseController
 		});
 
 	[HttpPut("update")]
-	public async ValueTask<IActionResult> UpdateAsync(QuestionUpdateDto dto)
+	public async ValueTask<IActionResult> UpdateAsync([FromForm] QuestionUpdateDto dto)
 		=> Ok(new Response
 		{
 			StatusCode = 200,

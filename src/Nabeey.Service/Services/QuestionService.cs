@@ -26,25 +26,22 @@ public class QuestionService : IQuestionService
 	}
 	public async ValueTask<QuestionResultDto> AddAsync(QuestionCreationDto dto)
 	{
-		var imageAsset = new Asset();
-		if (dto.Image != null)
-		{
-			imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
-		}
-
-		var createImage = new Asset()
-		{
-			FileName = imageAsset.FileName,
-			FilePath = imageAsset.FilePath,
-		};
-
 		var mapQuestion = new Question
 		{
 			Text = dto.Text,
-			Image = createImage,
 		};
 
-		mapQuestion.ImageId = imageAsset.Id;
+		if (dto.Image is not null)
+		{
+			var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+			var createImage = new Asset()
+			{
+				FileName = imageAsset.FileName,
+				FilePath = imageAsset.FilePath,
+			};
+		    mapQuestion.ImageId = imageAsset.Id;
+			mapQuestion.Image = createImage;
+		}
 
 		await repository.InsertAsync(mapQuestion);
 		await repository.SaveAsync();
@@ -54,14 +51,32 @@ public class QuestionService : IQuestionService
 
 	public async ValueTask<QuestionResultDto> ModifyAsync(QuestionUpdateDto dto)
 	{
-		var question = await repository.SelectAsync(x => x.Id.Equals(dto.Id))
+		var question = await repository.SelectAsync(x => x.Id.Equals(dto.Id), includes: new[] {"Image"})
 			?? throw new NotFoundException("Not found!");
 
-		var mapQuestion = mapper.Map(dto, question);
-		repository.Update(mapQuestion);
-		await repository.SaveAsync();
+        var uploadedImage = new Asset();
+        if (dto.Image is not null)
+        {
+            uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+            await this.assetService.RemoveAsync(question.Image);
+        }
 
-		var res = mapper.Map<QuestionResultDto>(mapQuestion);
+        question.Text = dto.Text;
+
+        if (uploadedImage.Id > 0)
+        {
+            if (question.Image == null)
+            {
+                question.Image = new Asset();
+            }
+            question.ImageId = uploadedImage.Id;
+            question.Image.FileName = uploadedImage.FileName;
+            question.Image.FilePath = uploadedImage.FilePath;
+        }
+
+        this.repository.Update(question);
+		await this.repository.SaveAsync();
+		var res = mapper.Map<QuestionResultDto>(question);
 		return res;
 	}
 

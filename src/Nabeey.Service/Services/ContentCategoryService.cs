@@ -1,4 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Entities.Assets;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.Questions;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
@@ -71,15 +77,20 @@ public class ContentCategoryService : IContentCategoryService
         var uploadedImage = new Asset();
 
         if (dto.Image is not null)
-        {
-            uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+		{
+			uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+            await this.assetService.RemoveAsync(category.Image);
         }
 
-        category.Description = dto.Description;
+		category.Description = dto.Description;
         category.Name = dto.Name;
 
         if (uploadedImage.Id > 0)
         {
+            if (category.Image == null)
+            {
+                category.Image = new Asset();
+            }
             category.ImageId = uploadedImage.Id;
             category.Image.FileName = uploadedImage.FileName;
             category.Image.FilePath = uploadedImage.FilePath;
@@ -93,11 +104,12 @@ public class ContentCategoryService : IContentCategoryService
 
     public async ValueTask<bool> RemoveAsync(long id)
 	{
-		var category = await this.repository.SelectAsync(c => c.Id.Equals(id))
+		var category = await this.repository.SelectAsync(c => c.Id.Equals(id), includes: new[] { "Image" })
 			?? throw new NotFoundException("This category is not found");
 
 		this.repository.Delete(category);
-		await this.repository.SaveAsync();
+        await this.assetService.RemoveAsync(category.Image);
+        await this.repository.SaveAsync();
 		return true;
 	}
 
