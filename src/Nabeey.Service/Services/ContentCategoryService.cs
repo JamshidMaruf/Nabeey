@@ -16,8 +16,8 @@ namespace Nabeey.Service.Services;
 public class ContentCategoryService : IContentCategoryService
 {
 	private readonly IMapper mapper;
-	private readonly IRepository<ContentCategory> repository;
 	private readonly IAssetService assetService;
+	private readonly IRepository<ContentCategory> repository;
 
 	public ContentCategoryService(IRepository<ContentCategory> repository, IMapper mapper, IAssetService assetService)
 	{
