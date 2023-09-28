@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentVideos;
 using Nabeey.Service.Interfaces;
@@ -32,6 +33,7 @@ public class ContentVideosController : BaseController
 		   Data = await this.contentVideoService.RemoveAsync(id)
 	   });
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async Task<IActionResult> GetAsync(long id)
 	  => Ok(new Response
@@ -41,6 +43,7 @@ public class ContentVideosController : BaseController
 		  Data = await this.contentVideoService.RetrieveByIdAsync(id)
 	  });
 
+	[AllowAnonymous]
 	[HttpGet("get-by-categoryId/{categorytId:long}")]
 	public async Task<IActionResult> GetByCategoryIdAsync(long categorytId)
 	  => Ok(new Response
@@ -50,6 +53,7 @@ public class ContentVideosController : BaseController
 		  Data = await this.contentVideoService.RetrieveAllByCategoryIdAsync(categorytId)
 	  });
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,

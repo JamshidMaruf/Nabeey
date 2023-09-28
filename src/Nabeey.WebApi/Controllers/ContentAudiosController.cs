@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.Interfaces;
@@ -32,6 +33,7 @@ public class ContentAudiosController : BaseController
 		   Data = await this.contentAudioService.RemoveAsync(id)
 	   });
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetAsync(long id)
 	  => Ok(new Response
@@ -41,6 +43,7 @@ public class ContentAudiosController : BaseController
 		  Data = await this.contentAudioService.RetrieveByIdAsync(id)
 	  });
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
@@ -53,6 +56,7 @@ public class ContentAudiosController : BaseController
 		  });
 
 
+	[AllowAnonymous]
 	[HttpGet("get-by-categoryId/{categoryId:long}")]
 	public async ValueTask<IActionResult> GetByCategoryIdAsync(long categoryId)
 	  => Ok(new Response

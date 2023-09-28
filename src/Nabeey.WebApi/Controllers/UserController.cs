@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Users;
@@ -15,6 +16,7 @@ public class UserController : BaseController
 		this.userService = userService;
 	}
 
+	[AllowAnonymous]
 	[HttpPost("create")]
 	public async ValueTask<IActionResult> PostAsync([FromForm] UserCreationDto dto)
 		=> Ok(new Response
@@ -42,6 +44,7 @@ public class UserController : BaseController
 			Data = await this.userService.RemoveAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetByIdAsync(long id)
 		=> Ok(new Response
@@ -51,6 +54,7 @@ public class UserController : BaseController
 			Data = await this.userService.RetrieveByIdAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
@@ -62,6 +66,7 @@ public class UserController : BaseController
 			Data = await this.userService.RetrieveAllAsync(@params, search)
 		});
 
+	[AllowAnonymous]
 	[HttpPatch("upgrade-role")]
 	public async ValueTask<IActionResult> UpgradeRoleAsync(long id, Role role)
 		=> Ok(new Response

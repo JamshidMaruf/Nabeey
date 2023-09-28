@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.Interfaces;
@@ -41,6 +42,7 @@ namespace Nabeey.WebApi.Controllers
 				Data = await this.answerService.RemoveAsync(id)
 			});
 
+		[AllowAnonymous]
 		[HttpGet("get/{id:long}")]
 		public async Task<IActionResult> GetAsync(long id)
 			=> Ok(new Response
@@ -50,6 +52,7 @@ namespace Nabeey.WebApi.Controllers
 				Data = await this.answerService.RetrieveByIdAsync(id)
 			});
 
+		[AllowAnonymous]
 		[HttpGet("get-all")]
 		public async ValueTask<IActionResult> GetAllAsync(
 			[FromQuery] PaginationParams @params)
@@ -60,6 +63,7 @@ namespace Nabeey.WebApi.Controllers
 				Data = await this.answerService.RetrieveAllAsync(@params)
 			});
 
+		[AllowAnonymous]
 		[HttpGet("get-all-by-contentId")]
 		public async ValueTask<IActionResult> GetAllByContentIdAsync(long questionId)
 			=> Ok(new Response
