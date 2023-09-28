@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Nabeey.DataAccess\Nabeey.DataAccess.csproj" />
     <ProjectReference Include="..\Nabeey.Service\Nabeey.Service.csproj" />
   </ItemGroup>
 

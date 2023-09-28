@@ -4,5 +4,5 @@ namespace Nabeey.Service.DTOs.Assets;
 
 public class AssetCreationDto
 {
-    public IFormFile FormFile { get; set; }
+	public IFormFile FormFile { get; set; }
 }

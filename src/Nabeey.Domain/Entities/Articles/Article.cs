@@ -7,13 +7,13 @@ namespace Nabeey.Domain.Entities.Articles;
 
 public class Article : Auditable
 {
-    public string Text { get; set; }
-    public long ContentId { get; set; }
-    public Content Content { get; set; }
+	public string Text { get; set; }
+	public long CategoryId { get; set; }
+	public ContentCategory Category { get; set; }
 
-    public long UserId { get; set; }
-    public User User { get; set; }
+	public long UserId { get; set; }
+	public User User { get; set; }
 
-    public long? ImageId { get; set; }
-    public Asset Image { get; set; }
+	public long? ImageId { get; set; }
+	public Asset Image { get; set; }
 }

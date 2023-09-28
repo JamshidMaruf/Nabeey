@@ -69,7 +69,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ContentId")
+                    b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -92,7 +92,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageId");
 
@@ -140,6 +140,9 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -163,70 +166,13 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("FileId");
 
                     b.HasIndex("ImageId");
 
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("BookId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ContentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("ContentId");
-
-                    b.ToTable("ContentBooks");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.Content", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ContentCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContentCategoryId");
-
-                    b.ToTable("Contents");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentAudio", b =>
@@ -240,7 +186,7 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<long>("AudioId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ContentId")
+                    b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -262,7 +208,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     b.HasIndex("AudioId");
 
-                    b.HasIndex("ContentId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ContentAudios");
                 });
@@ -278,6 +224,12 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<long>("ImageId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -288,6 +240,8 @@ namespace Nabeey.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("ContentCategories");
                 });
@@ -300,7 +254,7 @@ namespace Nabeey.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ContentId")
+                    b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -318,12 +272,12 @@ namespace Nabeey.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("VideoPath")
+                    b.Property<string>("VideoLink")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContentId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ContentVideos");
                 });
@@ -548,9 +502,9 @@ namespace Nabeey.DataAccess.Migrations
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Articles.Article", b =>
                 {
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentCategory", "Category")
                         .WithMany("Articles")
-                        .HasForeignKey("ContentId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -564,7 +518,7 @@ namespace Nabeey.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Content");
+                    b.Navigation("Category");
 
                     b.Navigation("Image");
 
@@ -573,6 +527,12 @@ namespace Nabeey.DataAccess.Migrations
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Books.Book", b =>
                 {
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentCategory", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "File")
                         .WithMany()
                         .HasForeignKey("FileId")
@@ -583,39 +543,11 @@ namespace Nabeey.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
+                    b.Navigation("Category");
+
                     b.Navigation("File");
 
                     b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contents.ContentBook", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Books.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
-                        .WithMany("Books")
-                        .HasForeignKey("ContentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Content");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.Content", b =>
-                {
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentCategory", "ContentCategory")
-                        .WithMany("Contents")
-                        .HasForeignKey("ContentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContentCategory");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentAudio", b =>
@@ -626,26 +558,37 @@ namespace Nabeey.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentCategory", "Category")
                         .WithMany("Audios")
-                        .HasForeignKey("ContentId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Audio");
 
-                    b.Navigation("Content");
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentCategory", b =>
+                {
+                    b.HasOne("Nabeey.Domain.Entities.Assets.Asset", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentVideo", b =>
                 {
-                    b.HasOne("Nabeey.Domain.Entities.Contexts.Content", "Content")
+                    b.HasOne("Nabeey.Domain.Entities.Contexts.ContentCategory", "Category")
                         .WithMany("Videos")
-                        .HasForeignKey("ContentId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Content");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.QuestionAnswers.QuestionAnswer", b =>
@@ -740,7 +683,7 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("Asset");
                 });
 
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.Content", b =>
+            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentCategory", b =>
                 {
                     b.Navigation("Articles");
 
@@ -749,11 +692,6 @@ namespace Nabeey.DataAccess.Migrations
                     b.Navigation("Books");
 
                     b.Navigation("Videos");
-                });
-
-            modelBuilder.Entity("Nabeey.Domain.Entities.Contexts.ContentCategory", b =>
-                {
-                    b.Navigation("Contents");
                 });
 
             modelBuilder.Entity("Nabeey.Domain.Entities.Questions.Question", b =>

@@ -8,59 +8,59 @@ namespace Nabeey.WebApi.Controllers;
 
 public class ContentCategoriesController : BaseController
 {
-    private readonly IContentCategoryService contentCategoryService;
-    public ContentCategoriesController(IContentCategoryService contentCategoryService)
-    {
-        this.contentCategoryService = contentCategoryService;
-    }
+	private readonly IContentCategoryService contentCategoryService;
+	public ContentCategoriesController(IContentCategoryService contentCategoryService)
+	{
+		this.contentCategoryService = contentCategoryService;
+	}
 
-    [HttpPost("create")]
-    public async ValueTask<IActionResult> PostAsync(ContentCategoryCreationDto dto)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.contentCategoryService.AddAsync(dto)
-        });
-
-
-    [HttpPut("update")]
-    public async ValueTask<IActionResult> PutAsync(ContentCategoryUpdateDto dto)
-       => Ok(new Response
-       {
-           StatusCode = 200,
-           Message = "Success",
-           Data = await this.contentCategoryService.ModifyAsync(dto)
-       });
+	[HttpPost("create")]
+	public async ValueTask<IActionResult> PostAsync([FromForm] ContentCategoryCreationDto dto)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.contentCategoryService.AddAsync(dto)
+		});
 
 
-    [HttpDelete("delete/{id:long}")]
-    public async ValueTask<IActionResult> DeleteAsync(long id)
-       => Ok(new Response
-       {
-           StatusCode = 200,
-           Message = "Success",
-           Data = await this.contentCategoryService.RemoveAsync(id)
-       });
+	[HttpPut("update")]
+	public async ValueTask<IActionResult> PutAsync(ContentCategoryUpdateDto dto)
+	   => Ok(new Response
+	   {
+		   StatusCode = 200,
+		   Message = "Success",
+		   Data = await this.contentCategoryService.ModifyAsync(dto)
+	   });
 
 
-    [HttpGet("get/{id:long}")]
-    public async ValueTask<IActionResult> GetByIdAsync(long id)
-       => Ok(new Response
-       {
-           StatusCode = 200,
-           Message = "Success",
-           Data = await this.contentCategoryService.RetrieveByIdAsync(id)
-       });
+	[HttpDelete("delete/{id:long}")]
+	public async ValueTask<IActionResult> DeleteAsync(long id)
+	   => Ok(new Response
+	   {
+		   StatusCode = 200,
+		   Message = "Success",
+		   Data = await this.contentCategoryService.RemoveAsync(id)
+	   });
 
-    [HttpGet("get-all")]
-    public async ValueTask<IActionResult> GetAllAsync(
-    [FromQuery] PaginationParams @params,Filter filter,
-    [FromQuery]  string search)
-    => Ok(new Response
-    {
-        StatusCode = 200,
-        Message = "Success",
-        Data = await this.contentCategoryService.RetrieveAllAsync(@params,filter, search)
-    });
+
+	[HttpGet("get/{id:long}")]
+	public async ValueTask<IActionResult> GetByIdAsync(long id)
+	   => Ok(new Response
+	   {
+		   StatusCode = 200,
+		   Message = "Success",
+		   Data = await this.contentCategoryService.RetrieveByIdAsync(id)
+	   });
+
+	[HttpGet("get-all")]
+	public async ValueTask<IActionResult> GetAllAsync(
+	[FromQuery] PaginationParams @params,
+	[FromQuery] string search)
+	=> Ok(new Response
+	{
+		StatusCode = 200,
+		Message = "Success",
+		Data = await this.contentCategoryService.RetrieveAllAsync(@params, search)
+	});
 }
