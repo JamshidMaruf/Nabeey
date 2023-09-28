@@ -1,31 +1,32 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Configurations;
-using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Enums;
-using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
 using Nabeey.Service.Interfaces;
+using Nabeey.Service.DTOs.Assets;
+using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Entities.Books;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Domain.Entities.Assets;
 
 namespace Nabeey.Service.Services;
 
 public class BookService : IBookService
 {
 	private readonly IMapper mapper;
-	private readonly IRepository<Book> bookRepository;
 	private readonly IAssetService assetService;
+	private readonly IRepository<Book> bookRepository;
 	private readonly IRepository<ContentCategory> categoryRepository;
 
 	public BookService(IMapper mapper, IRepository<Book> bookRepository, IRepository<ContentCategory> categoryRepository, IAssetService assetService)
 	{
 		this.mapper = mapper;
+		this.assetService = assetService;
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
-		this.assetService = assetService;
 	}
 
 	public async ValueTask<BookResultDto> AddAsync(BookCreationDto dto)
@@ -68,20 +69,58 @@ public class BookService : IBookService
 			?? throw new NotFoundException("This book is not found");
 
 		this.bookRepository.Delete(book);
-		await this.bookRepository.SaveAsync();
+		await this.assetService.RemoveAsync(book.Image);
+        await this.assetService.RemoveAsync(book.File);
+        await this.bookRepository.SaveAsync();
 		return true;
 	}
 
 	public async ValueTask<BookResultDto> ModifyAsync(BookUpdateDto dto)
 	{
-		var book = await this.bookRepository.SelectAsync(b => b.Id.Equals(dto.Id))
+		var book = await this.bookRepository.SelectAsync(expression: b => b.Id.Equals(dto.Id), includes: new[] { "Image", "File" })
 			?? throw new NotFoundException("This book is not found");
 
-		var mapBook = this.mapper.Map(dto, book);
-		this.bookRepository.Update(mapBook);
+		var updloadedImage = new Asset();
+        if (dto.Image is not null)
+		{
+			await this.assetService.RemoveAsync(book.Image);
+			updloadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+		}
+
+		var updloadedFile = new Asset();
+        if (dto.File is not null)
+		{
+			await this.assetService.RemoveAsync(book.File);
+			updloadedFile = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.File }, UploadType.Files);
+        }
+
+		if(updloadedImage.Id > 0)
+		{
+            book.Image ??= new Asset();
+            
+            book.ImageId = updloadedImage.Id;
+            book.Image.FileName = updloadedImage.FileName;
+            book.Image.FilePath = updloadedImage.FilePath;
+        }
+
+        if (updloadedFile.Id > 0)
+        {
+            book.File??= new Asset();
+
+            book.FileId = updloadedFile.Id;
+            book.File.FileName = updloadedImage.FileName;
+            book.File.FilePath = updloadedImage.FilePath;
+        }
+
+        book.Title = dto.Title;
+        book.Description = dto.Description;
+        book.CategoryId = dto.CategoryId;
+		book.Author = dto.Author;
+
+        this.bookRepository.Update(book);
 		await this.bookRepository.SaveAsync();
 
-		return this.mapper.Map<BookResultDto>(mapBook);
+		return this.mapper.Map<BookResultDto>(book);
 	}
 
 	public async ValueTask<IEnumerable<BookResultDto>> RetrieveAllAsync(PaginationParams @params, string search = null)
