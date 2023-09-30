@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Users;
@@ -10,12 +11,16 @@ namespace Nabeey.WebApi.Controllers;
 public class UserController : BaseController
 {
 	private readonly IUserService userService;
-	public UserController(IUserService userService)
-	{
-		this.userService = userService;
-	}
+	private readonly ICertificateService certificateService;
+    private readonly IWebHostEnvironment webHostEnvironment;
+    public UserController(IUserService userService, ICertificateService certificateService, IWebHostEnvironment webHostEnvironment)
+    {
+        this.userService = userService;
+        this.certificateService = certificateService;
+        this.webHostEnvironment = webHostEnvironment;
+    }
 
-	[HttpPost("create")]
+    [HttpPost("create")]
 	public async ValueTask<IActionResult> PostAsync([FromForm] UserCreationDto dto)
 		=> Ok(new Response
 		{
@@ -70,4 +75,21 @@ public class UserController : BaseController
 			Message = "Success",
 			Data = await this.userService.UpgradeRoleAsync(id, role)
 		});
+
+
+	[HttpGet("get-certificate")]
+	public async ValueTask<IActionResult> GetCertificate(long userId)
+	{
+        var dtos = await certificateService.RetriveUserCertificatesAsync(userId);
+
+		foreach(var i in dtos)
+			i.File.FilePath = Path.Combine(webHostEnvironment.WebRootPath, i.File.FilePath);
+
+		return Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = dtos
+		});
+    }
 }

@@ -48,7 +48,7 @@ public class QuizResultService : IQuizResultService
 		var incorrectAnswers = quiz.QuestionCount - correctAnswers;
 		var ball = Math.Round((double)(correctAnswers * 100) / quiz.QuestionCount);
 
-		ResultDto resultDto = new ResultDto()
+		ResultDto resultDto = new()
 		{
 			CorrectAnswers = correctAnswers,
 			IncorrectAnswers = incorrectAnswers,
@@ -94,11 +94,6 @@ public class QuizResultService : IQuizResultService
 		}
 
 		return result;
-	}
-
-	public ValueTask<CertificateDto> RetrieveUserCertificateAsync(long userId, long quizId)
-	{
-		throw new NotImplementedException();
 	}
 
 	public async ValueTask<IEnumerable<UserRatingDto>> RetrieveAllUserResultsAsync()

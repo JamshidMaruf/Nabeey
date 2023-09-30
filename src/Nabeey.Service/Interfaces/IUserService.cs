@@ -1,5 +1,6 @@
 ﻿using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Enums;
+using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.DTOs.Users;
 
 namespace Nabeey.Service.Interfaces;
