@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -15,6 +16,7 @@ public class CertificatesController : BaseController
         this.webHostEnvironment = webHostEnvironment;
     }
 
+    [AllowAnonymous]
     [HttpPost("generate")]
     public async ValueTask<IActionResult> Create(CertificateCreationDto dto)
     {
@@ -23,6 +25,7 @@ public class CertificatesController : BaseController
         return Ok(resultDto);
     }
 
+    [AllowAnonymous]
     [HttpPost("getById/{id:long}")]
     public async ValueTask<IActionResult> GetById(long id)
     {   
@@ -31,6 +34,7 @@ public class CertificatesController : BaseController
         return Ok(resultDto);
     }
 
+    [AllowAnonymous]
     [HttpGet("get-all")]
     public async ValueTask<IActionResult> GetCertificate()
     {

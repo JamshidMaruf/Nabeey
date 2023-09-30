@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.IRepositories;
-using Nabeey.Domain.Entities.Assets;
-using Nabeey.Domain.Entities.Certificates;
-using Nabeey.Domain.Entities.Quizzes;
-using Nabeey.Domain.Entities.Users;
-using Nabeey.Service.DTOs.Certificates;
-using Nabeey.Service.Exceptions;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Drawing.Imaging;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Interfaces;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
+using Nabeey.Service.Exceptions;
+using Nabeey.Domain.Entities.Users;
+using Nabeey.Domain.Entities.Assets;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.Domain.Entities.Quizzes;
+using Nabeey.DataAccess.IRepositories;
+using Nabeey.Service.DTOs.Certificates;
+using Nabeey.Domain.Entities.Certificates;
 
 namespace Nabeey.Service.Services;
 
@@ -87,11 +87,8 @@ public class CertificateService : ICertificateService
                 Certificate entity = new()
                 {
                     FileId = asset.Id,
-                    File = asset,
                     QuizId = quiz.Id,
-                    Quiz = quiz,
                     UserId = user.Id,
-                    User = user
                 };
                 await repository.InsertAsync(entity);
                 await repository.SaveAsync();

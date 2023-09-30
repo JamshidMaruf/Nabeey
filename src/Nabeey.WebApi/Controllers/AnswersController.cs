@@ -72,5 +72,4 @@ public class AnswersController : BaseController
 				Message = "Success",
 				Data = await this.answerService.RetrieveAllByQuestionIdAsync(questionId)
 			});
-	}
 }
