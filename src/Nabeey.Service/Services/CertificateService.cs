@@ -44,8 +44,9 @@ public class CertificateService : ICertificateService
             ?? throw new NotFoundException("This quiz is not found");
 
         var fullName = PadBoth($"{user.FirstName} {user.LastName}", 50);
+        var score = PadBoth(Math.Round(dto.Score, 1).ToString(), 5);
         var quizName = PadBoth(quiz.Name, 80);
-        var score = dto.Score.ToString();
+        var date = DateTime.Now.ToString().Split().First();
         var temp = "Templates/certificate_template.jpg";
 
         string filePath = Path.Combine(PathHelper.WebRootPath, temp);
@@ -54,22 +55,24 @@ public class CertificateService : ICertificateService
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                Brush brush = new SolidBrush(Color.FromArgb(44, 137, 132));
+                Brush brush = new SolidBrush(Color.FromArgb(168, 126, 93));
 
                 var id = Guid.NewGuid().ToString("N");
 
-                var defaultFont = new Font("sail", 50, FontStyle.Regular);
-                var fullNameFont = new Font("sail", 50, FontStyle.Bold);
+                var fullNameFont = new Font("ebrima", 50, FontStyle.Bold);
+                var defaultFont = new Font("Gabarito", 40, FontStyle.Regular);
 
-                var sizeOfCertNumber = graphics.MeasureString(id, defaultFont);
+               // var sizeOfCertNumber = graphics.MeasureString(id, defaultFont);
                 var sizeOfFullName = graphics.MeasureString(fullName, fullNameFont);
-                var sizeOfSubject = graphics.MeasureString(quizName, defaultFont);
+                //var sizeOfSubject = graphics.MeasureString(quizName, defaultFont);
                 var sizeOfTotalScore = graphics.MeasureString(score, defaultFont);
+                var sizeofDate = graphics.MeasureString(date, defaultFont);
 
-                graphics.DrawString(id, defaultFont, brush, new PointF((bitmap.Width - sizeOfCertNumber.Width) / 2.7f, 1300));
-                graphics.DrawString(fullName, fullNameFont, brush, new PointF((bitmap.Width - sizeOfFullName.Width), 100));
-                graphics.DrawString(quizName, defaultFont, brush, new PointF((bitmap.Width - sizeOfSubject.Width), 220));
-                graphics.DrawString(score, defaultFont, brush, new PointF((bitmap.Width - sizeOfTotalScore.Width) / 1.65f, 500));
+                //graphics.DrawString(id, defaultFont, brush, new PointF((bitmap.Width - sizeOfCertNumber.Width) / 2.7f, 1300));
+                graphics.DrawString(fullName, fullNameFont, brush, new PointF((bitmap.Width - sizeOfFullName.Width)/2.1f, 1505));
+                //graphics.DrawString(quizName, defaultFont, brush, new PointF((bitmap.Width - sizeOfSubject.Width), 220));
+                graphics.DrawString(score, defaultFont, brush, new PointF((bitmap.Width - sizeOfTotalScore.Width) / 1.52f, 2350));
+                graphics.DrawString(date, defaultFont, brush, new PointF((bitmap.Width - sizeofDate.Width) / 1.46f, 3510));
 
                 string outputFilePath = Path.Combine(PathHelper.WebRootPath, "Certificates/" + id + ".png");
                 using (FileStream fileStream = File.Create(outputFilePath))
@@ -83,12 +86,13 @@ public class CertificateService : ICertificateService
                     FilePath = "Certificates/" + id + ".png"
                 };
                 await assetRepository.InsertAsync(asset);
+                await repository.SaveAsync();
 
                 Certificate entity = new()
                 {
                     FileId = asset.Id,
                     QuizId = quiz.Id,
-                    UserId = user.Id,
+                    UserId = user.Id
                 };
                 await repository.InsertAsync(entity);
                 await repository.SaveAsync();
