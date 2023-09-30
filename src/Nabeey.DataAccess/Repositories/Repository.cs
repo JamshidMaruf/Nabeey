@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Nabeey.DataAccess.Contexts;
-using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Commons;
 using System.Linq.Expressions;
+using Nabeey.DataAccess.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Nabeey.DataAccess.IRepositories;
 
 namespace Nabeey.DataAccess.Repositories;
 
@@ -31,7 +31,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Auditabl
 	public void Delete(TEntity entity)
 	{
 		entity.IsDeleted = true;
-		this.context.Update(entity).State = EntityState.Deleted;
+		this.context.Update(entity).State = EntityState.Modified;
 	}
 
 	public void Destroy(TEntity entity)

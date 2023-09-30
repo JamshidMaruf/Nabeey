@@ -52,17 +52,18 @@ public class AppDbContext : DbContext
 		modelBuilder.Entity<Quiz>().HasQueryFilter(u => !u.IsDeleted);
 		modelBuilder.Entity<QuizQuestion>().HasQueryFilter(u => !u.IsDeleted);
 		modelBuilder.Entity<QuestionAnswer>().HasQueryFilter(qa => !qa.IsDeleted);
-		#endregion
+		modelBuilder.Entity<User>().HasQueryFilter(qa => !qa.IsDeleted);
+        #endregion
 
-		#region Many to many realationship --->>
-		// Users <=> Articles
-		//var userArticle = modelBuilder.Entity<UserArticle>();
-		//userArticle.HasKey(ua => new { ua.UserId, ua.ArticleId });
-		//userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
-		//userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
+        #region Many to many realationship --->>
+        // Users <=> Articles
+        //var userArticle = modelBuilder.Entity<UserArticle>();
+        //userArticle.HasKey(ua => new { ua.UserId, ua.ArticleId });
+        //userArticle.HasOne(ua => ua.User).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.UserId);
+        //userArticle.HasOne(ua => ua.Article).WithMany(ua => ua.UserArticles).HasForeignKey(ua => ua.ArticleId);
 
-		// Article and User
-		modelBuilder.Entity<Article>()
+        // Article and User
+        modelBuilder.Entity<Article>()
 		  .HasOne(a => a.User)
 		  .WithMany(u => u.Articles)
 		  .HasForeignKey(a => a.UserId)

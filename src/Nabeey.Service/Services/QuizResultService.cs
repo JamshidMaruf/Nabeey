@@ -72,15 +72,13 @@ public class QuizResultService : IQuizResultService
 
 	public async ValueTask<IEnumerable<ResultDto>> RetrieveAllQuizIdAsync(long quizId)
 	{
-		var questionAnswers = await this.questionAnswerRepository.SelectAll().ToListAsync();
+        var questionAnswers = await this.questionAnswerRepository.SelectAll(t => t.QuizId.Equals(quizId), includes: new[] { "Quiz" })
+                              .ToListAsync();
 
-		var result = new List<ResultDto>();
+        var result = new List<ResultDto>();
 		foreach (var questionAnswer in questionAnswers)
 		{
-			var allQuestion = this.questionAnswerRepository.SelectAll(t => t.QuizId.Equals(quizId)
-							  && t.UserId.Equals(questionAnswer.UserId), includes: new[] { "Quiz" });
-
-			var correctAnswers = allQuestion.Where(t => t.IsTrue).Count();
+			var correctAnswers = questionAnswers.Where(t => t.IsTrue && t.UserId.Equals(questionAnswer.UserId)).Count();
 			var incorrectAnswers = questionAnswer.Quiz.QuestionCount - correctAnswers;
 			var percentage = (correctAnswers * 100) / questionAnswer.Quiz.QuestionCount;
 

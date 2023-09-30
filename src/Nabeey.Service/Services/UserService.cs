@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Configurations;
+using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Domain.Enums;
+using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Users;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Extensions;
@@ -15,15 +17,17 @@ namespace Nabeey.Service.Services;
 public class UserService : IUserService
 {
 	private readonly IMapper mapper;
+	private readonly IAssetService assetService;
 	private readonly IRepository<User> userRepository;
 
-	public UserService(IRepository<User> repository, IMapper mapper)
-	{
-		this.mapper = mapper;
-		this.userRepository = repository;
-	}
+    public UserService(IRepository<User> repository, IMapper mapper, IAssetService assetService)
+    {
+        this.mapper = mapper;
+        this.userRepository = repository;
+        this.assetService = assetService;
+    }
 
-	public async ValueTask<UserResultDto> AddAsync(UserCreationDto dto)
+    public async ValueTask<UserResultDto> AddAsync(UserCreationDto dto)
 	{
 		User user = await this.userRepository.SelectAsync(x => x.Phone.Equals(dto.Phone));
 		if (user is not null)
@@ -31,7 +35,21 @@ public class UserService : IUserService
 
 		var mappedUser = this.mapper.Map<User>(dto);
 
-		mappedUser.PasswordHash = PasswordHash.Encrypt(dto.Password);
+        if (dto.Image is not null)
+        {
+            var uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+            var createImage = new Asset()
+            {
+                FileName = uploadedImage.FileName,
+                FilePath = uploadedImage.FilePath,
+            };
+
+            mappedUser.AssetId = uploadedImage.Id;
+            mappedUser.Asset = createImage;
+        }
+
+
+        mappedUser.PasswordHash = PasswordHash.Encrypt(dto.Password);
 		await this.userRepository.InsertAsync(mappedUser);
 		await this.userRepository.SaveAsync();
 
@@ -44,8 +62,21 @@ public class UserService : IUserService
 			?? throw new NotFoundException($"This user is not found with ID = {dto.Id}");
 
 		this.mapper.Map(dto, existUser);
+        if (dto.Image is not null)
+        {
+            var uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Image }, UploadType.Images);
+            var createImage = new Asset()
+            {
+                FileName = uploadedImage.FileName,
+                FilePath = uploadedImage.FilePath,
+            };
 
-		existUser.PasswordHash = PasswordHash.Encrypt(dto.Password);
+            existUser.AssetId = uploadedImage.Id;
+            existUser.Asset = createImage;
+        }
+
+
+        existUser.PasswordHash = PasswordHash.Encrypt(dto.Password);
 		this.userRepository.Update(existUser);
 		await this.userRepository.SaveAsync();
 
@@ -58,6 +89,7 @@ public class UserService : IUserService
 			?? throw new NotFoundException($"This user is not found with ID = {id}");
 
 		this.userRepository.Delete(existUser);
+		await this.assetService.RemoveAsync(existUser.Asset);
 		await this.userRepository.SaveAsync();
 
 		return true;
@@ -69,7 +101,7 @@ public class UserService : IUserService
 			.ToPaginate(@params)
 			.ToListAsync();
 
-		if (search is not null)
+		if (!string.IsNullOrEmpty(search))
 			users = users.Where(user => user.FirstName.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
 
 		return this.mapper.Map<IEnumerable<UserResultDto>>(users);

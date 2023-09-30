@@ -33,7 +33,7 @@ public class ContentAudioService : IContentAudioService
 	public async ValueTask<ContentAudioResultDto> AddAsync(ContentAudioCreationDto dto)
 	{
 		var category = await this.categoryRepository.SelectAsync(c => c.Id.Equals(dto.CategoryId))
-					  ?? throw new NotFoundException("This content is not found");
+					  ?? throw new NotFoundException("This category is not found");
 
 		if (dto.Audio is null)
 			throw new NotFoundException("This audio is not found");
@@ -59,7 +59,7 @@ public class ContentAudioService : IContentAudioService
 	public async ValueTask<bool> RemoveAsync(long id)
 	{
 		var existAudio = await this.contentAudioRepository.SelectAsync(a => a.Id.Equals(id))
-						?? throw new NotFoundException("This content audio is not found");
+						?? throw new NotFoundException("This audio is not found");
 
 		bool isChecked = await this.assetService.RemoveAsync(existAudio.Audio);
 		this.contentAudioRepository.Delete(existAudio);
@@ -71,17 +71,20 @@ public class ContentAudioService : IContentAudioService
 	{
 		var existAudio =
 			await this.contentAudioRepository.SelectAsync(a => a.Id.Equals(id), includes: new[] { "Audio" })
-			?? throw new NotFoundException("This content audio is not found");
+			?? throw new NotFoundException("This audio is not found");
 
 		return this.mapper.Map<ContentAudioResultDto>(existAudio);
 	}
 
-	public async ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search)
+	public async ValueTask<IEnumerable<ContentAudioResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
 	{
 		var existAudios = await this.contentAudioRepository.SelectAll(includes: new[] { "Audio" })
 			.ToPaginate(@params)
 			.ToListAsync();
-
+        
+		if (!string.IsNullOrEmpty(search))
+            existAudios = existAudios.Where(user => user.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        
 		return this.mapper.Map<IEnumerable<ContentAudioResultDto>>(existAudios);
 	}
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Books;
 using Nabeey.Service.Interfaces;
@@ -41,6 +42,7 @@ public class BooksController : BaseController
 			Data = await this.bookService.DeleteAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async Task<IActionResult> GetAsync(long id)
 		=> Ok(new Response
@@ -50,6 +52,7 @@ public class BooksController : BaseController
 			Data = await this.bookService.RetrieveByIdAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,
@@ -61,6 +64,8 @@ public class BooksController : BaseController
 			Data = await this.bookService.RetrieveAllAsync(@params, search)
 		});
 
+		
+	[AllowAnonymous]
 	[HttpGet("get-by-categoryId/{categoryId:long}")]
 	public async ValueTask<IActionResult> GetAllByCategoryIdAsync(long categoryId)
 		=> Ok(new Response

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
@@ -12,6 +13,7 @@ public class AuthController : BaseController
 		this.authService = authService;
 	}
 
+	[AllowAnonymous]
 	[HttpPost("login")]
 	public async Task<IActionResult> GenerateTokenAsync(string phone, string password)
 		=> Ok(new Response

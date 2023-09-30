@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.Interfaces;
@@ -25,7 +26,7 @@ public class ContentCategoriesController : BaseController
 
 
 	[HttpPut("update")]
-	public async ValueTask<IActionResult> PutAsync(ContentCategoryUpdateDto dto)
+	public async ValueTask<IActionResult> PutAsync([FromForm] ContentCategoryUpdateDto dto)
 	   => Ok(new Response
 	   {
 		   StatusCode = 200,
@@ -44,6 +45,7 @@ public class ContentCategoriesController : BaseController
 	   });
 
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetByIdAsync(long id)
 	   => Ok(new Response
@@ -53,6 +55,7 @@ public class ContentCategoriesController : BaseController
 		   Data = await this.contentCategoryService.RetrieveByIdAsync(id)
 	   });
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 	[FromQuery] PaginationParams @params,

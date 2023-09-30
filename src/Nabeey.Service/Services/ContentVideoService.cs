@@ -28,7 +28,7 @@ public class ContentVideoService : IContentVideoService
 	public async ValueTask<ContentVideoResultDto> AddAsync(ContentVideoCreationDto dto)
 	{
 		var category = await this.categoryRepository.SelectAsync(c => c.Id.Equals(dto.CategoryId))
-					  ?? throw new NotFoundException("This content is not found");
+					  ?? throw new NotFoundException("This category is not found");
 
 		var isChecked = YouTubeLinkValidator.IsValidYouTubeLink(dto.VideoLink);
 		if (!isChecked)
@@ -45,7 +45,7 @@ public class ContentVideoService : IContentVideoService
 	public async ValueTask<bool> RemoveAsync(long id)
 	{
 		var existVideo = await this.contentVideoRepository.SelectAsync(v => v.Id.Equals(id))
-					?? throw new NotFoundException("This content video is not found");
+					?? throw new NotFoundException("This video is not found");
 
 		this.contentVideoRepository.Delete(existVideo);
 		await this.contentVideoRepository.SaveAsync();
@@ -55,25 +55,27 @@ public class ContentVideoService : IContentVideoService
 	public async ValueTask<ContentVideoResultDto> RetrieveByIdAsync(long id)
 	{
 		var existVideo = await this.contentVideoRepository.SelectAsync(v => v.Id.Equals(id))
-					?? throw new NotFoundException("This content video is not found");
+					?? throw new NotFoundException("This video is not found");
 
 		return this.mapper.Map<ContentVideoResultDto>(existVideo);
 	}
 
 	public async ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAsync(PaginationParams @params, Filter filter, string search = null)
 	{
-		var videos = (await this.contentVideoRepository.SelectAll()
-			.ToListAsync())
-			.OrderBy(filter)
-			.ToPaginate(@params);
+		var videos = await this.contentVideoRepository.SelectAll()
+			.ToPaginate(@params)
+			.ToListAsync();
 
-		return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);
+        if (!string.IsNullOrEmpty(search))
+            videos = videos.Where(user => user.Title.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);
 	}
 
 	public async ValueTask<IEnumerable<ContentVideoResultDto>> RetrieveAllByCategoryIdAsync(long categoryId)
 	{
 		var content = await this.categoryRepository.SelectAsync(c => c.Id.Equals(categoryId))
-			?? throw new NotFoundException("This content is not found");
+			?? throw new NotFoundException("This category is not found");
 
 		var videos = this.contentVideoRepository.SelectAll(c => c.CategoryId.Equals(categoryId));
 		return this.mapper.Map<IEnumerable<ContentVideoResultDto>>(videos);

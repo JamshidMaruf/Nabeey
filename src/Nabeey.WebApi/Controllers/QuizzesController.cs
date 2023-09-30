@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.Interfaces;
@@ -41,6 +42,7 @@ public class QuizzesController : BaseController
 			Data = await this.quizService.DeleteAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetAsync(long id)
 		=> Ok(new Response
@@ -50,6 +52,7 @@ public class QuizzesController : BaseController
 			Data = await this.quizService.RetrieveByIdAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 	[FromQuery] PaginationParams @params,

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Enums;
@@ -20,7 +20,8 @@ public class UserController : BaseController
         this.webHostEnvironment = webHostEnvironment;
     }
 
-    [HttpPost("create")]
+	[AllowAnonymous]
+	[HttpPost("create")]
 	public async ValueTask<IActionResult> PostAsync([FromForm] UserCreationDto dto)
 		=> Ok(new Response
 		{
@@ -29,7 +30,7 @@ public class UserController : BaseController
 			Data = await this.userService.AddAsync(dto)
 		});
 
-	[HttpPut("update")]
+    [HttpPut("update")]
 	public async ValueTask<IActionResult> PutAsync([FromForm] UserUpdateDto dto)
 		=> Ok(new Response
 		{
@@ -38,7 +39,7 @@ public class UserController : BaseController
 			Data = await this.userService.ModifyAsync(dto)
 		});
 
-	[HttpDelete("delete/{id:long}")]
+    [HttpDelete("delete/{id:long}")]
 	public async ValueTask<IActionResult> DeleteAsync(long id)
 		=> Ok(new Response
 		{
@@ -47,6 +48,7 @@ public class UserController : BaseController
 			Data = await this.userService.RemoveAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async ValueTask<IActionResult> GetByIdAsync(long id)
 		=> Ok(new Response
@@ -56,6 +58,7 @@ public class UserController : BaseController
 			Data = await this.userService.RetrieveByIdAsync(id)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-all")]
 	public async ValueTask<IActionResult> GetAllAsync(
 		[FromQuery] PaginationParams @params,

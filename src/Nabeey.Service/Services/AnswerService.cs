@@ -14,6 +14,7 @@ using Nabeey.Service.Interfaces;
 
 namespace Nabeey.Service.Services;
 
+
 public class AnswerService : IAnswerService
 {
 	private readonly IMapper mapper;
@@ -34,20 +35,30 @@ public class AnswerService : IAnswerService
 		Question existQuestion = await this.quetionRepository.SelectAsync(q => q.Id.Equals(dto.QuestionId))
 			?? throw new NotFoundException($"This questionId is not found {dto.QuestionId}");
 
-		var imageAsset = new Asset();
-		if (dto.Asset != null)
+		var mappedAnswer = new Answer
 		{
-			imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Asset }, UploadType.Images);
-		}
+			Text = dto.Text,
+			QuestionId = dto.QuestionId,
+			Question = existQuestion,
+			IsTrue = dto.IsTrue
+		};
 
-		Answer mapAnswer = mapper.Map<Answer>(dto);
-		mapAnswer.Asset = imageAsset;
-		mapAnswer.AssetId = imageAsset.Id;
+        if (dto.Asset is not null)
+        {
+            var imageAsset = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Asset }, UploadType.Images);
+            var createImage = new Asset()
+            {
+                FileName = imageAsset.FileName,
+                FilePath = imageAsset.FilePath,
+            };
+            mappedAnswer.AssetId = imageAsset.Id;
+            mappedAnswer.Asset = createImage;
+        }
 
-		await this.repository.InsertAsync(mapAnswer);
+        await this.repository.InsertAsync(mappedAnswer);
 		await this.repository.SaveAsync();
 
-		return this.mapper.Map<AnswerResultDto>(mapAnswer);
+		return this.mapper.Map<AnswerResultDto>(mappedAnswer);
 	}
 
 	public async ValueTask<AnswerResultDto> ModifyAsync(AnswerUpdateDto dto)
@@ -55,11 +66,34 @@ public class AnswerService : IAnswerService
 		Answer answer = await this.repository.SelectAsync(x => x.Id.Equals(dto.Id))
 			?? throw new NotFoundException($"This AnswerId is not found {dto.Id}");
 
-		Answer mapAnswer = this.mapper.Map(dto, answer);
-		this.repository.Update(mapAnswer);
+        Question existQuestion = await this.quetionRepository.SelectAsync(q => q.Id.Equals(dto.QuestionId))
+            ?? throw new NotFoundException($"This questionId is not found {dto.QuestionId}");
+
+        var uploadedImage = new Asset();
+        if (dto.Asset is not null)
+        {
+            uploadedImage = await this.assetService.UploadAsync(new AssetCreationDto { FormFile = dto.Asset }, UploadType.Images);
+            await this.assetService.RemoveAsync(answer.Asset);
+        }
+
+        answer.Text = dto.Text;
+		answer.QuestionId = dto.QuestionId;
+		answer.Question = existQuestion;
+
+        if (uploadedImage.Id > 0)
+        {
+            if (answer.Asset == null)
+            {
+                answer.Asset = new Asset();
+            }
+            answer.AssetId = uploadedImage.Id;
+            answer.Asset.FileName = uploadedImage.FileName;
+            answer.Asset.FilePath = uploadedImage.FilePath;
+        }
+        this.repository.Update(answer);
 		await this.repository.SaveAsync();
 
-		return this.mapper.Map<AnswerResultDto>(mapAnswer);
+		return this.mapper.Map<AnswerResultDto>(answer);
 	}
 
 	public async ValueTask<bool> RemoveAsync(long id)
@@ -76,7 +110,7 @@ public class AnswerService : IAnswerService
 
 	public async ValueTask<AnswerResultDto> RetrieveByIdAsync(long id)
 	{
-		Answer answer = await repository.SelectAsync(x => x.Id.Equals(id))
+		Answer answer = await repository.SelectAsync(x => x.Id.Equals(id), includes: new[] { "Question", "Asset" })
 			?? throw new NotFoundException($"This id:{id} is not found ");
 
 		return this.mapper.Map<AnswerResultDto>(answer);
@@ -84,7 +118,7 @@ public class AnswerService : IAnswerService
 
 	public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllAsync(PaginationParams @params)
 	{
-		var answers = await this.repository.SelectAll()
+		var answers = await this.repository.SelectAll(includes: new[] { "Question", "Asset" })
 			.ToPaginate(@params)
 			.ToListAsync();
 
@@ -93,8 +127,9 @@ public class AnswerService : IAnswerService
 
 	public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllByQuestionIdAsync(long questionId)
 	{
-		var answers = await this.repository.SelectAll().Where(q => q.QuestionId == questionId).ToListAsync()
-			?? throw new NotFoundException($"This quetionId:{questionId} is not found ");
+		var answers = await this.repository.SelectAll(q => q.QuestionId == questionId,
+			includes: new[] { "Question", "Asset" }).ToListAsync()
+			?? throw new NotFoundException($"This questionId:{questionId} is not found ");
 
 		return this.mapper.Map<IEnumerable<AnswerResultDto>>(answers);
 	}

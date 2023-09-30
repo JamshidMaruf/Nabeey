@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nabeey.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230927182647_Firsrt")]
-    partial class Firsrt
+    [Migration("20230928190545_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

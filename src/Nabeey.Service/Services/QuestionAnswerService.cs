@@ -36,11 +36,8 @@ public class QuestionAnswerService : IQuestionAnswerService
 	}
 	public async ValueTask<QuestionAnswerResultDto> AddAsync(QuestionAnswerCreationDto dto)
 	{
-		if (HttpContextHelper.GetUserId != 0)
-			throw new CustomException(401, "This user is not authorized");
-
-		var user = await this.userRepository.SelectAsync(u => u.Id.Equals(HttpContextHelper.GetUserId))
-			?? throw new NotFoundException("This user is not Found");
+        var user = await this.userRepository.SelectAsync(u => u.Id.Equals(dto.UserId))
+            ?? throw new NotFoundException("This user is not Found");
 
 		var existAnswer = await this.answerRepository.SelectAsync(a => a.Id == dto.AnswerId)
 			?? throw new NotFoundException("This answer is not found");
@@ -69,10 +66,7 @@ public class QuestionAnswerService : IQuestionAnswerService
 		var existQuizAnswer = await this.questionAnswerRepository.SelectAsync(a => a.Id == dto.Id)
 		   ?? throw new NotFoundException("This quiz answer is not found");
 
-		if (HttpContextHelper.GetUserId != 0)
-			throw new CustomException(401, "This user is not authorized");
-
-		var user = await this.userRepository.SelectAsync(u => u.Id.Equals(HttpContextHelper.GetUserId))
+		var user = await this.userRepository.SelectAsync(u => u.Id.Equals(dto.UserId))
 			?? throw new NotFoundException("This user is not Found");
 
 		var existAnswer = await this.answerRepository.SelectAsync(a => a.Id == dto.AnswerId)
