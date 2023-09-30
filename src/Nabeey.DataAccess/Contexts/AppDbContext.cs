@@ -1,14 +1,15 @@
+using Nabeey.Domain.Entities.Users;
+using Nabeey.Domain.Entities.Books;
+using Nabeey.Domain.Entities.Assets;
 using Microsoft.EntityFrameworkCore;
 using Nabeey.Domain.Entities.Answers;
-using Nabeey.Domain.Entities.Articles;
-using Nabeey.Domain.Entities.Assets;
-using Nabeey.Domain.Entities.Books;
-using Nabeey.Domain.Entities.Contexts;
-using Nabeey.Domain.Entities.QuestionAnswers;
-using Nabeey.Domain.Entities.Questions;
-using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
-using Nabeey.Domain.Entities.Users;
+using Nabeey.Domain.Entities.Contexts;
+using Nabeey.Domain.Entities.Articles;
+using Nabeey.Domain.Entities.Questions;
+using Nabeey.Domain.Entities.Certificates;
+using Nabeey.Domain.Entities.QuizQuestions;
+using Nabeey.Domain.Entities.QuestionAnswers;
 
 namespace Nabeey.DataAccess.Contexts;
 
@@ -27,18 +28,17 @@ public class AppDbContext : DbContext
 	public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
 	public DbSet<Quiz> Quizzes { get; set; }
 	public DbSet<QuizQuestion> QuizQuestions { get; set; }
+	public DbSet<Certificate> Certificates { get; set; }
 	public DbSet<User> Users { get; set; }
-	
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
-	{
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	{
 		modelBuilder.Entity<Quiz>()
 			.Property(e => e.StartTime)
 			.HasColumnType("timestamp");
 		modelBuilder.Entity<Quiz>()
 			.Property(e => e.EndTime)
 			.HasColumnType("timestamp");
-
 
 		#region Entitylar uchun "IsDeleted" holatini filter qilish
 		modelBuilder.Entity<Answer>().HasQueryFilter(u => !u.IsDeleted);

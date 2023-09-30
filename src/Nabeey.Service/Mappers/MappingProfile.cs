@@ -3,6 +3,7 @@ using Nabeey.Domain.Entities.Answers;
 using Nabeey.Domain.Entities.Articles;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Entities.Books;
+using Nabeey.Domain.Entities.Certificates;
 using Nabeey.Domain.Entities.Contexts;
 using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.Questions;
@@ -13,6 +14,7 @@ using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Books;
+using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.DTOs.ContentAudios;
 using Nabeey.Service.DTOs.ContentCategories;
 using Nabeey.Service.DTOs.ContentVideos;
@@ -75,6 +77,9 @@ public class MappingProfile : Profile
 
 		//Asset
 		CreateMap<Asset, AssetResultDto>().ReverseMap();
+
+		//Certificate
+		CreateMap<Certificate, CertificateResultDtoDto>();
 
 		//Quiz
 		CreateMap<Quiz, QuizResultDto>().ReverseMap();

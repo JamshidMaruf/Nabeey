@@ -5,42 +5,42 @@ using Nabeey.Service.DTOs.Answers;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
 
-namespace Nabeey.WebApi.Controllers
+namespace Nabeey.WebApi.Controllers;
+
+public class AnswersController : BaseController
 {
-	public class AnswersController : BaseController
+	private readonly IAnswerService answerService;
+	public AnswersController(IAnswerService answerService)
 	{
-		private readonly IAnswerService answerService;
-		public AnswersController(IAnswerService answerService)
+		this.answerService = answerService;
+	}
+
+	[HttpPost("create")]
+	public async Task<IActionResult> PostAsync([FromQuery] AnswerCreationDto dto)
+		=> Ok(new Response
 		{
-			this.answerService = answerService;
-		}
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.answerService.AddAsync(dto)
+		});
 
-		[HttpPost("create")]
-		public async Task<IActionResult> PostAsync([FromQuery] AnswerCreationDto dto)
-			=> Ok(new Response
-			{
-				StatusCode = 200,
-				Message = "Success",
-				Data = await this.answerService.AddAsync(dto)
-			});
+	[HttpPut("update")]
+	public async Task<IActionResult> UpdateAsync([FromQuery] AnswerUpdateDto dto)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.answerService.ModifyAsync(dto)
+		});
 
-		[HttpPut("update")]
-		public async Task<IActionResult> UpdateAsync([FromQuery] AnswerUpdateDto dto)
-			=> Ok(new Response
-			{
-				StatusCode = 200,
-				Message = "Success",
-				Data = await this.answerService.ModifyAsync(dto)
-			});
-
-		[HttpDelete("delete/{id:long}")]
-		public async Task<IActionResult> DeleteAsync(long id)
-			=> Ok(new Response
-			{
-				StatusCode = 200,
-				Message = "Success",
-				Data = await this.answerService.RemoveAsync(id)
-			});
+	[HttpDelete("delete/{id:long}")]
+	public async Task<IActionResult> DeleteAsync(long id)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.answerService.RemoveAsync(id)
+		});
 
 		[AllowAnonymous]
 		[HttpGet("get/{id:long}")]
@@ -72,5 +72,4 @@ namespace Nabeey.WebApi.Controllers
 				Message = "Success",
 				Data = await this.answerService.RetrieveAllByQuestionIdAsync(questionId)
 			});
-	}
 }

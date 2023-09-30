@@ -13,4 +13,5 @@ public class QuizResultDto
 	public DateTime EndTime { get; set; }
 	public UserResultDto User { get; set; }
 	public ContentCategoryResultDto ContentCategory { get; set; }
+	public byte[] Certificate { get; set; }
 }

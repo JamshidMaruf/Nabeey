@@ -25,12 +25,13 @@ public static class ServicesCollection
 		services.AddScoped<IArticleService, ArticleService>();
 		services.AddScoped<IQuestionService, QuestionService>();
 		services.AddScoped<IQuizResultService, QuizResultService>();
+		services.AddScoped<ICertificateService, CertificateService>();
 		services.AddScoped<IContentVideoService, ContentVideoService>();
 		services.AddScoped<IContentAudioService, ContentAudioService>();
 		services.AddScoped<IQuizQuestionService, QuizQuestionService>();
 		services.AddScoped<IQuestionAnswerService, QuestionAnswerService>();
 		services.AddScoped<IContentCategoryService, ContentCategoryService>();
-		services.AddHttpContextAccessor();
+        services.AddHttpContextAccessor();
 	}
 
 	public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
