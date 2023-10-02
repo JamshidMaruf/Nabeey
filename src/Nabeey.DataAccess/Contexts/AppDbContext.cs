@@ -27,6 +27,7 @@ public class AppDbContext : DbContext
 	public DbSet<Question> Questions { get; set; }
 	public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
 	public DbSet<Quiz> Quizzes { get; set; }
+	public DbSet<QuizResult> QuizResults { get; set; }
 	public DbSet<QuizQuestion> QuizQuestions { get; set; }
 	public DbSet<Certificate> Certificates { get; set; }
 	public DbSet<User> Users { get; set; }

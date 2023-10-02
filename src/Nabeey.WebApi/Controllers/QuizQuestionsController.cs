@@ -65,7 +65,7 @@ public class QuizQuestionsController : BaseController
 		});
 
 	[AllowAnonymous]
-	[HttpGet("get-byQuiz")]
+	[HttpGet("get-by-quizId/{quizId:long}")]
 	public async ValueTask<IActionResult> GetByQuizAsync(long quizId)
 		=> Ok(new Response
 		{

@@ -474,6 +474,47 @@ namespace Nabeey.DataAccess.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizResult", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<double>("Ball")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("CorrectAnswerCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("IncorrectAnswerCount")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("QuizId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QuizResults");
+                });
+
             modelBuilder.Entity("Nabeey.Domain.Entities.Users.User", b =>
                 {
                     b.Property<long>("Id")
@@ -733,6 +774,25 @@ namespace Nabeey.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("ContentCategory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Nabeey.Domain.Entities.Quizzes.QuizResult", b =>
+                {
+                    b.HasOne("Nabeey.Domain.Entities.Quizzes.Quiz", "Quiz")
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nabeey.Domain.Entities.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
 
                     b.Navigation("User");
                 });

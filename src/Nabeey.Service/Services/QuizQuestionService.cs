@@ -30,6 +30,7 @@ public class QuizQuestionService : IQuizQuestionService
 		this.questionRepository = questionRepository;
 		this.quizQuestionRepository = quizQuestionRepository;
 	}
+
 	public async ValueTask<QuizQuestionResultDto> AddAsync(QuizQuestionCreationDto dto)
 	{
 		var existQuiz = await this.quizRepository.SelectAsync(q => q.Id.Equals(dto.QuizId))
@@ -113,7 +114,7 @@ public class QuizQuestionService : IQuizQuestionService
 			?? throw new NotFoundException("This quiz is not found");
 
 		IEnumerable<Question> questions = new List<Question>();
-		var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question" }).ToListAsync();
+		var quizQuestions = await this.quizQuestionRepository.SelectAll(includes: new[] { "Quiz", "Question.Answers" }).ToListAsync();
 
 		foreach (var item in quizQuestions)
 			if (item.QuizId == existQuiz.Id)

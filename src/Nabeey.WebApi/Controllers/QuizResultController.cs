@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -16,8 +17,9 @@ public class QuizResultController : BaseController
         this.webHostEnvironment = webHostEnvironment;
     }
 
-    [HttpGet("get/{id:long}")]
-	public async ValueTask<IActionResult> GetAsync(long userId, long quizId)
+	[AllowAnonymous]
+    [HttpGet("get-by-quizId-userId/{quizId:long}/{userId:long}")]
+    public async ValueTask<IActionResult> GetAsync(long userId, long quizId)
 		=> Ok(new Response
 		{
 			StatusCode = 200,
@@ -25,6 +27,8 @@ public class QuizResultController : BaseController
 			Data = await this.quizResultService.RetrieveByUserIdAsync(userId, quizId)
 		});
 
+
+	[AllowAnonymous]
 	[HttpGet("get-by-quizId/{quizId:long}")]
 	public async ValueTask<IActionResult> GetByQuizIdAsync(long quizId)
 		=> Ok(new Response
@@ -33,20 +37,4 @@ public class QuizResultController : BaseController
 			Message = "Success",
 			Data = await this.quizResultService.RetrieveAllQuizIdAsync(quizId)
 		});
-
-	[HttpGet("get-certificate")]
-	public async ValueTask<IActionResult> GetCertificate(long userId, long quizId)
-    {
-        var dtos = await certificateService.RetrieveByQuizIdCertificateAsync(userId, quizId);
-
-        foreach (var i in dtos)
-            i.File.FilePath = Path.Combine(webHostEnvironment.WebRootPath, i.File.FilePath);
-
-        return Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = dtos
-        });
-    }
 }
