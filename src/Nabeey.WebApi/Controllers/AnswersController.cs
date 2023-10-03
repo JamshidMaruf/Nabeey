@@ -64,7 +64,7 @@ public class AnswersController : BaseController
 			});
 
 		[AllowAnonymous]
-		[HttpGet("get-all-by-contentId")]
+		[HttpGet("get-by-questionId/{questionId:long}")]
 		public async ValueTask<IActionResult> GetAllByContentIdAsync(long questionId)
 			=> Ok(new Response
 			{

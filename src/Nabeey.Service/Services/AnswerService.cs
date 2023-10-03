@@ -77,6 +77,7 @@ public class AnswerService : IAnswerService
         }
 
         answer.Text = dto.Text;
+		answer.IsTrue = dto.IsTrue;
 		answer.QuestionId = dto.QuestionId;
 		answer.Question = existQuestion;
 
@@ -128,7 +129,7 @@ public class AnswerService : IAnswerService
 	public async ValueTask<IEnumerable<AnswerResultDto>> RetrieveAllByQuestionIdAsync(long questionId)
 	{
 		var answers = await this.repository.SelectAll(q => q.QuestionId == questionId,
-			includes: new[] { "Question", "Asset" }).ToListAsync()
+			includes: new[] { "Asset" }).ToListAsync()
 			?? throw new NotFoundException($"This questionId:{questionId} is not found ");
 
 		return this.mapper.Map<IEnumerable<AnswerResultDto>>(answers);

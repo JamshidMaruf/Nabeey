@@ -48,12 +48,14 @@ public class QuestionAnswerService : IQuestionAnswerService
 		var existQuestion = await this.questionRepository.SelectAsync(a => a.Id == dto.QuestionId)
 			?? throw new NotFoundException("This question is not found");
 
+		var answer = await this.answerRepository.SelectAsync(answer => answer.Id == dto.AnswerId);
 		var mapped = this.mapper.Map<QuestionAnswer>(dto);
 		mapped.Answer = existAnswer;
 		mapped.Quiz = existQuiz;
 		mapped.User = user;
 		mapped.UserId = user.Id;
 		mapped.Question = existQuestion;
+		mapped.IsTrue = answer.IsTrue;
 
 		await this.questionAnswerRepository.InsertAsync(mapped);
 		await this.questionAnswerRepository.SaveAsync();

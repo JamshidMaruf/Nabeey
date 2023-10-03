@@ -6,7 +6,7 @@ public class ResultDto
 {
 	public int CorrectAnswers { get; set; }
 	public int IncorrectAnswers { get; set; }
-	public double Percentage { get; set; }
+	public int QuestionCount { get; set; }
 	public double Ball { get; set; }
 	public QuizResultDto Quiz { get; set; }
 }
