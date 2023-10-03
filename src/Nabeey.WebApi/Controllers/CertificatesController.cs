@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.Interfaces;
 using Nabeey.WebApi.Models;
@@ -10,10 +12,12 @@ public class CertificatesController : BaseController
 {
     private readonly IWebHostEnvironment webHostEnvironment;
     private readonly ICertificateService certificateService;
-    public CertificatesController(ICertificateService certificateService, IWebHostEnvironment webHostEnvironment)
+    private readonly IHttpContextAccessor httpContextAccessor;
+    public CertificatesController(ICertificateService certificateService, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
     {
         this.certificateService = certificateService;
         this.webHostEnvironment = webHostEnvironment;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     [AllowAnonymous]
@@ -49,5 +53,35 @@ public class CertificatesController : BaseController
             Message = "Success",
             Data = dtos
         });
+    }
+
+    [AllowAnonymous]
+    [HttpGet("api/items/myaction")]
+    public IActionResult MyAction()
+    {
+        // HttpContext obyektini olish
+        var httpContext = httpContextAccessor.HttpContext;
+
+        string url = "/api/items/myaction";
+        return Ok(new { message = "Item URL: " + url });
+    }
+
+    [AllowAnonymous]
+    [HttpGet("api/items/myimage")]
+    public IActionResult GetImage(string fileName)
+    {
+        // Faylni nomi (masalan, "my-image.jpg")
+
+        // Faylni serverdan o'qish uchun yo'li
+        string filePath = Path.Combine(webHostEnvironment.WebRootPath, "images", fileName+".jpg");
+
+        if (!System.IO.File.Exists(filePath))
+        {
+            return NotFound(); // Fayl topilmadi
+        }
+
+        // Faylni boshqa mediatip orqali qaytarish
+        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+        return File(fileBytes, "image/jpeg");
     }
 }

@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Nabeey.DataAccess.Contexts;
 using Nabeey.Service.Helpers;
 using Nabeey.WebApi.Extensions;
 using Nabeey.WebApi.Middlewares;
+using Nabeey.WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,6 @@ builder.Services.AddSwaggerGen();
 
 // Add Authorization
 builder.Services.ConfigureSwagger();
-
 // Lowercase routing
 
 builder.Services.AddControllers(options =>
@@ -34,6 +35,8 @@ builder.Services.AddControllersWithViews()
 	.AddNewtonsoftJson(options =>
 	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // JWT
 builder.Services.AddJwt(builder.Configuration);
