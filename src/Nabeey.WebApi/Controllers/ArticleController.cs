@@ -46,7 +46,6 @@ public class ArticleController : BaseController
 		});
 
 
-		
 	[AllowAnonymous]
 	[HttpGet("get/{id:long}")]
 	public async Task<IActionResult> GetAsync(long id)
@@ -70,21 +69,31 @@ public class ArticleController : BaseController
 			Data = await this.service.RetrieveAllAsync(@params, filter, search)
 		});
 
-    [HttpGet("get-by-user/{userId:long}")]
-    public async Task<IActionResult> GetAllByUserIdAsync(long userId)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.RetrieveAllByUserIdAsync(userId)
-        });
-	
+	[HttpGet("get-by-user/{userId:long}")]
+	public async Task<IActionResult> GetAllByUserIdAsync(long userId)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.RetrieveAllByUserIdAsync(userId)
+		});
+
 	[HttpGet("get-by-category/{categoryId:long}")]
-    public async Task<IActionResult> GetAllByCategoryIdAsync(long categoryId)
-        => Ok(new Response
-        {
-            StatusCode = 200,
-            Message = "Success",
-            Data = await this.service.RetrieveAllByCategoryIdAsync(categoryId)
-        });
+	public async Task<IActionResult> GetAllByCategoryIdAsync(long categoryId)
+		=> Ok(new Response
+		{
+			StatusCode = 200,
+			Message = "Success",
+			Data = await this.service.RetrieveAllByCategoryIdAsync(categoryId)
+		});
+
+    [HttpGet("files/{fileName}")]
+	public IActionResult DownloadFile(string fileName)
+	{
+		var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
+		var stream = new FileStream(path, FileMode.Open);
+		var fileStreamResult = new FileStreamResult(stream, "application/octet-stream");
+		fileStreamResult.FileDownloadName = fileName;
+		return fileStreamResult;
+	}
 }

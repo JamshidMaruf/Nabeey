@@ -22,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Audios\" />
     <Folder Include="wwwroot\Certificates\" />
+    <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

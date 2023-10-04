@@ -88,11 +88,6 @@ public class CertificateService : ICertificateService
                     FilePath = $"{httpsRequest.Scheme}://{httpsRequest.Host}/Certificates/{id}.png"
                 };
 
-                var a = httpsRequest.Scheme;
-                var s = httpsRequest.Host;
-
-                var p = asset.FilePath;
-
 
                 await assetRepository.InsertAsync(asset);
                 await assetRepository.SaveAsync();
