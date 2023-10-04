@@ -82,17 +82,10 @@ public class UserController : BaseController
 
 	[HttpGet("get-certificate")]
 	public async ValueTask<IActionResult> GetCertificate(long userId)
-	{
-        var dtos = await certificateService.RetriveUserCertificatesAsync(userId);
-
-		foreach(var i in dtos)
-			i.File.FilePath = Path.Combine(webHostEnvironment.WebRootPath, i.File.FilePath);
-
-		return Ok(new Response
-		{
-			StatusCode = 200,
-			Message = "Success",
-			Data = dtos
-		});
-    }
+     => Ok(new Response
+     {
+         StatusCode = 200,
+         Message = "Success",
+         Data = await certificateService.RetriveUserCertificatesAsync(userId)
+     });
 }

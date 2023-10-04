@@ -4,10 +4,10 @@ namespace Nabeey.Service.Interfaces;
 
 public interface ICertificateService
 {
-    ValueTask<CertificateResultDtoDto> GenerateAsync(CertificateCreationDto dto);
+    ValueTask<CertificateResultDto> GenerateAsync(CertificateCreationDto dto);
     ValueTask<bool> DeleteAsync(long id);
-    ValueTask<CertificateResultDtoDto> RetrieveByIdAsync(long id);
-    ValueTask<IEnumerable<CertificateResultDtoDto>> RetriveUserCertificatesAsync(long userId);
-    ValueTask<IEnumerable<CertificateResultDtoDto>> RetrieveByQuizIdCertificateAsync(long userId, long quizId);
-    ValueTask<IEnumerable<CertificateResultDtoDto>> RetrieveAllAsync();
+    ValueTask<CertificateResultDto> RetrieveByIdAsync(long id);
+    ValueTask<IEnumerable<CertificateResultDto>> RetriveUserCertificatesAsync(long userId);
+    ValueTask<IEnumerable<CertificateResultDto>> RetrieveByQuizIdCertificateAsync(long userId, long quizId);
+    ValueTask<IEnumerable<CertificateResultDto>> RetrieveAllAsync();
 } 
