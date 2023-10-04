@@ -30,7 +30,7 @@ public class CertificatesController : BaseController
      });
 
     [AllowAnonymous]
-    [HttpGet("get-by-Id/{id:long}")]
+    [HttpGet("get-by-id/{id:long}")]
     public async ValueTask<IActionResult> GetById(long id)
      => Ok(new Response
      {
