@@ -1,10 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Users;
 using Nabeey.Domain.Enums;
+using Nabeey.Service.DTOs.Users;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
+using Nabeey.WebApi.Models;
+using Newtonsoft.Json.Linq;
 using Service.Helpers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,15 +19,17 @@ namespace Nabeey.Service.Services;
 public class AuthService : IAuthService
 {
 	private readonly IConfiguration configuration;
+	private readonly IMapper mapper;
 	private readonly IRepository<User> userRepository;
 
-	public AuthService(IConfiguration configuration, IRepository<User> repository)
-	{
-		this.configuration = configuration;
-		this.userRepository = repository;
-	}
+    public AuthService(IConfiguration configuration, IRepository<User> repository, IMapper mapper)
+    {
+        this.configuration = configuration;
+        this.userRepository = repository;
+        this.mapper = mapper;
+    }
 
-	public async ValueTask<string> GenerateTokenAsync(string phone, string originalPassword)
+    public async ValueTask<UserResponseDto> GenerateTokenAsync(string phone, string originalPassword)
 	{
 		var user = await this.userRepository.SelectAsync(u => u.Phone.Equals(phone))
 			?? throw new NotFoundException("This user is not found");
@@ -47,6 +53,9 @@ public class AuthService : IAuthService
 		};
 		var token = tokenHandler.CreateToken(tokenDescriptor);
 
-		return tokenHandler.WriteToken(token);
+		var mapped = this.mapper.Map<UserResponseDto>(user);
+		mapped.Token = tokenHandler.WriteToken(token);
+
+        return mapped;
 	}
 }

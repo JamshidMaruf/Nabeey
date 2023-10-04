@@ -23,6 +23,7 @@ using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
+using Nabeey.WebApi.Models;
 
 namespace Nabeey.Service.Mappers;
 
@@ -54,6 +55,7 @@ public class MappingProfile : Profile
 		CreateMap<User, UserResultDto>().ReverseMap();
 		CreateMap<UserCreationDto, User>().ReverseMap();
 		CreateMap<UserUpdateDto, User>().ReverseMap();
+		CreateMap<UserResponseDto, User>().ReverseMap();
 
 		//Answer
 		CreateMap<Answer, AnswerResultDto>().ReverseMap();

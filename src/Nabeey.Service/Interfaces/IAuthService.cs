@@ -1,6 +1,10 @@
-﻿namespace Nabeey.Service.Interfaces;
+﻿using Nabeey.Domain.Entities.Users;
+using Nabeey.Service.DTOs.Users;
+using Nabeey.WebApi.Models;
+
+namespace Nabeey.Service.Interfaces;
 
 public interface IAuthService
 {
-	ValueTask<string> GenerateTokenAsync(string phone, string originalPassword);
+	ValueTask<UserResponseDto> GenerateTokenAsync(string phone, string originalPassword);
 }
