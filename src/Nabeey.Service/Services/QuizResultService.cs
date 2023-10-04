@@ -154,9 +154,4 @@ public class QuizResultService : IQuizResultService
 
 		return result.FirstOrDefault(result => result.User.Id.Equals(id));
 	}
-
-    public ValueTask<CertificateResultDtoDto> RetrieveUserCertificateAsync(long userId, long quizId)
-    {
-        throw new NotImplementedException();
-    }
 }
