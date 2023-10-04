@@ -65,7 +65,7 @@ public class BookService : IBookService
 
 	public async ValueTask<bool> DeleteAsync(long id)
 	{
-		var book = await this.bookRepository.SelectAsync(b => b.Id.Equals(id), includes: new[] {"File, Image"})
+		var book = await this.bookRepository.SelectAsync(b => b.Id.Equals(id), includes: new[] { "Image", "File" })
 			?? throw new NotFoundException("This book is not found");
 
 		this.bookRepository.Delete(book);
