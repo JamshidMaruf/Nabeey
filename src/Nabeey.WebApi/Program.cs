@@ -36,8 +36,6 @@ builder.Services.AddControllersWithViews()
 	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-
 // JWT
 builder.Services.AddJwt(builder.Configuration);
 
