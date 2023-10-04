@@ -79,7 +79,7 @@ public class MappingProfile : Profile
 		CreateMap<Asset, AssetResultDto>().ReverseMap();
 
 		//Certificate
-		CreateMap<Certificate, CertificateResultDtoDto>();
+		CreateMap<Certificate, CertificateResultDto>();
 
 		//Quiz
 		CreateMap<Quiz, QuizResultDto>().ReverseMap();
