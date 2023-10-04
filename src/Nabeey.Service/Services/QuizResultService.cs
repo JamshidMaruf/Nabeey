@@ -5,6 +5,7 @@ using Nabeey.Domain.Entities.QuestionAnswers;
 using Nabeey.Domain.Entities.QuizQuestions;
 using Nabeey.Domain.Entities.Quizzes;
 using Nabeey.Domain.Entities.Users;
+using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
 using Nabeey.Service.Exceptions;
@@ -153,4 +154,9 @@ public class QuizResultService : IQuizResultService
 
 		return result.FirstOrDefault(result => result.User.Id.Equals(id));
 	}
+
+    public ValueTask<CertificateResultDtoDto> RetrieveUserCertificateAsync(long userId, long quizId)
+    {
+        throw new NotImplementedException();
+    }
 }

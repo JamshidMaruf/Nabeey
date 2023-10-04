@@ -85,7 +85,7 @@ public class UserService : IUserService
 
 	public async ValueTask<bool> RemoveAsync(long id)
 	{
-		User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(id))
+		User existUser = await this.userRepository.SelectAsync(u => u.Id.Equals(id), includes: new[] { "Asset" })
 			?? throw new NotFoundException($"This user is not found with ID = {id}");
 
 		this.userRepository.Delete(existUser);

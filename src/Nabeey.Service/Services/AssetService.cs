@@ -1,4 +1,5 @@
-﻿using Nabeey.DataAccess.IRepositories;
+﻿using Microsoft.AspNetCore.Http;
+using Nabeey.DataAccess.IRepositories;
 using Nabeey.Domain.Entities.Assets;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Assets;
@@ -11,13 +12,15 @@ namespace Nabeey.Service.Services;
 public class AssetService : IAssetService
 {
 	private readonly IRepository<Asset> repository;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-	public AssetService(IRepository<Asset> repository)
-	{
-		this.repository = repository;
-	}
+    public AssetService(IRepository<Asset> repository, IHttpContextAccessor httpContextAccessor)
+    {
+        this.repository = repository;
+        this.httpContextAccessor = httpContextAccessor;
+    }
 
-	public async ValueTask<Asset> UploadAsync(AssetCreationDto dto, UploadType type)
+    public async ValueTask<Asset> UploadAsync(AssetCreationDto dto, UploadType type)
 	{
 		var webRootPath = Path.Combine(PathHelper.WebRootPath, type.ToString());
 
@@ -30,18 +33,22 @@ public class AssetService : IAssetService
 
 		var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
 		await fileStream.WriteAsync(dto.FormFile.ToByte());
+        await dto.FormFile.CopyToAsync(fileStream);
 
-		var asset = new Asset()
+        var imageUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}/{type}/{fileName}";
+
+        var asset = new Asset()
 		{
 			FileName = fileName,
-			FilePath = filePath,
+			FilePath = imageUrl,
 		};
+
 		await this.repository.InsertAsync(asset);
 		await this.repository.SaveAsync();
 		return asset;
 	}
 
-	public async ValueTask<bool> RemoveAsync(Asset assetment)
+    public async ValueTask<bool> RemoveAsync(Asset assetment)
 	{
 		if (assetment is null)
 			return false;

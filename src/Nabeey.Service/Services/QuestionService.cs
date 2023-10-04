@@ -82,7 +82,7 @@ public class QuestionService : IQuestionService
 
 	public async ValueTask<bool> RemoveAsync(long id)
 	{
-		var question = await repository.SelectAsync(x => x.Id.Equals(id))
+		var question = await repository.SelectAsync(x => x.Id.Equals(id), includes: new[] { "Image" })
 			?? throw new NotFoundException("Not found!");
 
 		this.repository.Delete(question);
