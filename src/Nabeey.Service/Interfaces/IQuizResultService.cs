@@ -9,5 +9,4 @@ public interface IQuizResultService
 	ValueTask<IEnumerable<ResultDto>> RetrieveAllQuizIdAsync(long quizId);
 	ValueTask<IEnumerable<UserRatingDto>> RetrieveAllUserResultsAsync();
 	ValueTask<UserRatingDto> RetrieveUserResultByIdAsync(long id);
-	ValueTask<CertificateDto> RetrieveUserCertificateAsync(long userId, long quizId);
 }

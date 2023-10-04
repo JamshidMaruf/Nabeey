@@ -9,12 +9,10 @@ public class QuizResultController : BaseController
 {
 	private readonly IQuizResultService quizResultService;
 	private readonly ICertificateService certificateService;
-    private readonly IWebHostEnvironment webHostEnvironment;
-    public QuizResultController(IQuizResultService quizResultService, ICertificateService certificateService, IWebHostEnvironment webHostEnvironment)
+    public QuizResultController(IQuizResultService quizResultService, ICertificateService certificateService)
     {
         this.quizResultService = quizResultService;
         this.certificateService = certificateService;
-        this.webHostEnvironment = webHostEnvironment;
     }
 
 	[AllowAnonymous]
@@ -37,4 +35,14 @@ public class QuizResultController : BaseController
 			Message = "Success",
 			Data = await this.quizResultService.RetrieveAllQuizIdAsync(quizId)
 		});
+
+    [AllowAnonymous]
+    [HttpGet("get-certificate/{quizId:long}")]
+    public async ValueTask<IActionResult> GetCertificateAsync(long userId, long quizId)
+        => Ok(new Response
+        {
+            StatusCode = 200,
+            Message = "Success",
+            Data = await this.certificateService.RetrieveByQuizIdCertificateAsync(userId, quizId)
+        });
 }
