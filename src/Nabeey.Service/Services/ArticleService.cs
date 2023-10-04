@@ -88,7 +88,10 @@ public class ArticleService : IArticleService
 
 	public async ValueTask<ArticleResultDto> ModifyAsync(ArticleUpdateDto dto)
 	{
-		var existArticle = await this.articleRepository.SelectAsync(a => a.Id.Equals(dto.Id), includes: new[] { "Image" })
+        var user = await this.userRepository.SelectAsync(u => u.Id.Equals(dto.UserId))
+            ?? throw new NotFoundException("This user is not Found");
+
+        var existArticle = await this.articleRepository.SelectAsync(a => a.Id.Equals(dto.Id), includes: new[] { "Image" })
 			?? throw new NotFoundException($"This article is not found with id : {dto.Id}");
 
         var existCategory = await this.categoryRepository.SelectAsync(a => a.Id.Equals(dto.CategoryId))
