@@ -11,20 +11,22 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <script src="https://kit.fontawesome.com/15cb85390e.js" crossorigin="anonymous"></script>
     <title>Bootstrap demo</title>
+    
     <style>
 
         #submenu {
             transition: all 0.1s ease;
         }
 
-            #submenu:hover {
-                background-color: #42526E;
-                color: whitesmoke;
-            }
+        #submenu:hover {
+            background-color: #F8B451;
+            color: whitesmoke;
+        }
 
         .menu-list li a:hover {
-            background-color: #42526E;
+            background-color: #F8B451;
             color: whitesmoke;
         }
 
@@ -39,19 +41,24 @@
     </style>
 
 </head>
-<body style="background-color:darkgray">
+<body style="background-color:#fff">
 
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark" style="background-color: #01384D">
         <div class="container-fluid d-flex justify-content-between">
             <div>
-                <button class="navbar-toggler active" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                 <i class="fas fas-user"> <img src="~/Images/Logos/NabeeyLogo.png" style="color:white" width="40"  alt="Logo" /></i>
             </div>
+
             <div>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fas-user"> <img src="~/icons/user (2).png" style="color:white" width="36" alt="Logo" /></i>
+                         <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512">
+                            <style>
+                                svg {
+                                    fill: #f8b451
+                                }</style>
+                            <path d="M406.5 399.6C387.4 352.9 341.5 320 288 320H224c-53.5 0-99.4 32.9-118.5 79.6C69.9 362.2 48 311.7 48 256C48 141.1 141.1 48 256 48s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6zm-40.1 32.7C334.4 452.4 296.6 464 256 464s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3h64c38.8 0 71.2 27.6 78.5 64.3zM256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-272a40 40 0 1 1 0-80 40 40 0 1 1 0 80zm-88-40a88 88 0 1 0 176 0 88 88 0 1 0 -176 0z" />
+                        </svg> 
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-2 bg-dark">
@@ -63,29 +70,53 @@
             </div>
         </div>
 
-            <div class="collapse in show h-100 w-100 active" id="navbarToggleExternalContent">
-                <div class="position-absolute start-0 col-12 col-md-4 mx-auto p-3 shadow min-vh-100 w-25 bg-dark" style="color:white">
+        <div class="collapse in show h-100 w-100 active" id="navbarToggleExternalContent">
+            <div class="position-absolute start-0 col-md-2 mx-auto p-3 shadow min-vh-100 w-25" style="color:white; background-color:#01384D">
                     <div class="menu accordion active" style="color:white;">
-                        <ul class="menu-list active">
+                        <ul class="menu-list">
                             <li>
-                                <a class="menu-item active" href="#"><i class="fa-solid fa-house me-2"></i> Home</a>
+                            <a class="menu-item" href="#"><i class="fa-solid fa-user me-2"></i> Users</a>
                             </li>
                             <li>
-                                <a class="menu-item" href="@Url.Action("Users","User")"><i class="fa-solid fa-house me-2"></i> Users</a>
+                            <a class="menu-item" href="#"><i class="fa-solid fa-layer-group me-2"></i> Categories</a>
                             </li>
                             <li>
-                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Drivers</a>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-book me-2"></i> Books</a>
                             </li>
                             <li>
-                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Orders </a>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-newspaper me-2"></i> Articles </a>
                             </li>
                             <li>
-                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Admins</a>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-video me-2"></i> Videos</a>
                             </li>
 
                             <li>
-                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Others</a>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-file-audio me-2"></i> Audios</a>
                             </li>
+
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-certificate me-2"></i> Certificates</a>
+                            </li>
+
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-brain me-2"></i> Quizzes</a>
+                            </li>
+                            
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-question me-2"></i> Questions</a>
+                            </li>
+
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-square-poll-vertical me-2"></i> Quiz Results</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-face-smile me-2"></i> Answers</a>
+                            </li>
+
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-lock me-2"></i> Admins</a>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
