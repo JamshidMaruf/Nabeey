@@ -1,0 +1,103 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/fastbootstrap@1.1.2/dist/css/fastbootstrap.min.css" rel="stylesheet" integrity="sha256-xLGBU65wCDv2/qEdq3ZYw2Qdiia/wxxeGepRyZmpQdY=" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <title>Bootstrap demo</title>
+    <style>
+
+        #submenu {
+            transition: all 0.1s ease;
+        }
+
+            #submenu:hover {
+                background-color: #42526E;
+                color: whitesmoke;
+            }
+
+        .menu-list li a:hover {
+            background-color: #42526E;
+            color: whitesmoke;
+        }
+
+        .menu-item {
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+    </style>
+
+</head>
+<body style="background-color:darkgray">
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid d-flex justify-content-between">
+            <div>
+                <button class="navbar-toggler active" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fas-user"> <img src="~/icons/user (2).png" style="color:white" width="36" alt="Logo" /></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end mt-2 bg-dark">
+                        <li><a class="dropdown-item"  href="@Url.Action("Profile", "User")">Profile</a></li>
+                        <li><button class="dropdown-item" type="button">Settings</button></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Home")">Log out</a></li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+
+            <div class="collapse in show h-100 w-100 active" id="navbarToggleExternalContent">
+                <div class="position-absolute start-0 col-12 col-md-4 mx-auto p-3 shadow min-vh-100 w-25 bg-dark" style="color:white">
+                    <div class="menu accordion active" style="color:white;">
+                        <ul class="menu-list active">
+                            <li>
+                                <a class="menu-item active" href="#"><i class="fa-solid fa-house me-2"></i> Home</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="@Url.Action("Users","User")"><i class="fa-solid fa-house me-2"></i> Users</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Drivers</a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Orders </a>
+                            </li>
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Admins</a>
+                            </li>
+
+                            <li>
+                                <a class="menu-item" href="#"><i class="fa-solid fa-house me-2"></i> Others</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="background-image: url('https://as1.ftcdn.net/v2/jpg/02/35/61/94/1000_F_235619457_GWByvN8iD6FNddJ4cXk3gT4eZcUsgkdm.jpg');">
+            </div>
+
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/fastbootstrap@1.1.2/dist/js/fastbootstrap.min.js" integrity="sha256-+c+/OCMmtlZadi89VaV1yUOkk1T4BD2pwBFpY3OcrqI=" crossorigin="anonymous"></script>
+    <main role="main" class="pb-3" style = "margin-left:25%; margin-right:0%">
+        @RenderBody()
+    </main>
+</body>
+</html>
