@@ -7,9 +7,9 @@ using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Certificates;
 using Nabeey.Service.Helpers;
 using Nabeey.Service.Interfaces;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
-namespace Nabeey.WebApi.Controllers;
+namespace Nabeey.Web.Controllers;
 
 public class CertificatesController : BaseController
 {

@@ -7,7 +7,7 @@ using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Users;
 using Nabeey.Service.Exceptions;
 using Nabeey.Service.Interfaces;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 using Newtonsoft.Json.Linq;
 using Service.Helpers;
 using System.IdentityModel.Tokens.Jwt;

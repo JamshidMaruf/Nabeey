@@ -16,3 +16,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.avatar-wrapper {
+    border: 4px solid #fff;
+    position: relative;
+    height: 120px;
+    width: 120px;
+    margin: 15px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 5px -5px #fff;
+    transition: all 0.3s ease;
+}
+
+.profile-pic {
+    height: 100%;
+    width: 100%;
+}

@@ -38,6 +38,10 @@
         .dropdown-item {
             color: white;
         }
+
+        .sidebar .menu-list {
+            height: 89.5vh;
+        }
     </style>
 
 </head>
@@ -70,8 +74,8 @@
             </div>
         </div>
 
-        <div class="collapse in show h-100 w-100 active" id="navbarToggleExternalContent">
-            <div class="position-absolute start-0 col-md-2 mx-auto p-3 shadow min-vh-100 w-25" style="color:white; background-color:#01384D">
+        <div class="sidebar collapse in show pt-6" id="navbarToggleExternalContent">
+            <div class="position-absolute start-0 col-md-2 mx-auto p-3 shadow w-25" style="color:white; background-color:#01384D">
                     <div class="menu accordion active" style="color:white;">
                         <ul class="menu-list">
                             <li>
@@ -121,13 +125,11 @@
                     </div>
                 </div>
             </div>
-            <div style="background-image: url('https://as1.ftcdn.net/v2/jpg/02/35/61/94/1000_F_235619457_GWByvN8iD6FNddJ4cXk3gT4eZcUsgkdm.jpg');">
-            </div>
 
     </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/fastbootstrap@1.1.2/dist/js/fastbootstrap.min.js" integrity="sha256-+c+/OCMmtlZadi89VaV1yUOkk1T4BD2pwBFpY3OcrqI=" crossorigin="anonymous"></script>
-    <main role="main" class="pb-3" style = "margin-left:25%; margin-right:0%">
+    <main role="main" style = "margin-left:16.8%; margin-right:0%">
         @RenderBody()
     </main>
 </body>

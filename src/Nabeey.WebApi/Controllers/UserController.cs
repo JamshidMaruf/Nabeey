@@ -4,9 +4,9 @@ using Nabeey.Domain.Configurations;
 using Nabeey.Domain.Enums;
 using Nabeey.Service.DTOs.Users;
 using Nabeey.Service.Interfaces;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
-namespace Nabeey.WebApi.Controllers;
+namespace Nabeey.Web.Controllers;
 
 public class UserController : BaseController
 {

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Nabeey.Domain.Configurations;
 using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.Interfaces;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
-namespace Nabeey.WebApi.Controllers;
+namespace Nabeey.Web.Controllers;
 
 public class QuestionsController : BaseController
 {

@@ -1,0 +1,53 @@
+﻿@using Nabeey.Service.DTOs.Users;
+
+@model IEnumerable<UserResultDto>
+@{
+    var dto = Model.LastOrDefault();
+}
+
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <a class="btn btn-success" href="@Url.Action("Create")">Create</a>
+    </nav>
+<div class="p-3">
+    <table class="table align-middle">
+        <thead class="text-light" style="background-color: #01384D">
+            <tr>
+                <td>T/r</td>
+                <td>Image</td>
+                <td>First name</td>
+                <td>Last name</td>
+                <td>Phone</td>
+                <td>Email</td>
+                <td>Role</td>
+                <td>Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>
+                    <img src="@dto.Asset.FilePath"
+                         alt="Image"
+                         style="width: 45px; height: 45px"
+                         class="rounded-circle" />
+                </td>
+            <td>@dto.FirstName</td>
+            <td>@dto.LastName</td>
+            <td>@dto.Phone</td>
+            <td>@dto.Email</td>
+            <td>@dto.UserRole</td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Detail", "Users", dto.Id)" >Detail</a>
+                    <a class="btn btn-outline-warning" href="@Url.Action("Update", "Users", dto.Id)">Update</a>
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Users", dto.Id)">Delete</a>
+                </div>
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

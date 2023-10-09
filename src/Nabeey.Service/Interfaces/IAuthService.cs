@@ -1,6 +1,6 @@
 ﻿using Nabeey.Domain.Entities.Users;
 using Nabeey.Service.DTOs.Users;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
 namespace Nabeey.Service.Interfaces;
 

@@ -8,7 +8,7 @@ using Nabeey.Service.Mappers;
 using Nabeey.Service.Services;
 using System.Text;
 
-namespace Nabeey.WebApi.Extensions;
+namespace Nabeey.Web.Extensions;
 
 public static class ServicesCollection
 {
