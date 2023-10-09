@@ -1,4 +1,4 @@
-﻿namespace Nabeey.WebApi.Models;
+﻿namespace Nabeey.Web.Models;
 
 public class Response
 {

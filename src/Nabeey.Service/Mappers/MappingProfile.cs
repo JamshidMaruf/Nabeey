@@ -23,7 +23,7 @@ using Nabeey.Service.DTOs.Questions;
 using Nabeey.Service.DTOs.QuizQuestions;
 using Nabeey.Service.DTOs.Quizzes;
 using Nabeey.Service.DTOs.Users;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
 namespace Nabeey.Service.Mappers;
 

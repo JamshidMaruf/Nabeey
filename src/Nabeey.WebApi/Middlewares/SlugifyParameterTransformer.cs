@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Nabeey.WebApi.Middlewares;
+namespace Nabeey.Web.Middlewares;
 
 public class SlugifyParameterTransformer : IOutboundParameterTransformer
 {

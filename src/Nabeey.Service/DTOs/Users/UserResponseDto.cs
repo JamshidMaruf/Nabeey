@@ -2,7 +2,7 @@
 using Nabeey.Service.DTOs.Assets;
 using Nabeey.Service.DTOs.Users;
 
-namespace Nabeey.WebApi.Models;
+namespace Nabeey.Web.Models;
 
 public class UserResponseDto
 {

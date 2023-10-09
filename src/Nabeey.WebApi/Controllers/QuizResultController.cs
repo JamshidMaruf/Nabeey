@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nabeey.Service.Interfaces;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
-namespace Nabeey.WebApi.Controllers;
+namespace Nabeey.Web.Controllers;
 
 public class QuizResultController : BaseController
 {

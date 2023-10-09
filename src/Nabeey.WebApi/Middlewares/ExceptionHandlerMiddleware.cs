@@ -1,7 +1,7 @@
 ﻿using Nabeey.Service.Exceptions;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Models;
 
-namespace Nabeey.WebApi.Middlewares;
+namespace Nabeey.Web.Middlewares;
 
 public class ExceptionHandlerMiddleware
 {

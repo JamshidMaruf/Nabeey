@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Nabeey.DataAccess.Contexts;
 using Nabeey.Service.Helpers;
-using Nabeey.WebApi.Extensions;
-using Nabeey.WebApi.Middlewares;
-using Nabeey.WebApi.Models;
+using Nabeey.Web.Extensions;
+using Nabeey.Web.Middlewares;
+using Nabeey.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
