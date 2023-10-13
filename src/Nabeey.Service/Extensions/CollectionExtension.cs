@@ -52,9 +52,8 @@ public static class CollectionExtension
 		var prop = filter.OrderBy ?? "Id";
 
 		var property = typeof(TEntity).GetProperties().FirstOrDefault(n
-			=> n.Name.Equals(prop, StringComparison.OrdinalIgnoreCase));
-
-		property ??= typeof(TEntity).GetProperty("Id");
+			=> n.Name.Equals(prop, StringComparison.OrdinalIgnoreCase))
+			?? throw new CustomException(400, "Property that does not exist"); 
 
 		if (property.Name is "Id" && !filter.IsDesc)
 			return collect;

@@ -50,6 +50,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 	app.UseSwaggerUI();
 }
 
+app.UseCors(b => b.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
 app.UseAuthentication();
 
 app.UseStaticFiles();

@@ -13,7 +13,7 @@
         <a class="btn btn-success" href="@Url.Action("Create")">Create</a>
     </nav>
 <div class="p-3">
-    <table class="table align-middle">
+    <table class="table text-center">
         <thead class="text-light" style="background-color: #01384D">
             <tr>
                 <td>T/r</td>
@@ -27,27 +27,49 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>
-                    <img src="@dto.Asset.FilePath"
-                         alt="Image"
-                         style="width: 45px; height: 45px"
-                         class="rounded-circle" />
-                </td>
-            <td>@dto.FirstName</td>
-            <td>@dto.LastName</td>
-            <td>@dto.Phone</td>
-            <td>@dto.Email</td>
-            <td>@dto.UserRole</td>
-            <td>
-                <div class="btn-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Detail", "Users", dto.Id)" >Detail</a>
-                    <a class="btn btn-outline-warning" href="@Url.Action("Update", "Users", dto.Id)">Update</a>
-                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Users", dto.Id)">Delete</a>
-                </div>
-            </td>
-            </tr>
+            @{int tr = 1;}
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@tr</td>
+                    <td>
+                        @if (item.Asset is null)
+                        {
+                            <img src="./Images/Logos/profile.png"
+                                 alt="Image"
+                                 style="width: 40px; height: 40px"
+                                 class="rounded-circle" />
+                        }
+                        else
+                        {
+                            <img src="@item.Asset.FilePath"
+                                    alt="Image"
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle" />
+                        }
+                    </td>
+                    <td class="pt-3">@item.FirstName</td>
+                    <td class="pt-3">@item.LastName</td>
+                    <td class="pt-3">@item.Phone</td>
+                    <td class="pt-3">@item.Email</td>
+                    <td class="pt-3">@item.UserRole</td>
+                    <td>
+                        <div class="btn-group">
+
+                            <a class="btn btn-outline-primary" href="@Url.Action("Detail", "Users", item.Id)">Detail</a>
+                            <a class="btn btn-outline-warning" href="@Url.Action("Update", "Users", item.Id)">Update</a>
+                            <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Users", item.Id)">Delete</a>
+                            <form asp-action="Delete" asp-controller="Users" method="post">
+                                <button type="submit" asp-route-id=@item.Id onclick="return confirm('Delete selected item?');">
+                                    Link Text
+                                </button>
+                            </form>
+
+                        </div>
+                    </td>
+                    @{tr++;}
+                </tr>
+            }
         </tbody>
     </table>
 </div>
