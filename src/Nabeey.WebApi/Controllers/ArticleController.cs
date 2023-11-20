@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Nabeey.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Nabeey.Domain.Configurations;
-using Nabeey.Domain.Enums;
-using Nabeey.Service.DTOs.Articles;
 using Nabeey.Service.Interfaces;
-using Nabeey.Web.Models;
+using Nabeey.Domain.Configurations;
+using Nabeey.Service.DTOs.Articles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Nabeey.Web.Controllers;
 
@@ -69,6 +68,7 @@ public class ArticleController : BaseController
 			Data = await this.service.RetrieveAllAsync(@params, filter, search)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-by-user/{userId:long}")]
 	public async Task<IActionResult> GetAllByUserIdAsync(long userId)
 		=> Ok(new Response
@@ -78,6 +78,7 @@ public class ArticleController : BaseController
 			Data = await this.service.RetrieveAllByUserIdAsync(userId)
 		});
 
+	[AllowAnonymous]
 	[HttpGet("get-by-category/{categoryId:long}")]
 	public async Task<IActionResult> GetAllByCategoryIdAsync(long categoryId)
 		=> Ok(new Response
@@ -87,6 +88,7 @@ public class ArticleController : BaseController
 			Data = await this.service.RetrieveAllByCategoryIdAsync(categoryId)
 		});
 
+	[AllowAnonymous]
     [HttpGet("files/{fileName}")]
 	public IActionResult DownloadFile(string fileName)
 	{
