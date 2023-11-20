@@ -1,23 +1,17 @@
-using Nabeey.Domain.Commons;
-using Nabeey.Domain.Configurations;
-using Nabeey.Service.Exceptions;
 using Newtonsoft.Json;
+using Nabeey.Domain.Commons;
+using Nabeey.Service.Exceptions;
+using Nabeey.Domain.Configurations;
 
 namespace Nabeey.Service.Extensions;
 
 public static class CollectionExtension
 {
 	public static IQueryable<T> ToPaginate<T>(this IQueryable<T> values, PaginationParams @params)
-	{
-		var source = values.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
-		return source;
-	}
+		=> values.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
 
 	public static IEnumerable<T> ToPaginate<T>(this IEnumerable<T> values, PaginationParams @params)
-	{
-		var source = values.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
-		return source;
-	}
+		=> values.Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
 
 	public static IEnumerable<TEntity> ToPagedList<TEntity>(this IEnumerable<TEntity> entities, PaginationParams @params)
 		where TEntity : Auditable
